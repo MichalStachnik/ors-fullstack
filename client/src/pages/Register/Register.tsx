@@ -1,0 +1,133 @@
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+
+import './Register.css';
+
+const Register: React.FC = () => {
+  const [formData, setFormData] = useState({
+    username: '',
+    email: '',
+    password: '',
+    password2: ''
+  });
+
+  const { username, email, password, password2 } = formData;
+
+  const onChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({
+      ...formData,
+      [evt.target.name]: evt.target.value
+    });
+  };
+
+  const onSubmit = async (evt: React.FormEvent<HTMLFormElement>) => {
+    evt.preventDefault();
+
+    if (password !== password2) return;
+
+    console.log(formData);
+
+    const newUser = {
+      username,
+      email,
+      password
+    };
+
+    try {
+      const res = await fetch('/auth/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(newUser)
+      });
+
+      console.log('successful post');
+      console.log(res);
+
+      const data = await res.json();
+      console.log('data:', data);
+    } catch (error) {
+      console.log('error registering user');
+      console.error(error.message);
+      throw error;
+    }
+  };
+
+  return (
+    <div className="my-3">
+      <button type="button" className="btn btn-outline-secondary">
+        <Link to="/">Back</Link>
+      </button>
+      <form className="my-3" onSubmit={evt => onSubmit(evt)}>
+        <fieldset>
+          <legend>Sign Up</legend>
+          <div className="form-group">
+            <label htmlFor="username">Username</label>
+            <input
+              type="text"
+              className="form-control"
+              id="username"
+              aria-describedby="usernameHelp"
+              placeholder="Enter username"
+              required
+              name="username"
+              value={username}
+              onChange={evt => onChange(evt)}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="exampleInputEmail1">Email address</label>
+            <input
+              type="email"
+              className="form-control"
+              id="exampleInputEmail1"
+              aria-describedby="emailHelp"
+              placeholder="Enter email"
+              required
+              name="email"
+              value={email}
+              onChange={evt => onChange(evt)}
+            />
+            <small id="emailHelp" className="form-text text-muted">
+              We'll never share your email with anyone else.
+            </small>
+          </div>
+          <div className="form-group">
+            <label htmlFor="exampleInputPassword1">Password</label>
+            <input
+              type="password"
+              className="form-control"
+              id="exampleInputPassword1"
+              placeholder="Password"
+              required
+              name="password"
+              value={password}
+              onChange={evt => onChange(evt)}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="exampleInputPassword1">Confirm password</label>
+            <input
+              type="password"
+              className={`form-control ${
+                password.length && password !== password2 ? 'is-invalid' : ''
+              }`}
+              id="exampleInputPassword2"
+              placeholder="Password"
+              required
+              name="password2"
+              value={password2}
+              onChange={evt => onChange(evt)}
+            />
+          </div>
+          <button type="submit" className="btn btn-primary">
+            Submit
+          </button>
+        </fieldset>
+      </form>
+    </div>
+  );
+};
+
+export default Register;
