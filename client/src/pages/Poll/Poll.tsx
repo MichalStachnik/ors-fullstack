@@ -23,34 +23,6 @@ class Poll extends React.Component<Props, State> {
     super(props);
     this.state = {
       poll: {},
-      // options: {
-      //   chart: {
-      //     background: '#f4f4f4',
-      //     foreColor: '#333'
-      //   },
-      //   xaxis: {
-      //     categories: ['carmel', 'beacon', 'brooklyn', 'burlington', 'tokyo']
-      //   },
-      //   plotOptions: {
-      //     bar: { horizontal: false }
-      //   },
-      //   fill: {
-      //     color: ['#f44336']
-      //   },
-      //   dataLabels: {
-      //     enabled: false
-      //   },
-      //   title: {
-      //     text: 'my title',
-      //     align: 'center',
-      //     margin: 20,
-      //     offsetY: 20,
-      //     style: {
-      //       fontSize: '25px'
-      //     }
-      //   }
-      // },
-      // series: [{ name: 'population', data: [0, 1, 2, 5, 10] }],
       donutOptions: {
         options: {
           plotOptions: {
@@ -81,10 +53,6 @@ class Poll extends React.Component<Props, State> {
   }
 
   componentDidMount = async () => {
-    console.log('this.context in componentDidMount', this.context);
-    console.log(this.context.getUser());
-    console.log('poll.tsx', this.props);
-    // Proxy error?
     const res = await fetch(`/polls/${this.props.match.params.pollId}`);
     const data = await res.json();
 
@@ -92,36 +60,50 @@ class Poll extends React.Component<Props, State> {
 
     const chartData = data.poll.options.map((option: any) => option.voteCount);
 
-    this.setState(
-      {
-        poll: data.poll,
-        donutOptions: {
-          ...this.state.donutOptions,
-          options: {
-            labels: options
-          },
-          series: chartData,
+    this.setState({
+      poll: data.poll,
+      donutOptions: {
+        ...this.state.donutOptions,
+        options: {
           labels: options
-        }
-      },
-      () => {
-        console.log('state after CDM', this.state);
+        },
+        series: chartData,
+        labels: options
       }
-    );
+    });
   };
 
   handleVoteClick = async (option: any) => {
-    const res = await fetch(
+    // Send one vote
+    const voteRes = await fetch(
       `/polls/${this.props.match.params.pollId}/${option}`
     );
-    console.log('res from vote click', res);
+    const voteData = await voteRes.json();
+
+    // Get one poll
+    const pollRes = await fetch(`/polls/${this.props.match.params.pollId}`);
+    const pollData = await pollRes.json();
+
+    const options = pollData.poll.options.map((option: any) => option.option);
+
+    const chartData = pollData.poll.options.map(
+      (option: any) => option.voteCount
+    );
+    this.setState({
+      poll: pollData.poll,
+      donutOptions: {
+        ...this.state.donutOptions,
+        options: {
+          labels: options
+        },
+        series: chartData,
+        labels: options
+      }
+    });
   };
 
   render() {
     if (!this.state.poll) return <h1>Loading...</h1>;
-    // console.log('this.context.getUser()', this.context.getUser());
-    console.log('this.context', this.context);
-    // console.log(this.state.poll.options);
     return (
       <div className="card text-white bg-primary my-3">
         <div className="card-header">{this.state.poll.question}</div>

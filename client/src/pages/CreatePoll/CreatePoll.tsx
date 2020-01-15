@@ -1,4 +1,5 @@
 import React, { useState, useContext } from 'react';
+import { useHistory } from 'react-router-dom';
 
 import { UserContext } from '../../contexts/UserContext';
 
@@ -9,48 +10,79 @@ const CreatePoll: React.FC = () => {
 
   const [pollData, setPollData] = useState({
     question: '',
-    option1: '',
-    option2: '',
-    option3: ''
+    optionCount: 0,
+    options: {} as any
   });
 
-  let { question, option1, option2, option3 } = pollData;
+  let history = useHistory();
+  let { question, optionCount } = pollData;
+
+  const onQuestionChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
+    setPollData({
+      ...pollData,
+      question: evt.target.value
+    });
+  };
 
   const onChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
     setPollData({
       ...pollData,
-      [evt.target.name]: evt.target.value
+      options: {
+        ...pollData.options,
+        [evt.target.name]: evt.target.value
+      }
     });
   };
 
-  // const onSelectChange = (evt: React.ChangeEvent<HTMLSelectElement>) => {
-  //   console.log('select changed with', evt.target.name, evt.target.value);
-  //   setPollData({
-  //     ...pollData,
-  //     optionValue: parseInt(evt.target.value)
-  //   });
-  // };
+  const onSelectChange = (evt: React.ChangeEvent<HTMLSelectElement>) => {
+    setPollData({
+      ...pollData,
+      optionCount: parseInt(evt.target.value)
+    });
+  };
+
+  const renderOptions = () => {
+    if (optionCount <= 0) return;
+    let renderArray = [];
+
+    for (let i = 0; i < optionCount; i++) {
+      let val: any = pollData.options[`${i}`];
+
+      renderArray.push(
+        <div className="form-group">
+          <label htmlFor="question">Option {`${i}`}</label>
+          <input
+            type="input"
+            className="form-control"
+            id={`${i}`}
+            aria-describedby="questionHelp"
+            placeholder="Enter option"
+            required
+            name={`${i}`}
+            value={val || ''}
+            onChange={evt => onChange(evt)}
+          />
+        </div>
+      );
+    }
+    return renderArray;
+  };
 
   const onSubmit = async (evt: React.FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
 
-    console.log(pollData);
-    console.log('userContext in CreatePoll', userContext.getUser());
-
     const userToken = userContext.getUser();
 
-    console.log('userTOKEN!', userToken);
-    console.log('userTOKEN!', typeof userToken);
+    // Create options
+    let optionsArray = Object.values(pollData.options);
 
-    let options = [
-      { option: option1 },
-      { option: option2 },
-      { option: option3 }
-    ];
+    let postOptions = optionsArray.map(opt => {
+      return { option: opt };
+    });
 
     const postObj = {
       question,
-      options
+      options: postOptions
     };
 
     try {
@@ -63,13 +95,9 @@ const CreatePoll: React.FC = () => {
         body: JSON.stringify(postObj)
       });
 
-      console.log(res);
-
       const data = await res.json();
-      console.log('data:', data);
 
-      // context.changeSearchValue('');
-      userContext.setUser(data.token);
+      history.push('/');
     } catch (error) {
       console.log('error registering user');
       console.error(error.message);
@@ -93,19 +121,18 @@ const CreatePoll: React.FC = () => {
               required
               name="question"
               value={question}
-              onChange={evt => onChange(evt)}
+              onChange={evt => onQuestionChange(evt)}
             />
           </div>
-          {/* <div className="form-group">
+          <div className="form-group">
             <label htmlFor="exampleSelect1">Number of options:</label>
             <select
-              value={optionValue}
+              value={optionCount}
               onChange={evt => onSelectChange(evt)}
               className="form-control"
               id="optionSelect"
               name="OPTION!!"
             >
-              <option>1</option>
               <option>2</option>
               <option>3</option>
               <option>4</option>
@@ -113,50 +140,9 @@ const CreatePoll: React.FC = () => {
               <option>6</option>
               <option>7</option>
             </select>
-          </div> */}
+          </div>
 
-          <div className="form-group">
-            <label htmlFor="question">Option 3</label>
-            <input
-              type="input"
-              className="form-control"
-              id="option1"
-              aria-describedby="questionHelp"
-              placeholder="Enter option"
-              required
-              name="option1"
-              value={option1}
-              onChange={evt => onChange(evt)}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="question">Option 2</label>
-            <input
-              type="input"
-              className="form-control"
-              id="option2"
-              aria-describedby="questionHelp"
-              placeholder="Enter option"
-              required
-              name="option2"
-              value={option2}
-              onChange={evt => onChange(evt)}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="question">Option 3</label>
-            <input
-              type="input"
-              className="form-control"
-              id="option3"
-              aria-describedby="questionHelp"
-              placeholder="Enter option"
-              required
-              name="option3"
-              value={option3}
-              onChange={evt => onChange(evt)}
-            />
-          </div>
+          {renderOptions()}
 
           <button type="submit" className="btn btn-primary">
             Submit

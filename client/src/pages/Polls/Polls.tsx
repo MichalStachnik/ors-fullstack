@@ -19,15 +19,10 @@ class Polls extends React.Component<Props, State> {
 
   componentDidMount = async () => {
     const res = await fetch('/polls');
-    const data = await res.json();
-    this.setState(
-      {
-        polls: data.polls
-      },
-      () => {
-        console.log('polls after setting state', this.state.polls);
-      }
-    );
+    const { polls } = await res.json();
+    this.setState({
+      polls
+    });
   };
 
   componentDidUpdate = async () => {};
@@ -42,16 +37,13 @@ class Polls extends React.Component<Props, State> {
               <div className="card-header">
                 {poll.question}
                 <Link to={`/polls/${poll._id}`}>
-                  <button
-                    className="btn btn-outline-info my-2 my-sm-0"
-                    type="submit"
-                  >
+                  <button className="btn btn-info my-2 my-sm-0" type="submit">
                     Vote
                   </button>
                 </Link>
               </div>
               <div className="card-body">
-                <h4 className="card-title">lello</h4>
+                <h4 className="card-title"></h4>
 
                 {poll.options.map((option: any, index: number) => {
                   return (
