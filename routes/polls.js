@@ -3,12 +3,11 @@ const router = express.Router();
 const authMiddleware = require('../helpers/auth');
 const Poll = require('../models/Poll');
 
-// Create poll
+// Create one poll
 router.post('/', authMiddleware, async (req, res, next) => {
   console.log('in POST /polls with req.user: ', req.user);
   const { question, options } = req.body;
-  console.log('question: ', question);
-  console.log('options: ', options);
+  console.log('req.body', req.body);
 
   try {
     let poll = new Poll({
@@ -43,13 +42,11 @@ router.get('/', async (req, res, next) => {
   }
 });
 
-// Get single poll
+// Get one poll
 // Proxy error?
 router.get('/:pollId', async (req, res, next) => {
-  console.log('in server with: ', req.params);
   try {
     let poll = await Poll.findById(req.params.pollId);
-
     res.status(200).json({ poll });
   } catch (error) {
     console.log('error fetching single poll');
@@ -68,14 +65,12 @@ router.get('/:pollId/:option', async (req, res, next) => {
       // console.log('option.option', option.option);
       // console.log('req.params.option', req.params.option);
       if (option.option === req.params.option) {
-        console.log('upping it');
         option.voteCount++;
       }
     });
 
     await poll.save();
-    console.log('updated vote count and saved');
-    res.status(200);
+    res.status(200).json({ message: 'updated vote count' });
   } catch (error) {
     console.log('error sending vote');
     console.error(error.message);

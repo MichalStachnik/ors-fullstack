@@ -1,29 +1,5 @@
-// import React from 'react';
-
-// import './CreatePoll.css';
-
-// interface Props {}
-
-// interface State {}
-
-// class CreatePoll extends React.Component<Props, State> {
-//   constructor(props: Props) {
-//     super(props);
-//     this.state = {};
-//   }
-
-//   componentDidMount = async () => {};
-
-//   componentDidUpdate = async () => {};
-
-//   render() {
-//     return <div>im a create poll page</div>;
-//   }
-// }
-
-// export default CreatePoll;
-
 import React, { useState, useContext } from 'react';
+import { useHistory } from 'react-router-dom';
 
 import { UserContext } from '../../contexts/UserContext';
 
@@ -32,49 +8,96 @@ import './CreatePoll.css';
 const CreatePoll: React.FC = () => {
   const userContext = useContext(UserContext);
 
-  const [formData, setFormData] = useState({
-    email: '',
-    password: ''
+  const [pollData, setPollData] = useState({
+    question: '',
+    optionCount: 0,
+    options: {} as any
   });
 
-  console.log('userContext in CreatePoll', userContext);
+  let history = useHistory();
+  let { question, optionCount } = pollData;
 
-  const { email, password } = formData;
+  const onQuestionChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
+    setPollData({
+      ...pollData,
+      question: evt.target.value
+    });
+  };
 
   const onChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
-      [evt.target.name]: evt.target.value
+    setPollData({
+      ...pollData,
+      options: {
+        ...pollData.options,
+        [evt.target.name]: evt.target.value
+      }
     });
+  };
+
+  const onSelectChange = (evt: React.ChangeEvent<HTMLSelectElement>) => {
+    setPollData({
+      ...pollData,
+      optionCount: parseInt(evt.target.value)
+    });
+  };
+
+  const renderOptions = () => {
+    if (optionCount <= 0) return;
+    let renderArray = [];
+
+    for (let i = 0; i < optionCount; i++) {
+      let val: any = pollData.options[`${i}`];
+
+      renderArray.push(
+        <div className="form-group">
+          <label htmlFor="question">Option {`${i}`}</label>
+          <input
+            type="input"
+            className="form-control"
+            id={`${i}`}
+            aria-describedby="questionHelp"
+            placeholder="Enter option"
+            required
+            name={`${i}`}
+            value={val || ''}
+            onChange={evt => onChange(evt)}
+          />
+        </div>
+      );
+    }
+    return renderArray;
   };
 
   const onSubmit = async (evt: React.FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
 
-    console.log(formData);
+    const userToken = userContext.getUser();
 
-    const credentials = {
-      email,
-      password
+    // Create options
+    let optionsArray = Object.values(pollData.options);
+
+    let postOptions = optionsArray.map(opt => {
+      return { option: opt };
+    });
+
+    const postObj = {
+      question,
+      options: postOptions
     };
 
     try {
-      const res = await fetch('/auth/login', {
+      const res = await fetch('/polls', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'x-auth-token': `${userToken}`
         },
-        body: JSON.stringify(credentials)
+        body: JSON.stringify(postObj)
       });
 
-      console.log('successful post');
-      console.log(res);
-
       const data = await res.json();
-      console.log('data:', data);
 
-      // context.changeSearchValue('');
-      userContext.setUser(data.token);
+      history.push('/');
     } catch (error) {
       console.log('error registering user');
       console.error(error.message);
@@ -86,37 +109,41 @@ const CreatePoll: React.FC = () => {
     <div className="my-3">
       <form className="my-3" onSubmit={evt => onSubmit(evt)}>
         <fieldset>
-          <legend>Login</legend>
+          <legend>Create Poll</legend>
           <div className="form-group">
-            <label htmlFor="exampleInputEmail1">Email address</label>
+            <label htmlFor="question">Question</label>
             <input
-              type="email"
+              type="input"
               className="form-control"
-              id="exampleInputEmail1"
-              aria-describedby="emailHelp"
-              placeholder="Enter email"
+              id="question"
+              aria-describedby="questionHelp"
+              placeholder="Enter question"
               required
-              name="email"
-              value={email}
-              onChange={evt => onChange(evt)}
-            />
-            <small id="emailHelp" className="form-text text-muted">
-              We'll never share your email with anyone else.
-            </small>
-          </div>
-          <div className="form-group">
-            <label htmlFor="exampleInputPassword1">Password</label>
-            <input
-              type="password"
-              className="form-control"
-              id="exampleInputPassword1"
-              placeholder="Password"
-              required
-              name="password"
-              value={password}
-              onChange={evt => onChange(evt)}
+              name="question"
+              value={question}
+              onChange={evt => onQuestionChange(evt)}
             />
           </div>
+          <div className="form-group">
+            <label htmlFor="exampleSelect1">Number of options:</label>
+            <select
+              value={optionCount}
+              onChange={evt => onSelectChange(evt)}
+              className="form-control"
+              id="optionSelect"
+              name="OPTION!!"
+            >
+              <option>2</option>
+              <option>3</option>
+              <option>4</option>
+              <option>5</option>
+              <option>6</option>
+              <option>7</option>
+            </select>
+          </div>
+
+          {renderOptions()}
+
           <button type="submit" className="btn btn-primary">
             Submit
           </button>

@@ -13,10 +13,6 @@ class Navbar extends React.Component<Props, State> {
     this.state = {};
   }
 
-  componentDidMount = async () => {};
-
-  componentDidUpdate = async () => {};
-
   render() {
     return (
       <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
@@ -64,10 +60,7 @@ class Navbar extends React.Component<Props, State> {
               type="text"
               placeholder="Search"
             />
-            <button
-              className="btn btn-outline-success my-2 my-sm-0"
-              type="submit"
-            >
+            <button className="btn btn-outline-info my-2 my-sm-0" type="submit">
               Search
             </button>
           </form>

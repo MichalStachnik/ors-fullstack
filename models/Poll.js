@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
 
 const PollSchema = new mongoose.Schema({
-  user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'user'
-  },
+  // user: {
+  //   type: mongoose.Schema.Types.ObjectId,
+  //   ref: 'user'
+  // },
   question: {
     type: String,
     required: true

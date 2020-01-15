@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 import { UserContext } from '../../contexts/UserContext';
 
@@ -12,6 +12,8 @@ const Login: React.FC = () => {
     email: '',
     password: ''
   });
+
+  const history = useHistory();
 
   const { email, password } = formData;
 
@@ -41,14 +43,9 @@ const Login: React.FC = () => {
         body: JSON.stringify(credentials)
       });
 
-      console.log('successful post');
-      console.log(res);
-
       const data = await res.json();
-      console.log('data:', data);
-
-      // context.changeSearchValue('');
       userContext.setUser(data.token);
+      history.push('/');
     } catch (error) {
       console.log('error registering user');
       console.error(error.message);
