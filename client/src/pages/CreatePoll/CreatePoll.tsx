@@ -1,28 +1,3 @@
-// import React from 'react';
-
-// import './CreatePoll.css';
-
-// interface Props {}
-
-// interface State {}
-
-// class CreatePoll extends React.Component<Props, State> {
-//   constructor(props: Props) {
-//     super(props);
-//     this.state = {};
-//   }
-
-//   componentDidMount = async () => {};
-
-//   componentDidUpdate = async () => {};
-
-//   render() {
-//     return <div>im a create poll page</div>;
-//   }
-// }
-
-// export default CreatePoll;
-
 import React, { useState, useContext } from 'react';
 
 import { UserContext } from '../../contexts/UserContext';
@@ -32,42 +7,62 @@ import './CreatePoll.css';
 const CreatePoll: React.FC = () => {
   const userContext = useContext(UserContext);
 
-  const [formData, setFormData] = useState({
-    email: '',
-    password: ''
+  const [pollData, setPollData] = useState({
+    question: '',
+    option1: '',
+    option2: '',
+    option3: ''
   });
 
-  console.log('userContext in CreatePoll', userContext);
-
-  const { email, password } = formData;
+  let { question, option1, option2, option3 } = pollData;
 
   const onChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
+    setPollData({
+      ...pollData,
       [evt.target.name]: evt.target.value
     });
   };
 
+  // const onSelectChange = (evt: React.ChangeEvent<HTMLSelectElement>) => {
+  //   console.log('select changed with', evt.target.name, evt.target.value);
+  //   setPollData({
+  //     ...pollData,
+  //     optionValue: parseInt(evt.target.value)
+  //   });
+  // };
+
   const onSubmit = async (evt: React.FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
 
-    console.log(formData);
+    console.log(pollData);
+    console.log('userContext in CreatePoll', userContext.getUser());
 
-    const credentials = {
-      email,
-      password
+    const userToken = userContext.getUser();
+
+    console.log('userTOKEN!', userToken);
+    console.log('userTOKEN!', typeof userToken);
+
+    let options = [
+      { option: option1 },
+      { option: option2 },
+      { option: option3 }
+    ];
+
+    const postObj = {
+      question,
+      options
     };
 
     try {
-      const res = await fetch('/auth/login', {
+      const res = await fetch('/polls', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'x-auth-token': `${userToken}`
         },
-        body: JSON.stringify(credentials)
+        body: JSON.stringify(postObj)
       });
 
-      console.log('successful post');
       console.log(res);
 
       const data = await res.json();
@@ -86,37 +81,83 @@ const CreatePoll: React.FC = () => {
     <div className="my-3">
       <form className="my-3" onSubmit={evt => onSubmit(evt)}>
         <fieldset>
-          <legend>Login</legend>
+          <legend>Create Poll</legend>
           <div className="form-group">
-            <label htmlFor="exampleInputEmail1">Email address</label>
+            <label htmlFor="question">Question</label>
             <input
-              type="email"
+              type="input"
               className="form-control"
-              id="exampleInputEmail1"
-              aria-describedby="emailHelp"
-              placeholder="Enter email"
+              id="question"
+              aria-describedby="questionHelp"
+              placeholder="Enter question"
               required
-              name="email"
-              value={email}
-              onChange={evt => onChange(evt)}
-            />
-            <small id="emailHelp" className="form-text text-muted">
-              We'll never share your email with anyone else.
-            </small>
-          </div>
-          <div className="form-group">
-            <label htmlFor="exampleInputPassword1">Password</label>
-            <input
-              type="password"
-              className="form-control"
-              id="exampleInputPassword1"
-              placeholder="Password"
-              required
-              name="password"
-              value={password}
+              name="question"
+              value={question}
               onChange={evt => onChange(evt)}
             />
           </div>
+          {/* <div className="form-group">
+            <label htmlFor="exampleSelect1">Number of options:</label>
+            <select
+              value={optionValue}
+              onChange={evt => onSelectChange(evt)}
+              className="form-control"
+              id="optionSelect"
+              name="OPTION!!"
+            >
+              <option>1</option>
+              <option>2</option>
+              <option>3</option>
+              <option>4</option>
+              <option>5</option>
+              <option>6</option>
+              <option>7</option>
+            </select>
+          </div> */}
+
+          <div className="form-group">
+            <label htmlFor="question">Option 3</label>
+            <input
+              type="input"
+              className="form-control"
+              id="option1"
+              aria-describedby="questionHelp"
+              placeholder="Enter option"
+              required
+              name="option1"
+              value={option1}
+              onChange={evt => onChange(evt)}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="question">Option 2</label>
+            <input
+              type="input"
+              className="form-control"
+              id="option2"
+              aria-describedby="questionHelp"
+              placeholder="Enter option"
+              required
+              name="option2"
+              value={option2}
+              onChange={evt => onChange(evt)}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="question">Option 3</label>
+            <input
+              type="input"
+              className="form-control"
+              id="option3"
+              aria-describedby="questionHelp"
+              placeholder="Enter option"
+              required
+              name="option3"
+              value={option3}
+              onChange={evt => onChange(evt)}
+            />
+          </div>
+
           <button type="submit" className="btn btn-primary">
             Submit
           </button>

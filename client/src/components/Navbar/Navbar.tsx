@@ -65,7 +65,7 @@ class Navbar extends React.Component<Props, State> {
               placeholder="Search"
             />
             <button
-              className="btn btn-outline-success my-2 my-sm-0"
+              className="btn btn-outline-secondary my-2 my-sm-0"
               type="submit"
             >
               Search

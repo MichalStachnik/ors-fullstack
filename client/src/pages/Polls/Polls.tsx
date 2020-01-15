@@ -43,7 +43,7 @@ class Polls extends React.Component<Props, State> {
                 {poll.question}
                 <Link to={`/polls/${poll._id}`}>
                   <button
-                    className="btn btn-outline-success my-2 my-sm-0"
+                    className="btn btn-outline-info my-2 my-sm-0"
                     type="submit"
                   >
                     Vote
@@ -60,10 +60,7 @@ class Polls extends React.Component<Props, State> {
                     </p>
                   );
                 })}
-                <p className="card-text">
-                  Some quick example text to build on the card title and make up
-                  the bulk of the card's content.
-                </p>
+                <p className="card-text"></p>
               </div>
             </div>
           );

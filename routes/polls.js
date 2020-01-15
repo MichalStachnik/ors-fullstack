@@ -7,8 +7,9 @@ const Poll = require('../models/Poll');
 router.post('/', authMiddleware, async (req, res, next) => {
   console.log('in POST /polls with req.user: ', req.user);
   const { question, options } = req.body;
-  console.log('question: ', question);
-  console.log('options: ', options);
+  console.log('req.body', req.body);
+  // console.log('question: ', question);
+  // console.log('options: ', options);
 
   try {
     let poll = new Poll({

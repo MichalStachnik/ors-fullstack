@@ -17,7 +17,7 @@ const App: React.FC = () => {
     <UserProvider>
       <Router>
         <Navbar />
-        <div className="container col-lg-10">
+        <div className="container col-lg-10 col-md-11 col-sm-12">
           <Route exact path="/" component={Polls} />
           <Route exact path="/polls/:pollId" component={Poll} />
           <Route exact path="/login" component={Login} />
