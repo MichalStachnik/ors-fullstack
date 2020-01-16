@@ -4,7 +4,9 @@ const mongoose = require('mongoose');
 const polls = require('./routes/polls');
 const auth = require('./routes/auth');
 
-require('dotenv').config();
+// require('dotenv').config();
+
+require('dotenv').config({ path: __dirname + '/.env' });
 
 const DB_PATH = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@ors-wbspk.mongodb.net/test?retryWrites=true&w=majority`;
 
