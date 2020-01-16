@@ -5,8 +5,9 @@ const polls = require('./routes/polls.js');
 const auth = require('./routes/auth.js');
 
 require('dotenv').config();
+console.log('OUR ENVIRONMENT', process.env.NODE_ENV);
 
-const DB_PATH = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@ors-wbspk.mongodb.net/test?retryWrites=true&w=majority`;
+let DB_PATH = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@ors-wbspk.mongodb.net/test?retryWrites=true&w=majority`;
 
 const connectToDB = async () => {
   try {
