@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Chart from 'react-apexcharts';
+import DonutChart from '../../components/DonutChart/DonutChart';
 
 import './Polls.css';
 
@@ -44,8 +45,6 @@ class Polls extends React.Component<Props, State> {
                 </Link>
               </div>
               <div className="card-body">
-                <h4 className="card-title"></h4>
-
                 {poll.options.map((option: any, index: number) => {
                   return (
                     <p className="card-text" key={index}>
@@ -53,16 +52,7 @@ class Polls extends React.Component<Props, State> {
                     </p>
                   );
                 })}
-
-                {console.log('im a poll', poll)}
-                {
-                  // <Chart
-                  //   options={donutOptions}
-                  //   series={series}
-                  //   type="donut"
-                  //   // width="380"
-                  // />
-                }
+                <DonutChart pollData={poll.options} />
               </div>
             </div>
           );
