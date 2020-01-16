@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Chart from 'react-apexcharts';
 
 import './Polls.css';
 
@@ -52,7 +53,16 @@ class Polls extends React.Component<Props, State> {
                     </p>
                   );
                 })}
-                <p className="card-text"></p>
+
+                {console.log('im a poll', poll)}
+                {
+                  // <Chart
+                  //   options={donutOptions}
+                  //   series={series}
+                  //   type="donut"
+                  //   // width="380"
+                  // />
+                }
               </div>
             </div>
           );
