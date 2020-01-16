@@ -10,6 +10,9 @@ const DB_PATH = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@ors
 
 const connectToDB = async () => {
   try {
+    console.log('attempting to login with:');
+    console.log('process.env.DB_USER: ', process.env.DB_USER);
+    console.log('process.env.DB_USER: ', process.env.DB_PASS);
     await mongoose.connect(DB_PATH, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
