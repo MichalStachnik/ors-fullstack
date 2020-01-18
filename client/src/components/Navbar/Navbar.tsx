@@ -1,6 +1,8 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
+import { UserContext } from '../../contexts/UserContext';
+
 import './Navbar.css';
 
 interface Props {}
@@ -8,12 +10,20 @@ interface Props {}
 interface State {}
 
 class Navbar extends React.Component<Props, State> {
+  static contextType = UserContext;
   constructor(props: Props) {
     super(props);
     this.state = {};
   }
 
   render() {
+    let usr = this.context.getUser();
+    // console.log(usr);
+    // if (usr === undefined) {
+    //   console.log('usr is undefined');
+    // } else {
+    //   console.log('we are authed');
+    // }
     return (
       <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
         <a className="navbar-brand" href="#">
@@ -38,21 +48,33 @@ class Navbar extends React.Component<Props, State> {
                 Polls
               </NavLink>
             </li>
-            <li className="nav-item">
-              <NavLink exact to="/create-poll" className="nav-link">
-                Create Poll
-              </NavLink>
-            </li>
-            <li className="nav-item">
-              <NavLink exact to="/register" className="nav-link">
-                Register
-              </NavLink>
-            </li>
-            <li className="nav-item">
-              <NavLink exact to="/login" className="nav-link">
-                Login
-              </NavLink>
-            </li>
+            {usr === undefined ? (
+              ''
+            ) : (
+              <li className="nav-item">
+                <NavLink exact to="/create-poll" className="nav-link">
+                  Create Poll
+                </NavLink>
+              </li>
+            )}
+            {usr === undefined ? (
+              <li className="nav-item">
+                <NavLink exact to="/register" className="nav-link">
+                  Register
+                </NavLink>
+              </li>
+            ) : (
+              ''
+            )}
+            {usr === undefined ? (
+              <li className="nav-item">
+                <NavLink exact to="/login" className="nav-link">
+                  Login
+                </NavLink>
+              </li>
+            ) : (
+              ''
+            )}
           </ul>
           <form className="form-inline my-2 my-lg-0">
             <input

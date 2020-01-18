@@ -5,15 +5,11 @@ const polls = require('./routes/polls.js');
 const auth = require('./routes/auth.js');
 
 require('dotenv').config();
-console.log('OUR ENVIRONMENT', process.env.NODE_ENV);
 
 let DB_PATH = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@ors-wbspk.mongodb.net/test?retryWrites=true&w=majority`;
 
 const connectToDB = async () => {
   try {
-    console.log('attempting to login with:');
-    console.log('process.env.DB_USER: ', process.env.DB_USER);
-    console.log('process.env.DB_USER: ', process.env.DB_PASS);
     await mongoose.connect(DB_PATH, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
@@ -21,6 +17,7 @@ const connectToDB = async () => {
     });
     console.log('Connected to mongodb...');
   } catch (error) {
+    console.log('Error connecting to mongodb');
     console.error(error);
     process.exit(1);
   }

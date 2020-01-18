@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Redirect } from 'react-router-dom';
 
 import { UserContext } from '../../contexts/UserContext';
 
@@ -104,6 +104,11 @@ const CreatePoll: React.FC = () => {
       throw error;
     }
   };
+
+  let usr = userContext.getUser();
+  if (usr === undefined) {
+    return <Redirect from="/create-poll" exact to="/" />;
+  }
 
   return (
     <div className="my-3">
