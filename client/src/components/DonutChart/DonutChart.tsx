@@ -21,7 +21,7 @@ const DonutChart: React.FC<Props> = props => {
           expandOnClick: true,
           donut: {
             labels: {
-              show: true,
+              show: false,
               name: {
                 color: '#fff'
               },

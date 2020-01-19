@@ -6,6 +6,9 @@
 
 .card-options {
   flex: 0.5;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .card-text {
