@@ -18,12 +18,6 @@ class Navbar extends React.Component<Props, State> {
 
   render() {
     let usr = this.context.getUser();
-    // console.log(usr);
-    // if (usr === undefined) {
-    //   console.log('usr is undefined');
-    // } else {
-    //   console.log('we are authed');
-    // }
     return (
       <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
         <a className="navbar-brand" href="#">
@@ -40,7 +34,6 @@ class Navbar extends React.Component<Props, State> {
         >
           <span className="navbar-toggler-icon"></span>
         </button>
-
         <div className="collapse navbar-collapse" id="navbarColor01">
           <ul className="navbar-nav mr-auto">
             <li className="nav-item">
