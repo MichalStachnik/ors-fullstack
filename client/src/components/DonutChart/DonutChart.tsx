@@ -6,13 +6,9 @@ interface Props {
 }
 
 const DonutChart: React.FC<Props> = props => {
-  console.log('my props', props);
-
   const options = props.pollData.map((option: any) => option.option);
 
   const chartData = props.pollData.map((option: any) => option.voteCount);
-
-  console.log('our options', options);
 
   const donutOptions = {
     options: {
@@ -54,12 +50,9 @@ const DonutChart: React.FC<Props> = props => {
     labels: options
   };
 
-  console.log('donutOptions', donutOptions);
-
-  const [donutData, setDonutData] = useState({
-    donutOptions
-  });
-  console.log('donutData', donutData);
+  // const [donutData, setDonutData] = useState({
+  //   donutOptions
+  // });
 
   return (
     <Chart

@@ -131,7 +131,6 @@ class Poll extends React.Component<Props, State> {
             options={this.state.donutOptions.options}
             series={this.state.donutOptions.series}
             type="donut"
-            // width="380"
           />
         </div>
       </div>
