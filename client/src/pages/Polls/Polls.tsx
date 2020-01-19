@@ -45,13 +45,18 @@ class Polls extends React.Component<Props, State> {
                 </Link>
               </div>
               <div className="card-body">
-                {poll.options.map((option: any, index: number) => {
-                  return (
-                    <p className="card-text" key={index}>
-                      {option.voteCount}: {option.option}
-                    </p>
-                  );
-                })}
+                <div className="card-options">
+                  {poll.options.map((option: any, index: number) => {
+                    return (
+                      <p className="card-text" key={index}>
+                        <span className="badge badge-info badge-pill">
+                          {option.voteCount}
+                        </span>
+                        {option.option}
+                      </p>
+                    );
+                  })}
+                </div>
                 <DonutChart pollData={poll.options} />
               </div>
             </div>

@@ -3,3 +3,13 @@
   align-items: center;
   justify-content: space-between;
 }
+
+.card-options {
+  flex: 0.5;
+}
+
+.card-text {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}

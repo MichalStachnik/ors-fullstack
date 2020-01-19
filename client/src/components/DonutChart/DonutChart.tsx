@@ -32,6 +32,7 @@ const DonutChart: React.FC<Props> = props => {
         }
       },
       legend: {
+        show: false,
         labels: {
           colors: '#fff'
         }
