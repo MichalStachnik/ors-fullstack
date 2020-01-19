@@ -36,7 +36,19 @@ const DonutChart: React.FC<Props> = props => {
         labels: {
           colors: '#fff'
         }
-      }
+      },
+      responsive: [
+        {
+          breakpoint: 500,
+          options: {
+            plotOptions: {
+              pie: {
+                expandOnClick: false
+              }
+            }
+          }
+        }
+      ]
     },
     series: chartData,
     labels: options
@@ -54,7 +66,7 @@ const DonutChart: React.FC<Props> = props => {
       options={donutOptions.options}
       series={donutOptions.series}
       type="donut"
-      width="380"
+      width="100%"
     />
   );
 };

@@ -57,7 +57,9 @@ class Polls extends React.Component<Props, State> {
                     );
                   })}
                 </div>
-                <DonutChart pollData={poll.options} />
+                <div className="card-chart">
+                  <DonutChart pollData={poll.options} />
+                </div>
               </div>
             </div>
           );
