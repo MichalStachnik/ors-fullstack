@@ -43,7 +43,6 @@ router.get('/', async (req, res, next) => {
 });
 
 // Get one poll
-// Proxy error?
 router.get('/:pollId', async (req, res, next) => {
   try {
     let poll = await Poll.findById(req.params.pollId);

@@ -107,9 +107,11 @@ class Poll extends React.Component<Props, State> {
     if (!this.state.poll) return <h1>Loading...</h1>;
     return (
       <div>
-        <button type="button" className="btn btn-outline-secondary mt-3">
-          <Link to="/">Back</Link>
-        </button>
+        <Link to="/">
+          <button type="button" className="btn btn-outline-secondary mt-3">
+            Back
+          </button>
+        </Link>
         <div className="card text-white bg-primary my-3">
           <div className="card-header">{this.state.poll.question}</div>
           <div className="card-body">
@@ -137,6 +139,19 @@ class Poll extends React.Component<Props, State> {
               series={this.state.donutOptions.series}
               type="donut"
             />
+          </div>
+        </div>
+        <div className="form-group">
+          <label htmlFor="commentTextarea">Add comment</label>
+          <textarea
+            className="form-control"
+            id="commentTextarea"
+            rows={3}
+          ></textarea>
+          <div className="button-container">
+            <button type="button" className="btn btn-outline-info mt-3">
+              Post
+            </button>
           </div>
         </div>
       </div>

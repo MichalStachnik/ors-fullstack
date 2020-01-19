@@ -55,9 +55,11 @@ const Login: React.FC = () => {
 
   return (
     <div className="my-3">
-      <button type="button" className="btn btn-outline-secondary">
-        <Link to="/">Back</Link>
-      </button>
+      <Link to="/">
+        <button type="button" className="btn btn-outline-secondary">
+          Back
+        </button>
+      </Link>
       <form className="my-3" onSubmit={evt => onSubmit(evt)}>
         <fieldset>
           <legend>Login</legend>
