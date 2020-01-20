@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import './App.css';
@@ -13,12 +13,20 @@ import CreatePoll from './pages/CreatePoll/CreatePoll';
 import { UserProvider } from './contexts/UserContext';
 
 const App: React.FC = () => {
+  let [searchValue, setSearchValue] = useState('');
+
+  const inputChangeHandler = (evt: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(evt.target.value);
+  };
+
   return (
     <UserProvider>
       <Router>
-        <Navbar />
+        <Navbar onInputChanged={inputChangeHandler} />
         <div className="container col-lg-10 col-md-11 col-sm-12">
-          <Route exact path="/" component={Polls} />
+          <Route exact path="/">
+            <Polls searchValue={searchValue} />
+          </Route>
           <Route exact path="/polls/:pollId" component={Poll} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />

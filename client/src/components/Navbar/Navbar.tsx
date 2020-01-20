@@ -5,7 +5,9 @@ import { UserContext } from '../../contexts/UserContext';
 
 import './Navbar.css';
 
-interface Props {}
+interface Props {
+  onInputChanged: (evt: React.ChangeEvent<HTMLInputElement>) => void;
+}
 
 interface State {}
 
@@ -74,6 +76,7 @@ class Navbar extends React.Component<Props, State> {
               className="form-control mr-sm-2"
               type="text"
               placeholder="Search"
+              onKeyUp={(evt: any) => this.props.onInputChanged(evt)}
             />
             <button className="btn btn-outline-info my-2 my-sm-0" type="submit">
               Search

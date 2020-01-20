@@ -119,7 +119,7 @@ class Poll extends React.Component<Props, State> {
               {/* <h4 className="card-title">lello</h4> */}
               {this.state.poll.options?.map((option: any, index: number) => {
                 return (
-                  <div className="option mb-3">
+                  <div className="option mb-3" key={index}>
                     <p className="card-text" key={index}>
                       {option.voteCount} {option.option}
                     </p>
