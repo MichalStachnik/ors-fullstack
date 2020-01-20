@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Chart from 'react-apexcharts';
 
 import { UserContext } from '../../contexts/UserContext';
@@ -105,34 +106,53 @@ class Poll extends React.Component<Props, State> {
   render() {
     if (!this.state.poll) return <h1>Loading...</h1>;
     return (
-      <div className="card text-white bg-primary my-3">
-        <div className="card-header">{this.state.poll.question}</div>
-        <div className="card-body">
-          <div className="card-body-left">
-            {/* <h4 className="card-title">lello</h4> */}
-            {this.state.poll.options?.map((option: any, index: number) => {
-              return (
-                <div className="option mb-3">
-                  <p className="card-text" key={index}>
-                    {option.voteCount} {option.option}
-                  </p>
-                  <button
-                    type="button"
-                    className="btn btn-outline-info"
-                    onClick={() => this.handleVoteClick(option.option)}
-                  >
-                    Vote
-                  </button>
-                </div>
-              );
-            })}
+      <div>
+        <Link to="/">
+          <button type="button" className="btn btn-outline-secondary mt-3">
+            Back
+          </button>
+        </Link>
+        <div className="card text-white bg-primary my-3">
+          <div className="card-header">{this.state.poll.question}</div>
+          <div className="card-body">
+            <div className="card-body-left">
+              {/* <h4 className="card-title">lello</h4> */}
+              {this.state.poll.options?.map((option: any, index: number) => {
+                return (
+                  <div className="option mb-3" key={index}>
+                    <p className="card-text" key={index}>
+                      {option.voteCount} {option.option}
+                    </p>
+                    <button
+                      type="button"
+                      className="btn btn-outline-info"
+                      onClick={() => this.handleVoteClick(option.option)}
+                    >
+                      Vote
+                    </button>
+                  </div>
+                );
+              })}
+            </div>
+            <Chart
+              options={this.state.donutOptions.options}
+              series={this.state.donutOptions.series}
+              type="donut"
+            />
           </div>
-          <Chart
-            options={this.state.donutOptions.options}
-            series={this.state.donutOptions.series}
-            type="donut"
-            // width="380"
-          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="commentTextarea">Add comment</label>
+          <textarea
+            className="form-control"
+            id="commentTextarea"
+            rows={3}
+          ></textarea>
+          <div className="button-container">
+            <button type="button" className="btn btn-outline-info mt-3">
+              Post
+            </button>
+          </div>
         </div>
       </div>
     );

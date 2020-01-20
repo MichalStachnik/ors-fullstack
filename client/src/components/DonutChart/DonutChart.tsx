@@ -6,13 +6,9 @@ interface Props {
 }
 
 const DonutChart: React.FC<Props> = props => {
-  console.log('my props', props);
-
   const options = props.pollData.map((option: any) => option.option);
 
   const chartData = props.pollData.map((option: any) => option.voteCount);
-
-  console.log('our options', options);
 
   const donutOptions = {
     options: {
@@ -21,7 +17,7 @@ const DonutChart: React.FC<Props> = props => {
           expandOnClick: true,
           donut: {
             labels: {
-              show: true,
+              show: false,
               name: {
                 color: '#fff'
               },
@@ -32,28 +28,38 @@ const DonutChart: React.FC<Props> = props => {
         }
       },
       legend: {
+        show: false,
         labels: {
           colors: '#fff'
         }
-      }
+      },
+      responsive: [
+        {
+          breakpoint: 500,
+          options: {
+            plotOptions: {
+              pie: {
+                expandOnClick: false
+              }
+            }
+          }
+        }
+      ]
     },
     series: chartData,
     labels: options
   };
 
-  console.log('donutOptions', donutOptions);
-
-  const [donutData, setDonutData] = useState({
-    donutOptions
-  });
-  console.log('donutData', donutData);
+  // const [donutData, setDonutData] = useState({
+  //   donutOptions
+  // });
 
   return (
     <Chart
       options={donutOptions.options}
       series={donutOptions.series}
       type="donut"
-      width="380"
+      width="100%"
     />
   );
 };
