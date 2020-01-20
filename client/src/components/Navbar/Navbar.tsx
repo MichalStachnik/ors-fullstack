@@ -7,16 +7,31 @@ import './Navbar.css';
 
 interface Props {
   onInputChanged: (evt: React.ChangeEvent<HTMLInputElement>) => void;
+  onInputCleared: () => void;
+  searchValue: string;
 }
 
-interface State {}
+interface State {
+  isInputFocued: boolean;
+}
 
 class Navbar extends React.Component<Props, State> {
   static contextType = UserContext;
   constructor(props: Props) {
     super(props);
-    this.state = {};
+    this.state = {
+      isInputFocued: false
+    };
   }
+
+  handleInputFocus = (evt: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({ isInputFocued: true });
+  };
+
+  handleClearClick = () => {
+    this.props.onInputCleared();
+    this.setState({ isInputFocued: false });
+  };
 
   render() {
     let usr = this.context.getUser();
@@ -72,12 +87,19 @@ class Navbar extends React.Component<Props, State> {
             )}
           </ul>
           <form className="form-inline my-2 my-lg-0">
-            <input
-              className="form-control mr-sm-2"
-              type="text"
-              placeholder="Search"
-              onKeyUp={(evt: any) => this.props.onInputChanged(evt)}
-            />
+            <div className="input-container">
+              <input
+                className="form-control mr-sm-2"
+                type="text"
+                placeholder="Search"
+                value={this.props.searchValue}
+                onChange={(evt: any) => this.props.onInputChanged(evt)}
+                onFocus={(evt: any) => this.handleInputFocus(evt)}
+              />
+              {this.state.isInputFocued && (
+                <i className="fa fa-times" onClick={this.handleClearClick}></i>
+              )}
+            </div>
             <button className="btn btn-outline-info my-2 my-sm-0" type="submit">
               Search
             </button>

@@ -19,10 +19,18 @@ const App: React.FC = () => {
     setSearchValue(evt.target.value);
   };
 
+  const inputClearHandler = () => {
+    setSearchValue('');
+  };
+
   return (
     <UserProvider>
       <Router>
-        <Navbar onInputChanged={inputChangeHandler} />
+        <Navbar
+          searchValue={searchValue}
+          onInputChanged={inputChangeHandler}
+          onInputCleared={inputClearHandler}
+        />
         <div className="container col-lg-10 col-md-11 col-sm-12">
           <Route exact path="/">
             <Polls searchValue={searchValue} />

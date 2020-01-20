@@ -1,0 +1,11 @@
+nav .input-container {
+  position: relative;
+}
+
+nav .fa-times {
+  cursor: pointer;
+  color: var(--danger);
+  position: absolute;
+  right: 15px;
+  top: 10px;
+}
