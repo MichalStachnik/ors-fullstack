@@ -137,14 +137,15 @@ class Poll extends React.Component<Props, State> {
   };
 
   handleLikeClick = async () => {
-    console.log('like clicked');
     const res = await fetch(`/polls/${this.props.match.params.pollId}/like`);
     const data = await res.json();
-    console.log('data back on fe', data);
+    console.log('data back on fe after like', data);
   };
 
-  handleDisLikeClick = () => {
-    console.log('dislike clicked');
+  handleDisLikeClick = async () => {
+    const res = await fetch(`/polls/${this.props.match.params.pollId}/dislike`);
+    const data = await res.json();
+    console.log('data back on fe after dislike', data);
   };
 
   render() {
@@ -159,15 +160,21 @@ class Poll extends React.Component<Props, State> {
         <div className="card text-white bg-primary my-3">
           <div className="card-header">
             <div className="question">{this.state.poll.question}</div>
-            <div className="likes">
-              <i
-                className="fa fa-thumbs-up"
-                onClick={() => this.handleLikeClick()}
-              ></i>
-              <i
-                className="fa fa-thumbs-down"
-                onClick={() => this.handleDisLikeClick()}
-              ></i>
+            <div className="likes-container">
+              <div className="likes">
+                <span>Liked: {this.state.poll.likes}</span>
+                <i
+                  className="fa fa-thumbs-up fa-lg"
+                  onClick={() => this.handleLikeClick()}
+                ></i>
+              </div>
+              <div className="dislikes">
+                <span>Disliked: {this.state.poll.dislikes}</span>
+                <i
+                  className="fa fa-thumbs-down fa-lg"
+                  onClick={() => this.handleDisLikeClick()}
+                ></i>
+              </div>
             </div>
           </div>
           <div className="card-body">

@@ -21,6 +21,29 @@ textarea {
   justify-content: flex-end;
 }
 
+.likes-container {
+  width: 30%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.likes-container .likes,
+.likes-container .dislikes {
+  width: 50%;
+}
+
+.likes-container .likes {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.likes-container .dislikes {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
 i {
   cursor: pointer;
 }

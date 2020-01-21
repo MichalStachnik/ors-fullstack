@@ -93,23 +93,31 @@ router.post('/:pollId/comment', async (req, res, next) => {
 
 // Send one like
 router.get('/:pollId/like', async (req, res, next) => {
-  console.log('liked');
-
   try {
-    // Get the poll
-    // Increment the likes
-    // let poll = await Poll.findById(req.params.pollId);
-    console.log('the poll id we got', req.params.pollId);
     let poll = await Poll.findByIdAndUpdate(req.params.pollId, {
       $inc: { likes: 1 }
     });
 
-    console.log('the poll after updating', poll);
-
     res.status(200).json({ msg: 'poll liked' });
-  } catch (error) {}
+  } catch (error) {
+    console.log('error liking poll');
+    console.error(error.message);
+    throw error;
+  }
 });
 
 // Send one dislike
+router.get('/:pollId/dislike', async (req, res, next) => {
+  try {
+    let poll = await Poll.findByIdAndUpdate(req.params.pollId, {
+      $inc: { dislikes: 1 }
+    });
+    res.status(200).json({ msg: 'poll disliked' });
+  } catch (error) {
+    console.log('error disliking');
+    console.error(error.message);
+    throw error;
+  }
+});
 
 module.exports = router;
