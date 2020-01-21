@@ -7,19 +7,35 @@ import './Navbar.css';
 
 interface Props {
   onInputChanged: (evt: React.ChangeEvent<HTMLInputElement>) => void;
+  onInputCleared: () => void;
+  searchValue: string;
 }
 
-interface State {}
+interface State {
+  isInputFocued: boolean;
+}
 
 class Navbar extends React.Component<Props, State> {
   static contextType = UserContext;
   constructor(props: Props) {
     super(props);
-    this.state = {};
+    this.state = {
+      isInputFocued: false
+    };
   }
 
+  handleInputFocus = (evt: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({ isInputFocued: true });
+  };
+
+  handleClearClick = () => {
+    this.props.onInputCleared();
+    this.setState({ isInputFocued: false });
+  };
+
   render() {
-    let usr = this.context.getUser();
+    let token = this.context.getToken();
+    let username = this.context.getUsername();
     return (
       <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
         <a className="navbar-brand" href="#">
@@ -43,7 +59,7 @@ class Navbar extends React.Component<Props, State> {
                 Polls
               </NavLink>
             </li>
-            {usr === undefined ? (
+            {token === '' ? (
               ''
             ) : (
               <li className="nav-item">
@@ -52,7 +68,7 @@ class Navbar extends React.Component<Props, State> {
                 </NavLink>
               </li>
             )}
-            {usr === undefined ? (
+            {token === '' ? (
               <li className="nav-item">
                 <NavLink exact to="/register" className="nav-link">
                   Register
@@ -61,7 +77,7 @@ class Navbar extends React.Component<Props, State> {
             ) : (
               ''
             )}
-            {usr === undefined ? (
+            {token === '' ? (
               <li className="nav-item">
                 <NavLink exact to="/login" className="nav-link">
                   Login
@@ -71,13 +87,25 @@ class Navbar extends React.Component<Props, State> {
               ''
             )}
           </ul>
+          {username && (
+            <h6 className="username">
+              Welcome back <span>{username}</span>
+            </h6>
+          )}
           <form className="form-inline my-2 my-lg-0">
-            <input
-              className="form-control mr-sm-2"
-              type="text"
-              placeholder="Search"
-              onKeyUp={(evt: any) => this.props.onInputChanged(evt)}
-            />
+            <div className="input-container">
+              <input
+                className="form-control mr-sm-2"
+                type="text"
+                placeholder="Search"
+                value={this.props.searchValue}
+                onChange={(evt: any) => this.props.onInputChanged(evt)}
+                onFocus={(evt: any) => this.handleInputFocus(evt)}
+              />
+              {this.state.isInputFocued && (
+                <i className="fa fa-times" onClick={this.handleClearClick}></i>
+              )}
+            </div>
             <button className="btn btn-outline-info my-2 my-sm-0" type="submit">
               Search
             </button>

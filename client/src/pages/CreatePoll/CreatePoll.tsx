@@ -71,7 +71,7 @@ const CreatePoll: React.FC = () => {
   const onSubmit = async (evt: React.FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
 
-    const userToken = userContext.getUser();
+    const userToken = userContext.getToken();
 
     // Create options
     let optionsArray = Object.values(pollData.options);
@@ -105,8 +105,8 @@ const CreatePoll: React.FC = () => {
     }
   };
 
-  let usr = userContext.getUser();
-  if (usr === undefined) {
+  let token = userContext.getToken();
+  if (token === '') {
     return <Redirect from="/create-poll" exact to="/" />;
   }
 

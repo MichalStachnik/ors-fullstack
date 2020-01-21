@@ -1,0 +1,20 @@
+nav .input-container {
+  position: relative;
+}
+
+nav .fa-times {
+  cursor: pointer;
+  color: var(--danger);
+  position: absolute;
+  right: 15px;
+  top: 10px;
+}
+
+nav .username {
+  color: #fff;
+  width: 40%;
+}
+
+nav .username span {
+  color: var(--info);
+}
