@@ -1,33 +1,42 @@
 import React, { Component, createContext } from 'react';
 
 const initialContext = {
-  user: undefined,
+  username: '',
+  token: '',
   setUser: (user: any) => {},
-  getUser: () => {}
+  getToken: () => '',
+  getUsername: () => ''
 };
 
 export const UserContext = createContext(initialContext);
 
-export class UserProvider extends Component<{}, { user: any }> {
+export class UserProvider extends Component<
+  {},
+  { username: string; token: string }
+> {
   constructor(props: any) {
     super(props);
-    this.state = { user: undefined };
+    this.state = { token: '', username: '' };
   }
 
-  getUser = () => this.state.user;
-
   setUser = (user: any) => {
-    this.setState({ user });
-    console.log('set user called with', user);
+    const { token, username } = user;
+    this.setState({ token, username });
   };
+
+  getToken = () => this.state.token;
+
+  getUsername = () => this.state.username;
 
   render() {
     return (
       <UserContext.Provider
         value={{
-          user: this.state.user,
+          username: this.state.username,
+          token: this.state.token,
           setUser: this.setUser,
-          getUser: this.getUser
+          getToken: this.getToken,
+          getUsername: this.getUsername
         }}
       >
         {this.props.children}

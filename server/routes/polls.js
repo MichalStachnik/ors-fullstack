@@ -55,14 +55,12 @@ router.get('/:pollId', async (req, res, next) => {
 });
 
 // Send one vote
-router.get('/:pollId/:option', async (req, res, next) => {
+router.get('/:pollId/vote/:option', async (req, res, next) => {
   try {
     let poll = await Poll.findById(req.params.pollId);
 
     console.log('req.params', req.params);
     poll.options.map(option => {
-      // console.log('option.option', option.option);
-      // console.log('req.params.option', req.params.option);
       if (option.option === req.params.option) {
         option.voteCount++;
       }
@@ -76,5 +74,42 @@ router.get('/:pollId/:option', async (req, res, next) => {
     throw error;
   }
 });
+
+// Create one comment
+router.post('/:pollId/comment', async (req, res, next) => {
+  const { comment } = req.body;
+
+  try {
+    let poll = await Poll.findById(req.params.pollId);
+    poll.comments.push(comment);
+    await poll.save();
+    res.status(200).json({ message: 'comment saved' });
+  } catch (error) {
+    console.log('error fetching single poll');
+    console.error(error.message);
+    throw error;
+  }
+});
+
+// Send one like
+router.get('/:pollId/like', async (req, res, next) => {
+  console.log('liked');
+
+  try {
+    // Get the poll
+    // Increment the likes
+    // let poll = await Poll.findById(req.params.pollId);
+    console.log('the poll id we got', req.params.pollId);
+    let poll = await Poll.findByIdAndUpdate(req.params.pollId, {
+      $inc: { likes: 1 }
+    });
+
+    console.log('the poll after updating', poll);
+
+    res.status(200).json({ msg: 'poll liked' });
+  } catch (error) {}
+});
+
+// Send one dislike
 
 module.exports = router;

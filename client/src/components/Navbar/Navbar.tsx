@@ -34,7 +34,8 @@ class Navbar extends React.Component<Props, State> {
   };
 
   render() {
-    let usr = this.context.getUser();
+    let token = this.context.getToken();
+    let username = this.context.getUsername();
     return (
       <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
         <a className="navbar-brand" href="#">
@@ -58,7 +59,7 @@ class Navbar extends React.Component<Props, State> {
                 Polls
               </NavLink>
             </li>
-            {usr === undefined ? (
+            {token === '' ? (
               ''
             ) : (
               <li className="nav-item">
@@ -67,7 +68,7 @@ class Navbar extends React.Component<Props, State> {
                 </NavLink>
               </li>
             )}
-            {usr === undefined ? (
+            {token === '' ? (
               <li className="nav-item">
                 <NavLink exact to="/register" className="nav-link">
                   Register
@@ -76,7 +77,7 @@ class Navbar extends React.Component<Props, State> {
             ) : (
               ''
             )}
-            {usr === undefined ? (
+            {token === '' ? (
               <li className="nav-item">
                 <NavLink exact to="/login" className="nav-link">
                   Login
@@ -86,6 +87,11 @@ class Navbar extends React.Component<Props, State> {
               ''
             )}
           </ul>
+          {username && (
+            <h6 className="username">
+              Welcome back <span>{username}</span>
+            </h6>
+          )}
           <form className="form-inline my-2 my-lg-0">
             <div className="input-container">
               <input

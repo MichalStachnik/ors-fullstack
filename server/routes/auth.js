@@ -113,7 +113,7 @@ router.post('/login', async (req, res) => {
   jwt.sign(payload, process.env.TOKEN, { expiresIn: 3600 }, (error, token) => {
     if (error) throw error;
     console.log('token signed, sending token...');
-    res.json({ token });
+    res.json({ token, username: user.username });
   });
 });
 

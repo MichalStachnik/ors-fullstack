@@ -16,6 +16,7 @@ interface State {
   series?: any;
   donutOptions?: any;
   labels?: any;
+  commentValue: string;
 }
 
 class Poll extends React.Component<Props, State> {
@@ -49,7 +50,8 @@ class Poll extends React.Component<Props, State> {
         },
         series: [],
         labels: []
-      }
+      },
+      commentValue: ''
     };
   }
 
@@ -103,6 +105,48 @@ class Poll extends React.Component<Props, State> {
     });
   };
 
+  onSubmit = async (evt: React.FormEvent<HTMLFormElement>) => {
+    evt.preventDefault();
+
+    const comment = {
+      comment: this.state.commentValue
+    };
+
+    try {
+      const res = await fetch(
+        `/polls/${this.props.match.params.pollId}/comment`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(comment)
+        }
+      );
+
+      const data = await res.json();
+    } catch (error) {
+      console.log('error adding comment');
+      console.error(error.message);
+      throw error;
+    }
+  };
+
+  handleCommentChange = (evt: React.ChangeEvent<HTMLTextAreaElement>) => {
+    this.setState({ commentValue: evt.target.value });
+  };
+
+  handleLikeClick = async () => {
+    console.log('like clicked');
+    const res = await fetch(`/polls/${this.props.match.params.pollId}/like`);
+    const data = await res.json();
+    console.log('data back on fe', data);
+  };
+
+  handleDisLikeClick = () => {
+    console.log('dislike clicked');
+  };
+
   render() {
     if (!this.state.poll) return <h1>Loading...</h1>;
     return (
@@ -113,7 +157,19 @@ class Poll extends React.Component<Props, State> {
           </button>
         </Link>
         <div className="card text-white bg-primary my-3">
-          <div className="card-header">{this.state.poll.question}</div>
+          <div className="card-header">
+            <div className="question">{this.state.poll.question}</div>
+            <div className="likes">
+              <i
+                className="fa fa-thumbs-up"
+                onClick={() => this.handleLikeClick()}
+              ></i>
+              <i
+                className="fa fa-thumbs-down"
+                onClick={() => this.handleDisLikeClick()}
+              ></i>
+            </div>
+          </div>
           <div className="card-body">
             <div className="card-body-left">
               {/* <h4 className="card-title">lello</h4> */}
@@ -141,19 +197,33 @@ class Poll extends React.Component<Props, State> {
             />
           </div>
         </div>
-        <div className="form-group">
-          <label htmlFor="commentTextarea">Add comment</label>
-          <textarea
-            className="form-control"
-            id="commentTextarea"
-            rows={3}
-          ></textarea>
-          <div className="button-container">
-            <button type="button" className="btn btn-outline-info mt-3">
-              Post
-            </button>
+        <form onSubmit={evt => this.onSubmit(evt)}>
+          <div className="form-group">
+            <label htmlFor="commentTextarea">Add comment</label>
+            <textarea
+              className="form-control"
+              id="commentTextarea"
+              rows={3}
+              value={this.state.commentValue}
+              onChange={evt => this.handleCommentChange(evt)}
+            ></textarea>
+            <div className="button-container">
+              <button type="submit" className="btn btn-outline-info mt-3">
+                Post
+              </button>
+            </div>
           </div>
-        </div>
+        </form>
+        {this.state.poll.comments?.map((comment: any, index: number) => {
+          return (
+            <div className="card border-info mb-3">
+              <div className="card-header"></div>
+              <div className="card-body">
+                <p className="card-text">{comment}</p>
+              </div>
+            </div>
+          );
+        })}
       </div>
     );
   }

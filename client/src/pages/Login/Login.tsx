@@ -44,10 +44,10 @@ const Login: React.FC = () => {
       });
 
       const data = await res.json();
-      userContext.setUser(data.token);
+      userContext.setUser(data);
       history.push('/');
     } catch (error) {
-      console.log('error registering user');
+      console.log('error logging in');
       console.error(error.message);
       throw error;
     }
