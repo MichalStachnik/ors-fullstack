@@ -4,4 +4,5 @@ html {
 
 #root {
   background: #222321;
+  min-height: 100vh;
 }

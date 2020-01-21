@@ -139,13 +139,25 @@ class Poll extends React.Component<Props, State> {
   handleLikeClick = async () => {
     const res = await fetch(`/polls/${this.props.match.params.pollId}/like`);
     const data = await res.json();
-    console.log('data back on fe after like', data);
+
+    this.setState({
+      poll: {
+        ...this.state.poll,
+        likes: data.poll.likes
+      }
+    });
   };
 
   handleDisLikeClick = async () => {
     const res = await fetch(`/polls/${this.props.match.params.pollId}/dislike`);
     const data = await res.json();
-    console.log('data back on fe after dislike', data);
+
+    this.setState({
+      poll: {
+        ...this.state.poll,
+        dislikes: data.poll.dislikes
+      }
+    });
   };
 
   render() {

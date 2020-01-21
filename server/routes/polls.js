@@ -94,11 +94,15 @@ router.post('/:pollId/comment', async (req, res, next) => {
 // Send one like
 router.get('/:pollId/like', async (req, res, next) => {
   try {
-    let poll = await Poll.findByIdAndUpdate(req.params.pollId, {
-      $inc: { likes: 1 }
-    });
+    let poll = await Poll.findByIdAndUpdate(
+      req.params.pollId,
+      {
+        $inc: { likes: 1 }
+      },
+      { new: true }
+    );
 
-    res.status(200).json({ msg: 'poll liked' });
+    res.status(200).json({ msg: 'poll liked', poll });
   } catch (error) {
     console.log('error liking poll');
     console.error(error.message);
@@ -109,10 +113,16 @@ router.get('/:pollId/like', async (req, res, next) => {
 // Send one dislike
 router.get('/:pollId/dislike', async (req, res, next) => {
   try {
-    let poll = await Poll.findByIdAndUpdate(req.params.pollId, {
-      $inc: { dislikes: 1 }
-    });
-    res.status(200).json({ msg: 'poll disliked' });
+    let poll = await Poll.findByIdAndUpdate(
+      req.params.pollId,
+      {
+        $inc: { dislikes: 1 }
+      },
+      {
+        new: true
+      }
+    );
+    res.status(200).json({ msg: 'poll disliked', poll });
   } catch (error) {
     console.log('error disliking');
     console.error(error.message);
