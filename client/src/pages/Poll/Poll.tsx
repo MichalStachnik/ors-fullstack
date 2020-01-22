@@ -79,7 +79,7 @@ class Poll extends React.Component<Props, State> {
   handleVoteClick = async (option: any) => {
     // Send one vote
     const voteRes = await fetch(
-      `/polls/${this.props.match.params.pollId}/${option}`
+      `/polls/${this.props.match.params.pollId}/vote/${option}`
     );
     const voteData = await voteRes.json();
 
@@ -108,8 +108,11 @@ class Poll extends React.Component<Props, State> {
   onSubmit = async (evt: React.FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
 
+    const userToken = this.context.getToken();
+    const username = this.context.getUsername();
     const comment = {
-      comment: this.state.commentValue
+      commentAuthor: username,
+      commentText: this.state.commentValue
     };
 
     try {
@@ -118,13 +121,15 @@ class Poll extends React.Component<Props, State> {
         {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'x-auth-token': `${userToken}`
           },
           body: JSON.stringify(comment)
         }
       );
 
       const data = await res.json();
+      console.log('data back on FE after posting comment', data);
     } catch (error) {
       console.log('error adding comment');
       console.error(error.message);

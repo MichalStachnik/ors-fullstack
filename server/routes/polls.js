@@ -8,10 +8,14 @@ router.post('/', authMiddleware, async (req, res, next) => {
   console.log('in POST /polls with req.user: ', req.user);
   const { question, options } = req.body;
   console.log('req.body', req.body);
+  console.log('req.user.id');
+  console.log(typeof req.user.id);
+  console.log(req.user.id);
+  console.log('-----------');
 
   try {
     let poll = new Poll({
-      user: req.user,
+      user: req.user.id,
       question,
       options,
       totalVotes: 0,
@@ -76,13 +80,25 @@ router.get('/:pollId/vote/:option', async (req, res, next) => {
 });
 
 // Create one comment
-router.post('/:pollId/comment', async (req, res, next) => {
-  const { comment } = req.body;
+router.post('/:pollId/comment', authMiddleware, async (req, res, next) => {
+  const { commentText } = req.body;
+  const userId = req.user.id;
+
+  const comment = {
+    authorId: userId,
+    comment: commentText
+  };
+
+  console.log('on the server with createdPost');
+  console.log(comment);
+  console.log('-----------');
 
   try {
     let poll = await Poll.findById(req.params.pollId);
     poll.comments.push(comment);
     await poll.save();
+    console.log('poll saved after adding comment');
+    console.log(poll);
     res.status(200).json({ message: 'comment saved' });
   } catch (error) {
     console.log('error fetching single poll');
