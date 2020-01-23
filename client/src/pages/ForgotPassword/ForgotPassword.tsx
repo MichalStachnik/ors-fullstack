@@ -3,19 +3,17 @@ import { Link, useHistory } from 'react-router-dom';
 
 import { UserContext } from '../../contexts/UserContext';
 
-import './Login.css';
+import './ForgotPassword.css';
 
-const Login: React.FC = () => {
+const ForgotPassword: React.FC = () => {
   const userContext = useContext(UserContext);
-
-  const [formData, setFormData] = useState({
-    email: '',
-    password: ''
-  });
-
   const history = useHistory();
 
-  const { email, password } = formData;
+  const [formData, setFormData] = useState({
+    email: ''
+  });
+
+  const { email } = formData;
 
   const onChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -26,28 +24,26 @@ const Login: React.FC = () => {
 
   const onSubmit = async (evt: React.FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
-
-    console.log(formData);
-
-    const credentials = {
-      email,
-      password
+    console.log('what we are sending from FE', email);
+    let payload = {
+      email
     };
 
     try {
-      const res = await fetch('/auth/login', {
+      const res = await fetch('/auth/forgot-password', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(credentials)
+        body: JSON.stringify(payload)
       });
 
       const data = await res.json();
-      userContext.setUser(data);
-      history.push('/');
+      console.log('data', data);
+      //   userContext.setUser(data);
+      //   history.push('/');
     } catch (error) {
-      console.log('error logging in');
+      console.log('error sending forget password');
       console.error(error.message);
       throw error;
     }
@@ -62,7 +58,7 @@ const Login: React.FC = () => {
       </Link>
       <form className="my-3" onSubmit={evt => onSubmit(evt)}>
         <fieldset>
-          <legend>Login</legend>
+          <legend>Forgot Password</legend>
           <div className="form-group">
             <label htmlFor="exampleInputEmail1">Email address</label>
             <input
@@ -76,29 +72,9 @@ const Login: React.FC = () => {
               value={email}
               onChange={evt => onChange(evt)}
             />
-            <small id="emailHelp" className="form-text text-muted">
-              We'll never share your email with anyone else.
-            </small>
           </div>
-          <div className="form-group">
-            <label htmlFor="exampleInputPassword1">Password</label>
-            <input
-              type="password"
-              className="form-control"
-              id="exampleInputPassword1"
-              placeholder="Password"
-              required
-              name="password"
-              value={password}
-              onChange={evt => onChange(evt)}
-            />
-          </div>
-          <small className="form-text text-muted">
-            Forgot your password?
-            <Link to="/forgot-password">click here</Link>
-          </small>
           <button type="submit" className="btn btn-primary">
-            Submit
+            Send Link
           </button>
         </fieldset>
       </form>
@@ -106,4 +82,4 @@ const Login: React.FC = () => {
   );
 };
 
-export default Login;
+export default ForgotPassword;

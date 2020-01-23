@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const sgMail = require('@sendgrid/mail');
 
 const authMiddlware = require('../helpers/auth');
 
@@ -132,6 +133,30 @@ router.post('/login', async (req, res) => {
     console.log('token signed, sending token...');
     res.json({ token, username: user.username });
   });
+});
+
+// Forgot password
+router.post('/forgot-password', async (req, res) => {
+  const { email } = req.body;
+  console.log('the email', email);
+
+  res.status(200).json({ msg: 'ok' });
+
+  // try {
+  //   sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+  //   const msg = {
+  //     to: 'test@example.com',
+  //     from: 'test@example.com',
+  //     subject: 'Sending with Twilio SendGrid is Fun',
+  //     text: 'and easy to do anywhere, even with Node.js',
+  //     html: '<strong>and easy to do anywhere, even with Node.js</strong>'
+  //   };
+  //   sgMail.send(msg);
+  //   console.log('sent');
+  // } catch (error) {
+  //   console.log('error sending email with sendgrid');
+  //   throw error;
+  // }
 });
 
 module.exports = router;
