@@ -9,6 +9,7 @@ import Register from './pages/Register/Register';
 import Polls from './pages/Polls/Polls';
 import Poll from './pages/Poll/Poll';
 import CreatePoll from './pages/CreatePoll/CreatePoll';
+import ForgotPassword from './pages/ForgotPassword/ForgotPassword';
 
 import { UserProvider } from './contexts/UserContext';
 
@@ -39,6 +40,7 @@ const App: React.FC = () => {
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />
           <Route exact path="/create-poll" component={CreatePoll} />
+          <Route exact path="/forgot-password" component={ForgotPassword} />
         </div>
       </Router>
     </UserProvider>

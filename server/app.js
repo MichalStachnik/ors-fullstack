@@ -1,6 +1,8 @@
 const path = require('path');
 const express = require('express');
 const mongoose = require('mongoose');
+
+// Routes
 const polls = require('./routes/polls.js');
 const auth = require('./routes/auth.js');
 

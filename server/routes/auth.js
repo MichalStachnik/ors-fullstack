@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const sgMail = require('@sendgrid/mail');
 
 const authMiddlware = require('../helpers/auth');
 
@@ -38,11 +39,11 @@ router.post(
 
     const { username, email, password } = req.body;
     try {
-      // Check if user already exists
       let user = await User.findOne({ email });
 
+      // Check if user already exists
       if (user) {
-        return res.status(400).json({ message: 'This email already exists' });
+        return res.status(400).json({ msg: 'This email already exists' });
       }
 
       user = new User({
@@ -57,10 +58,7 @@ router.post(
 
       user.password = await bcrypt.hash(password, salt);
 
-      console.log('right before user save with id: ', user.id);
       await user.save();
-      console.log('user saved with id: ', user.id);
-
       // Set JWT
       const payload = {
         user: {
@@ -115,6 +113,39 @@ router.post('/login', async (req, res) => {
     console.log('token signed, sending token...');
     res.json({ token, username: user.username });
   });
+});
+
+// Forgot password
+router.post('/forgot-password', async (req, res) => {
+  const { email } = req.body;
+
+  // Check is user email is in the db
+  let user = await User.findOne({ email });
+
+  if (!user) {
+    console.warn('user does not exist');
+    res.status(400).json({ message: 'no user for that email' });
+  }
+
+  // if so then send email
+  try {
+    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+    const msg = {
+      to: user.email,
+      from: 'test@example.com',
+      // from: 'stachnikmichal@gmail.com',
+      subject: 'Reset Password',
+      text: 'Please click the link to reset your password',
+      html:
+        '<strong>Please click the link to <a href="#>reset your password</a></strong>'
+    };
+    sgMail.send(msg);
+    res.status(200).json({ message: 'ok sent email' });
+  } catch (error) {
+    console.warn('error sending email with sendgrid');
+    console.error(error.message);
+    res.status(500).send('Server error');
+  }
 });
 
 module.exports = router;

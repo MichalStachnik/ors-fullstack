@@ -93,6 +93,10 @@ const Login: React.FC = () => {
               onChange={evt => onChange(evt)}
             />
           </div>
+          <small className="form-text text-muted">
+            Forgot your password?
+            <Link to="/forgot-password">click here</Link>
+          </small>
           <button type="submit" className="btn btn-primary">
             Submit
           </button>

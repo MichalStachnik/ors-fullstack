@@ -37,7 +37,7 @@ class Navbar extends React.Component<Props, State> {
     let token = this.context.getToken();
     let username = this.context.getUsername();
     return (
-      <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
+      <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
         <a className="navbar-brand" href="#">
           OneRandomSample
         </a>
@@ -106,7 +106,10 @@ class Navbar extends React.Component<Props, State> {
                 <i className="fa fa-times" onClick={this.handleClearClick}></i>
               )}
             </div>
-            <button className="btn btn-outline-info my-2 my-sm-0" type="submit">
+            <button
+              className="btn btn-outline-primary my-2 my-sm-0"
+              type="submit"
+            >
               Search
             </button>
           </form>

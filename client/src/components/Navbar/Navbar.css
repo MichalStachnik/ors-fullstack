@@ -16,5 +16,5 @@ nav .username {
 }
 
 nav .username span {
-  color: var(--info);
+  color: var(--primary);
 }

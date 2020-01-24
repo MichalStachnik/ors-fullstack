@@ -1,10 +1,11 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-const PollSchema = new mongoose.Schema({
-  // user: {
-  //   type: mongoose.Schema.Types.ObjectId,
-  //   ref: 'user'
-  // },
+const PollSchema = Schema({
+  creatorId: {
+    type: Schema.Types.ObjectId,
+    ref: 'user'
+  },
   question: {
     type: String,
     required: true
@@ -18,6 +19,10 @@ const PollSchema = new mongoose.Schema({
       voteCount: {
         type: Number,
         default: 0
+      },
+      voters: {
+        type: Schema.Types.ObjectId,
+        ref: 'user'
       }
     }
   ],
@@ -28,9 +33,6 @@ const PollSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   },
-  comments: {
-    type: [String]
-  },
   likes: {
     type: Number,
     default: 0
@@ -38,7 +40,27 @@ const PollSchema = new mongoose.Schema({
   dislikes: {
     type: Number,
     default: 0
-  }
+  },
+  comments: [
+    {
+      authorId: {
+        type: Schema.Types.ObjectId,
+        ref: 'user'
+      },
+      author: {
+        type: String,
+        required: true
+      },
+      comment: {
+        type: String,
+        required: true
+      },
+      date: {
+        type: Date,
+        default: Date.now
+      }
+    }
+  ]
 });
 
 module.exports = mongoose.model('poll', PollSchema);

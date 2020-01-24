@@ -79,7 +79,7 @@ class Poll extends React.Component<Props, State> {
   handleVoteClick = async (option: any) => {
     // Send one vote
     const voteRes = await fetch(
-      `/polls/${this.props.match.params.pollId}/${option}`
+      `/polls/${this.props.match.params.pollId}/vote/${option}`
     );
     const voteData = await voteRes.json();
 
@@ -108,8 +108,11 @@ class Poll extends React.Component<Props, State> {
   onSubmit = async (evt: React.FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
 
+    const userToken = this.context.getToken();
+    const username = this.context.getUsername();
     const comment = {
-      comment: this.state.commentValue
+      commentAuthor: username,
+      commentText: this.state.commentValue
     };
 
     try {
@@ -118,13 +121,15 @@ class Poll extends React.Component<Props, State> {
         {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'x-auth-token': `${userToken}`
           },
           body: JSON.stringify(comment)
         }
       );
 
       const data = await res.json();
+      console.log('data back on FE after posting comment', data);
     } catch (error) {
       console.log('error adding comment');
       console.error(error.message);
@@ -191,7 +196,6 @@ class Poll extends React.Component<Props, State> {
           </div>
           <div className="card-body">
             <div className="card-body-left">
-              {/* <h4 className="card-title">lello</h4> */}
               {this.state.poll.options?.map((option: any, index: number) => {
                 return (
                   <div className="option mb-3" key={index}>
@@ -200,7 +204,7 @@ class Poll extends React.Component<Props, State> {
                     </p>
                     <button
                       type="button"
-                      className="btn btn-outline-info"
+                      className="btn btn-outline-primary"
                       onClick={() => this.handleVoteClick(option.option)}
                     >
                       Vote
@@ -227,7 +231,7 @@ class Poll extends React.Component<Props, State> {
               onChange={evt => this.handleCommentChange(evt)}
             ></textarea>
             <div className="button-container">
-              <button type="submit" className="btn btn-outline-info mt-3">
+              <button type="submit" className="btn btn-outline-primary mt-3">
                 Post
               </button>
             </div>
@@ -235,7 +239,7 @@ class Poll extends React.Component<Props, State> {
         </form>
         {this.state.poll.comments?.map((comment: any, index: number) => {
           return (
-            <div className="card border-info mb-3">
+            <div className="card border-primary mb-3">
               <div className="card-header"></div>
               <div className="card-body">
                 <p className="card-text">{comment}</p>
