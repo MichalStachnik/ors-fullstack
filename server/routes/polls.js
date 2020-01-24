@@ -89,10 +89,6 @@ router.post('/:pollId/comment', authMiddleware, async (req, res, next) => {
     comment: commentText
   };
 
-  console.log('on the server with createdPost');
-  console.log(comment);
-  console.log('-----------');
-
   try {
     let poll = await Poll.findById(req.params.pollId);
     poll.comments.push(comment);
@@ -118,7 +114,7 @@ router.get('/:pollId/like', async (req, res, next) => {
       { new: true }
     );
 
-    res.status(200).json({ msg: 'poll liked', poll });
+    res.status(200).json({ message: 'poll liked', poll });
   } catch (error) {
     console.log('error liking poll');
     console.error(error.message);
@@ -138,9 +134,9 @@ router.get('/:pollId/dislike', async (req, res, next) => {
         new: true
       }
     );
-    res.status(200).json({ msg: 'poll disliked', poll });
+    res.status(200).json({ message: 'poll disliked', poll });
   } catch (error) {
-    console.log('error disliking');
+    console.log('error disliking poll');
     console.error(error.message);
     throw error;
   }

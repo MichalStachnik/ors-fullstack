@@ -43,24 +43,7 @@ router.post(
 
       // Check if user already exists
       if (user) {
-        return res.status(400).json({ message: 'This email already exists' });
-      }
-
-      // Send email to user
-      try {
-        sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-        const msg = {
-          to: 'test@example.com',
-          from: 'test@example.com',
-          subject: 'Sending with Twilio SendGrid is Fun',
-          text: 'and easy to do anywhere, even with Node.js',
-          html: '<strong>and easy to do anywhere, even with Node.js</strong>'
-        };
-        sgMail.send(msg);
-        console.log('sent');
-      } catch (error) {
-        console.log('error sending email with sendgrid');
-        throw error;
+        return res.status(400).json({ msg: 'This email already exists' });
       }
 
       user = new User({
@@ -75,26 +58,23 @@ router.post(
 
       user.password = await bcrypt.hash(password, salt);
 
-      console.log('right before user save with id: ', user.id);
       await user.save();
-      console.log('user saved with id: ', user.id);
-
       // Set JWT
-      // const payload = {
-      //   user: {
-      //     id: user.id
-      //   }
-      // };
+      const payload = {
+        user: {
+          id: user.id
+        }
+      };
 
-      // jwt.sign(
-      //   payload,
-      //   process.env.TOKEN,
-      //   { expiresIn: 3600 },
-      //   (error, token) => {
-      //     if (error) throw error;
-      //     res.json({ token });
-      //   }
-      // );
+      jwt.sign(
+        payload,
+        process.env.TOKEN,
+        { expiresIn: 3600 },
+        (error, token) => {
+          if (error) throw error;
+          res.json({ token });
+        }
+      );
     } catch (error) {
       console.log('error!!');
       console.error(error.message);
@@ -138,25 +118,34 @@ router.post('/login', async (req, res) => {
 // Forgot password
 router.post('/forgot-password', async (req, res) => {
   const { email } = req.body;
-  console.log('the email', email);
 
-  res.status(200).json({ msg: 'ok' });
+  // Check is user email is in the db
+  let user = await User.findOne({ email });
 
-  // try {
-  //   sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-  //   const msg = {
-  //     to: 'test@example.com',
-  //     from: 'test@example.com',
-  //     subject: 'Sending with Twilio SendGrid is Fun',
-  //     text: 'and easy to do anywhere, even with Node.js',
-  //     html: '<strong>and easy to do anywhere, even with Node.js</strong>'
-  //   };
-  //   sgMail.send(msg);
-  //   console.log('sent');
-  // } catch (error) {
-  //   console.log('error sending email with sendgrid');
-  //   throw error;
-  // }
+  if (!user) {
+    console.warn('user does not exist');
+    res.status(400).json({ message: 'no user for that email' });
+  }
+
+  // if so then send email
+  try {
+    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+    const msg = {
+      to: user.email,
+      from: 'test@example.com',
+      // from: 'stachnikmichal@gmail.com',
+      subject: 'Reset Password',
+      text: 'Please click the link to reset your password',
+      html:
+        '<strong>Please click the link to <a href="#>reset your password</a></strong>'
+    };
+    sgMail.send(msg);
+    res.status(200).json({ message: 'ok sent email' });
+  } catch (error) {
+    console.warn('error sending email with sendgrid');
+    console.error(error.message);
+    res.status(500).send('Server error');
+  }
 });
 
 module.exports = router;

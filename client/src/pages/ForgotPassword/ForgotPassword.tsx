@@ -1,30 +1,26 @@
-import React, { useState, useContext } from 'react';
-import { Link, useHistory } from 'react-router-dom';
-
-import { UserContext } from '../../contexts/UserContext';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 import './ForgotPassword.css';
 
 const ForgotPassword: React.FC = () => {
-  const userContext = useContext(UserContext);
-  const history = useHistory();
-
   const [formData, setFormData] = useState({
-    email: ''
+    email: '',
+    buttonDisabled: true
   });
 
-  const { email } = formData;
+  const { email, buttonDisabled } = formData;
 
   const onChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
-      [evt.target.name]: evt.target.value
+      [evt.target.name]: evt.target.value,
+      buttonDisabled: false
     });
   };
 
   const onSubmit = async (evt: React.FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
-    console.log('what we are sending from FE', email);
     let payload = {
       email
     };
@@ -40,8 +36,8 @@ const ForgotPassword: React.FC = () => {
 
       const data = await res.json();
       console.log('data', data);
-      //   userContext.setUser(data);
       //   history.push('/');
+      setFormData({ ...formData, buttonDisabled: true });
     } catch (error) {
       console.log('error sending forget password');
       console.error(error.message);
@@ -73,7 +69,11 @@ const ForgotPassword: React.FC = () => {
               onChange={evt => onChange(evt)}
             />
           </div>
-          <button type="submit" className="btn btn-primary">
+          <button
+            disabled={buttonDisabled}
+            type="submit"
+            className="btn btn-primary"
+          >
             Send Link
           </button>
         </fieldset>
