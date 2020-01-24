@@ -39,14 +39,20 @@ class Polls extends React.Component<Props, State> {
           )
           .map((poll: any, index: number) => {
             return (
-              <div className="card text-white bg-primary my-3" key={index}>
+              <div
+                className="card text-white bg-dark border-light  my-3"
+                key={index}
+              >
                 <div className="card-header">
                   <div className="card-question">
                     <h3>{poll.question}</h3>
-                    <p className="text-info">{poll.date}</p>
+                    <p className="text-primary">{poll.date}</p>
                   </div>
                   <Link to={`/polls/${poll._id}`}>
-                    <button className="btn btn-info my-2 my-sm-0" type="submit">
+                    <button
+                      className="btn btn-secondary my-2 my-sm-0"
+                      type="button"
+                    >
                       Vote
                     </button>
                   </Link>
@@ -56,7 +62,7 @@ class Polls extends React.Component<Props, State> {
                     {poll.options.map((option: any, index: number) => {
                       return (
                         <p className="card-text" key={index}>
-                          <span className="badge badge-info badge-pill">
+                          <span className="badge badge-primary badge-pill">
                             {option.voteCount}
                           </span>
                           {option.option}
