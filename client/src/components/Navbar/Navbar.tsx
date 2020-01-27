@@ -38,9 +38,12 @@ class Navbar extends React.Component<Props, State> {
     let username = this.context.getUsername();
     return (
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a className="navbar-brand" href="#">
-          OneRandomSample
-        </a>
+        <div className="brand-container">
+          <a className="navbar-brand" href="#">
+            OneRandomSample
+          </a>
+          <small className="text-muted">a small polling application</small>
+        </div>
         <button
           className="navbar-toggler"
           type="button"

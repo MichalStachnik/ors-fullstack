@@ -39,10 +39,7 @@ class Polls extends React.Component<Props, State> {
           )
           .map((poll: any, index: number) => {
             return (
-              <div
-                className="card text-white bg-dark border-light  my-3"
-                key={index}
-              >
+              <div className="card text-white bg-dark my-3" key={index}>
                 <div className="card-header">
                   <div className="card-question">
                     <h3>{poll.question}</h3>

@@ -127,17 +127,16 @@ router.post('/forgot-password', async (req, res) => {
     res.status(400).json({ message: 'no user for that email' });
   }
 
-  // if so then send email
+  // If so then send email
   try {
     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
     const msg = {
       to: user.email,
-      from: 'test@example.com',
-      // from: 'stachnikmichal@gmail.com',
+      from: 'support@onerandomsample.com',
       subject: 'Reset Password',
       text: 'Please click the link to reset your password',
       html:
-        '<strong>Please click the link to <a href="#>reset your password</a></strong>'
+        '<strong>Please click the link to <a href="#">reset your password</a></strong>'
     };
     sgMail.send(msg);
     res.status(200).json({ message: 'ok sent email' });

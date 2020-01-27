@@ -54,7 +54,7 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className="my-3">
+    <div className="my-3 text-white">
       <Link to="/">
         <button type="button" className="btn btn-outline-secondary">
           Back
@@ -97,7 +97,7 @@ const Login: React.FC = () => {
             Forgot your password?
             <Link to="/forgot-password">click here</Link>
           </small>
-          <button type="submit" className="btn btn-primary">
+          <button type="submit" className="btn btn-primary mt-3 float-right">
             Submit
           </button>
         </fieldset>
