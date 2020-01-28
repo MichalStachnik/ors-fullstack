@@ -127,7 +127,24 @@ router.post('/forgot-password', async (req, res) => {
     res.status(400).json({ message: 'no user for that email' });
   }
 
-  // If so then send email
+  // Set JWT
+  const payload = {
+    user: {
+      id: user.id
+    }
+  };
+
+  // Synchronous usage of jwt.sign() - returns a string
+  const emailToken = jwt.sign(payload, process.env.TOKEN, { expiresIn: '1d' });
+
+  // Check if prod and construct forgot password link
+  let forgotPasswordUrl;
+  if (process.env.NODE_ENV === 'production') {
+    forgotPasswordUrl = `https://hidden-woodland-03676.herokuapp.com/new-password/${emailToken}`;
+  } else {
+    forgotPasswordUrl = `http://localhost:3000/new-password/${emailToken}`;
+  }
+
   try {
     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
     const msg = {
@@ -135,8 +152,7 @@ router.post('/forgot-password', async (req, res) => {
       from: 'support@onerandomsample.com',
       subject: 'Reset Password',
       text: 'Please click the link to reset your password',
-      html:
-        '<strong>Please click the link to <a href="#">reset your password</a></strong>'
+      html: `<p>Please click the link to <strong><a href='${forgotPasswordUrl}'>reset your password</a></strong></p>`
     };
     sgMail.send(msg);
     res.status(200).json({ message: 'ok sent email' });
@@ -144,6 +160,27 @@ router.post('/forgot-password', async (req, res) => {
     console.warn('error sending email with sendgrid');
     console.error(error.message);
     res.status(500).send('Server error');
+  }
+});
+
+// GET /new-password
+router.get('/new-password', (req, res, next) => {
+  const emailToken = req.header('x-auth-token');
+
+  if (!emailToken) {
+    return res.status(401).json({ error: 'no token' });
+  }
+
+  // Verify token
+  try {
+    const decodedToken = jwt.verify(emailToken, process.env.TOKEN);
+
+    return res
+      .status(200)
+      .json({ message: 'email token valid', token: decodedToken });
+  } catch (error) {
+    console.error('error with token verification');
+    res.status(401).json({ message: 'token is not valid' });
   }
 });
 

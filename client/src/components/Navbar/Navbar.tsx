@@ -42,7 +42,7 @@ class Navbar extends React.Component<Props, State> {
           <a className="navbar-brand" href="#">
             OneRandomSample
           </a>
-          <small className="text-muted">a small polling application</small>
+          <small className="text-muted ml-2">a small polling application</small>
         </div>
         <button
           className="navbar-toggler"
