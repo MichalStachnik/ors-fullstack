@@ -5,13 +5,7 @@ const Poll = require('../models/Poll');
 
 // Create one poll
 router.post('/', authMiddleware, async (req, res, next) => {
-  console.log('in POST /polls with req.user: ', req.user);
   const { question, options } = req.body;
-  console.log('req.body', req.body);
-  console.log('req.user.id');
-  console.log(typeof req.user.id);
-  console.log(req.user.id);
-  console.log('-----------');
 
   try {
     let poll = new Poll({

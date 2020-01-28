@@ -18,7 +18,6 @@ const NewPassword: React.FC = (props: any) => {
 
   const authenticateToken = async () => {
     try {
-      console.log(' about to fetch');
       const res = await fetch('/auth/new-password', {
         method: 'GET',
         headers: {
@@ -43,7 +42,7 @@ const NewPassword: React.FC = (props: any) => {
   if (!emailToken) {
     history.push('/');
   } else {
-    // Authenticate token with server
+    // Authenticate email token with server
     authenticateToken();
   }
 
@@ -62,10 +61,11 @@ const NewPassword: React.FC = (props: any) => {
     };
 
     try {
-      const res = await fetch('/new-password', {
+      const res = await fetch('/auth/new-password', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'x-auth-token': `${emailToken}`
         },
         body: JSON.stringify(payload)
       });
@@ -93,7 +93,7 @@ const NewPassword: React.FC = (props: any) => {
           <div className="form-group">
             <label htmlFor="newPassword">Email address</label>
             <input
-              type="email"
+              type="password"
               className="form-control"
               id="newPassword"
               aria-describedby="passwordHelp"

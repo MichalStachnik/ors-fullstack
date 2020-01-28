@@ -99,7 +99,6 @@ router.post('/login', async (req, res) => {
   if (!isMatched) {
     return res.status(400).json({ message: 'bad password' });
   }
-  console.log('passwords match, signing token...');
 
   // Set JWT
   const payload = {
@@ -163,7 +162,7 @@ router.post('/forgot-password', async (req, res) => {
   }
 });
 
-// GET /new-password
+// GET /auth/new-password
 router.get('/new-password', (req, res, next) => {
   const emailToken = req.header('x-auth-token');
 
@@ -178,6 +177,39 @@ router.get('/new-password', (req, res, next) => {
     return res
       .status(200)
       .json({ message: 'email token valid', token: decodedToken });
+  } catch (error) {
+    console.error('error with token verification');
+    res.status(401).json({ message: 'token is not valid' });
+  }
+});
+
+// POST /auth/new-password
+router.post('/new-password', async (req, res, next) => {
+  const emailToken = req.header('x-auth-token');
+  const newPassword = req.body.password;
+
+  if (!newPassword || !emailToken) {
+    res.status(401).json({ message: 'invalid credentials' });
+  }
+
+  // Verify token
+  try {
+    const decodedToken = jwt.verify(emailToken, process.env.TOKEN);
+    // Hash and salt new password
+    const salt = await bcrypt.genSalt(12);
+
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+    // Update password in db
+    let user = await User.findByIdAndUpdate(
+      decodedToken.user.id,
+      {
+        password: hashedPassword
+      },
+      { new: true }
+    );
+
+    return res.status(200).json({ message: 'successfully updated password' });
   } catch (error) {
     console.error('error with token verification');
     res.status(401).json({ message: 'token is not valid' });
