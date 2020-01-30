@@ -6,13 +6,14 @@ import './NewPassword.css';
 const NewPassword: React.FC = (props: any) => {
   const [formData, setFormData] = useState({
     password: '',
+    password2: '',
     buttonDisabled: true,
     emailToken: ''
   });
 
   let history = useHistory();
 
-  const { password, buttonDisabled } = formData;
+  const { password, password2, buttonDisabled } = formData;
 
   const emailToken = props.match.params.emailToken;
 
@@ -56,6 +57,9 @@ const NewPassword: React.FC = (props: any) => {
 
   const onSubmit = async (evt: React.FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
+
+    if (password !== password2) return;
+
     let payload = {
       password
     };
@@ -101,6 +105,21 @@ const NewPassword: React.FC = (props: any) => {
               required
               name="password"
               value={password}
+              onChange={evt => onChange(evt)}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="exampleInputPassword1">Confirm password</label>
+            <input
+              type="password"
+              className={`form-control ${
+                password.length && password !== password2 ? 'is-invalid' : ''
+              }`}
+              id="exampleInputPassword2"
+              placeholder="Password"
+              required
+              name="password2"
+              value={password2}
               onChange={evt => onChange(evt)}
             />
           </div>
