@@ -45,6 +45,10 @@ const Login: React.FC = () => {
 
       const data = await res.json();
       userContext.setUser(data);
+
+      // Set to localstorage
+      localStorage.setItem('username', data.username);
+
       history.push('/');
     } catch (error) {
       console.log('error logging in');
