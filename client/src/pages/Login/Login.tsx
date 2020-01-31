@@ -64,7 +64,10 @@ const Login: React.FC = () => {
           Back
         </button>
       </Link>
-      <form className="my-3" onSubmit={evt => onSubmit(evt)}>
+      <form
+        className="my-3 p-5 container col-lg-8 border-primary card bg-dark"
+        onSubmit={evt => onSubmit(evt)}
+      >
         <fieldset>
           <legend>Login</legend>
           <div className="form-group">
