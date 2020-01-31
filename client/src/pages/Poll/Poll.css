@@ -7,6 +7,15 @@
   flex: 0.7;
 }
 
+.card-body .card-body-right {
+  max-width: 60%;
+  /* width: 80%;
+  min-height: 300px;
+  height: 350px; */
+  display: flex;
+  align-items: center;
+}
+
 .option {
   display: flex;
   justify-content: space-between;

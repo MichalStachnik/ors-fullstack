@@ -6,6 +6,10 @@ interface Props {
 }
 
 const DonutChart: React.FC<Props> = props => {
+  if (!props.pollData) {
+    return <div>Loading...</div>;
+  }
+
   const options = props.pollData.map((option: any) => option.option);
 
   const chartData = props.pollData.map((option: any) => option.voteCount);

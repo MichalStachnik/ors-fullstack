@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Chart from 'react-apexcharts';
 import DonutChart from '../../components/DonutChart/DonutChart';
 
 import './Polls.css';
@@ -27,6 +26,8 @@ class Polls extends React.Component<Props, State> {
     this.setState({
       polls
     });
+    console.log('the polls we have in /polls');
+    console.log(polls);
   };
 
   render() {

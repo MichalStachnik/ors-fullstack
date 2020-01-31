@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Chart from 'react-apexcharts';
+import DonutChart from '../../components/DonutChart/DonutChart';
 
 import { UserContext } from '../../contexts/UserContext';
 
@@ -58,6 +59,9 @@ class Poll extends React.Component<Props, State> {
   componentDidMount = async () => {
     const res = await fetch(`/polls/${this.props.match.params.pollId}`);
     const data = await res.json();
+
+    console.log('the poll we get in /poll');
+    console.log(data);
 
     const options = data.poll.options.map((option: any) => option.option);
 
@@ -200,7 +204,10 @@ class Poll extends React.Component<Props, State> {
                 return (
                   <div className="option mb-3" key={index}>
                     <p className="card-text" key={index}>
-                      {option.voteCount} {option.option}
+                      <span className="badge badge-primary badge-pill">
+                        {option.voteCount}
+                      </span>
+                      {option.option}
                     </p>
                     <button
                       type="button"
@@ -213,31 +220,37 @@ class Poll extends React.Component<Props, State> {
                 );
               })}
             </div>
-            <Chart
-              options={this.state.donutOptions.options}
-              series={this.state.donutOptions.series}
-              type="donut"
-            />
+            {/* <div className="card-body-right">
+              <Chart
+                options={this.state.donutOptions.options}
+                series={this.state.donutOptions.series}
+                type="donut"
+                width="100%"
+              />
+            </div> */}
+            <div className="card-body-right">
+              <DonutChart pollData={this.state.poll.options} />
+            </div>
           </div>
         </div>
         <div className="card text-white bg-dark mb-3">
-        <form className="container" onSubmit={evt => this.onSubmit(evt)}>
-          <div className="form-group mt-3">
-            <label htmlFor="commentTextarea">Add comment</label>
-            <textarea
-              className="form-control"
-              id="commentTextarea"
-              rows={3}
-              value={this.state.commentValue}
-              onChange={evt => this.handleCommentChange(evt)}
-            ></textarea>
-            <div className="button-container">
-              <button type="submit" className="btn btn-outline-primary mt-3">
-                Post
-              </button>
+          <form className="container" onSubmit={evt => this.onSubmit(evt)}>
+            <div className="form-group mt-3">
+              <label htmlFor="commentTextarea">Add comment</label>
+              <textarea
+                className="form-control"
+                id="commentTextarea"
+                rows={3}
+                value={this.state.commentValue}
+                onChange={evt => this.handleCommentChange(evt)}
+              ></textarea>
+              <div className="button-container">
+                <button type="submit" className="btn btn-outline-primary mt-3">
+                  Post
+                </button>
+              </div>
             </div>
-          </div>
-        </form>
+          </form>
         </div>
 
         {this.state.poll.comments?.map((comment: any, index: number) => {
