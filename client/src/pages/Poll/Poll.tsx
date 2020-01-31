@@ -105,6 +105,7 @@ class Poll extends React.Component<Props, State> {
     });
   };
 
+  // POST a comment
   onSubmit = async (evt: React.FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
 
@@ -129,7 +130,6 @@ class Poll extends React.Component<Props, State> {
       );
 
       const data = await res.json();
-      console.log('data back on FE after posting comment', data);
     } catch (error) {
       console.log('error adding comment');
       console.error(error.message);
@@ -174,7 +174,7 @@ class Poll extends React.Component<Props, State> {
             Back
           </button>
         </Link>
-        <div className="card text-white bg-primary my-3">
+        <div className="card text-white bg-dark my-3">
           <div className="card-header">
             <div className="question">{this.state.poll.question}</div>
             <div className="likes-container">
@@ -239,10 +239,10 @@ class Poll extends React.Component<Props, State> {
         </form>
         {this.state.poll.comments?.map((comment: any, index: number) => {
           return (
-            <div className="card border-primary mb-3">
-              <div className="card-header"></div>
+            <div className="card border-primary text-white bg-dark mb-3">
+              <div className="card-header">{comment.author}</div>
               <div className="card-body">
-                <p className="card-text">{comment}</p>
+                <p className="card-text">{comment.comment}</p>
               </div>
             </div>
           );

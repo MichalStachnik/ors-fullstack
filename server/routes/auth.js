@@ -84,14 +84,21 @@ router.post(
 );
 
 // Login user
+// POST /auth/login
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
+  console.log('in auth/login on server');
+  console.log('email', email);
+  console.log('password', password);
 
   let user = await User.findOne({ email });
 
   if (!user) {
     return res.status(400).json({ message: 'no user with that email' });
   }
+
+  console.log('the user we got', user);
+  console.log('and the users password', user.password);
 
   // Check password
   const isMatched = await bcrypt.compare(password, user.password);
@@ -115,6 +122,7 @@ router.post('/login', async (req, res) => {
 });
 
 // Forgot password
+// POST /auth/forgot-password
 router.post('/forgot-password', async (req, res) => {
   const { email } = req.body;
 
@@ -199,6 +207,10 @@ router.post('/new-password', async (req, res, next) => {
     const salt = await bcrypt.genSalt(12);
 
     const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+    console.log('the hashed password');
+    console.log(hashedPassword);
+    console.log('^^^^^');
 
     // Update password in db
     let user = await User.findByIdAndUpdate(

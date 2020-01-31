@@ -35,8 +35,6 @@ const ForgotPassword: React.FC = () => {
       });
 
       const data = await res.json();
-      console.log('data', data);
-      //   history.push('/');
       setFormData({ ...formData, buttonDisabled: true });
     } catch (error) {
       console.log('error sending forget password');
@@ -72,7 +70,7 @@ const ForgotPassword: React.FC = () => {
           <button
             disabled={buttonDisabled}
             type="submit"
-            className="btn btn-primary"
+            className="btn btn-primary float-right"
           >
             Send Link
           </button>
