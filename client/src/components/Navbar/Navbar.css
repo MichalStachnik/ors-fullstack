@@ -1,3 +1,8 @@
+nav .brand-container {
+  display: flex;
+  flex-direction: column;
+}
+
 nav .input-container {
   position: relative;
 }
@@ -7,7 +12,7 @@ nav .fa-times {
   color: var(--danger);
   position: absolute;
   right: 15px;
-  top: 10px;
+  top: 20.5px;
 }
 
 nav .username {

@@ -84,6 +84,7 @@ router.post(
 );
 
 // Login user
+// POST /auth/login
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
@@ -99,7 +100,6 @@ router.post('/login', async (req, res) => {
   if (!isMatched) {
     return res.status(400).json({ message: 'bad password' });
   }
-  console.log('passwords match, signing token...');
 
   // Set JWT
   const payload = {
@@ -116,6 +116,7 @@ router.post('/login', async (req, res) => {
 });
 
 // Forgot password
+// POST /auth/forgot-password
 router.post('/forgot-password', async (req, res) => {
   const { email } = req.body;
 
@@ -127,17 +128,32 @@ router.post('/forgot-password', async (req, res) => {
     res.status(400).json({ message: 'no user for that email' });
   }
 
-  // if so then send email
+  // Set JWT
+  const payload = {
+    user: {
+      id: user.id
+    }
+  };
+
+  // Synchronous usage of jwt.sign() - returns a string
+  const emailToken = jwt.sign(payload, process.env.TOKEN, { expiresIn: '1d' });
+
+  // Check if prod and construct forgot password link
+  let forgotPasswordUrl;
+  if (process.env.NODE_ENV === 'production') {
+    forgotPasswordUrl = `https://hidden-woodland-03676.herokuapp.com/new-password/${emailToken}`;
+  } else {
+    forgotPasswordUrl = `http://localhost:3000/new-password/${emailToken}`;
+  }
+
   try {
     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
     const msg = {
       to: user.email,
-      from: 'test@example.com',
-      // from: 'stachnikmichal@gmail.com',
+      from: 'support@onerandomsample.com',
       subject: 'Reset Password',
       text: 'Please click the link to reset your password',
-      html:
-        '<strong>Please click the link to <a href="#>reset your password</a></strong>'
+      html: `<p>Please click the link to <strong><a href='${forgotPasswordUrl}'>reset your password</a></strong></p>`
     };
     sgMail.send(msg);
     res.status(200).json({ message: 'ok sent email' });
@@ -145,6 +161,60 @@ router.post('/forgot-password', async (req, res) => {
     console.warn('error sending email with sendgrid');
     console.error(error.message);
     res.status(500).send('Server error');
+  }
+});
+
+// GET /auth/new-password
+router.get('/new-password', (req, res, next) => {
+  const emailToken = req.header('x-auth-token');
+
+  if (!emailToken) {
+    return res.status(401).json({ error: 'no token' });
+  }
+
+  // Verify token
+  try {
+    const decodedToken = jwt.verify(emailToken, process.env.TOKEN);
+
+    return res
+      .status(200)
+      .json({ message: 'email token valid', token: decodedToken });
+  } catch (error) {
+    console.error('error with token verification');
+    res.status(401).json({ message: 'token is not valid' });
+  }
+});
+
+// POST /auth/new-password
+router.post('/new-password', async (req, res, next) => {
+  const emailToken = req.header('x-auth-token');
+  const newPassword = req.body.password;
+
+  if (!newPassword || !emailToken) {
+    res.status(401).json({ message: 'invalid credentials' });
+  }
+
+  // Verify token
+  try {
+    const decodedToken = jwt.verify(emailToken, process.env.TOKEN);
+    // Hash and salt new password
+    const salt = await bcrypt.genSalt(12);
+
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+    // Update password in db
+    let user = await User.findByIdAndUpdate(
+      decodedToken.user.id,
+      {
+        password: hashedPassword
+      },
+      { new: true }
+    );
+
+    return res.status(200).json({ message: 'successfully updated password' });
+  } catch (error) {
+    console.error('error with token verification');
+    res.status(401).json({ message: 'token is not valid' });
   }
 });
 

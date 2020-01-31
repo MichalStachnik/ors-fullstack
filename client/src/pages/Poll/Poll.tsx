@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Chart from 'react-apexcharts';
+import DonutChart from '../../components/DonutChart/DonutChart';
 
 import { UserContext } from '../../contexts/UserContext';
 
@@ -59,6 +60,9 @@ class Poll extends React.Component<Props, State> {
     const res = await fetch(`/polls/${this.props.match.params.pollId}`);
     const data = await res.json();
 
+    console.log('the poll we get in /poll');
+    console.log(data);
+
     const options = data.poll.options.map((option: any) => option.option);
 
     const chartData = data.poll.options.map((option: any) => option.voteCount);
@@ -105,6 +109,7 @@ class Poll extends React.Component<Props, State> {
     });
   };
 
+  // POST a comment
   onSubmit = async (evt: React.FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
 
@@ -129,7 +134,6 @@ class Poll extends React.Component<Props, State> {
       );
 
       const data = await res.json();
-      console.log('data back on FE after posting comment', data);
     } catch (error) {
       console.log('error adding comment');
       console.error(error.message);
@@ -174,7 +178,7 @@ class Poll extends React.Component<Props, State> {
             Back
           </button>
         </Link>
-        <div className="card text-white bg-primary my-3">
+        <div className="card text-white bg-dark my-3">
           <div className="card-header">
             <div className="question">{this.state.poll.question}</div>
             <div className="likes-container">
@@ -200,7 +204,10 @@ class Poll extends React.Component<Props, State> {
                 return (
                   <div className="option mb-3" key={index}>
                     <p className="card-text" key={index}>
-                      {option.voteCount} {option.option}
+                      <span className="badge badge-primary badge-pill">
+                        {option.voteCount}
+                      </span>
+                      {option.option}
                     </p>
                     <button
                       type="button"
@@ -213,36 +220,51 @@ class Poll extends React.Component<Props, State> {
                 );
               })}
             </div>
-            <Chart
-              options={this.state.donutOptions.options}
-              series={this.state.donutOptions.series}
-              type="donut"
-            />
-          </div>
-        </div>
-        <form onSubmit={evt => this.onSubmit(evt)}>
-          <div className="form-group">
-            <label htmlFor="commentTextarea">Add comment</label>
-            <textarea
-              className="form-control"
-              id="commentTextarea"
-              rows={3}
-              value={this.state.commentValue}
-              onChange={evt => this.handleCommentChange(evt)}
-            ></textarea>
-            <div className="button-container">
-              <button type="submit" className="btn btn-outline-primary mt-3">
-                Post
-              </button>
+            {/* <div className="card-body-right">
+              <Chart
+                options={this.state.donutOptions.options}
+                series={this.state.donutOptions.series}
+                type="donut"
+                width="100%"
+              />
+            </div> */}
+            <div className="card-body-right">
+              <DonutChart pollData={this.state.poll.options} />
             </div>
           </div>
-        </form>
+        </div>
+        <div className="card text-white bg-dark mb-3">
+          <form className="container" onSubmit={evt => this.onSubmit(evt)}>
+            <div className="form-group mt-3">
+              <label htmlFor="commentTextarea">Add comment</label>
+              <textarea
+                className="form-control"
+                id="commentTextarea"
+                rows={3}
+                value={this.state.commentValue}
+                onChange={evt => this.handleCommentChange(evt)}
+              ></textarea>
+              <div className="button-container">
+                <button type="submit" className="btn btn-outline-primary mt-3">
+                  Post
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+
         {this.state.poll.comments?.map((comment: any, index: number) => {
           return (
-            <div className="card border-primary mb-3">
-              <div className="card-header"></div>
+            <div
+              key={index}
+              className="card border-primary text-white bg-dark mb-3"
+            >
+              <div className="card-header">
+                <span>{comment.author}</span>
+                <span className="text-primary">{comment.date}</span>
+              </div>
               <div className="card-body">
-                <p className="card-text">{comment}</p>
+                <p className="card-text">{comment.comment}</p>
               </div>
             </div>
           );

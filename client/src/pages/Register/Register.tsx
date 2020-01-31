@@ -25,8 +25,6 @@ const Register: React.FC = () => {
 
     if (password !== password2) return;
 
-    console.log(formData);
-
     const newUser = {
       username,
       email,
@@ -41,9 +39,6 @@ const Register: React.FC = () => {
         },
         body: JSON.stringify(newUser)
       });
-
-      console.log('successful post');
-      console.log(res);
 
       const data = await res.json();
       console.log('data:', data);

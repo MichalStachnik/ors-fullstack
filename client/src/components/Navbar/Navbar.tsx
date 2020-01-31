@@ -12,7 +12,7 @@ interface Props {
 }
 
 interface State {
-  isInputFocued: boolean;
+  isInputFocused: boolean;
 }
 
 class Navbar extends React.Component<Props, State> {
@@ -20,17 +20,21 @@ class Navbar extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      isInputFocued: false
+      isInputFocused: false
     };
   }
 
   handleInputFocus = (evt: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ isInputFocued: true });
+    this.setState({ isInputFocused: true });
+  };
+
+  handleInputBlur = (evt: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({ isInputFocused: false });
   };
 
   handleClearClick = () => {
     this.props.onInputCleared();
-    this.setState({ isInputFocued: false });
+    this.setState({ isInputFocused: false });
   };
 
   render() {
@@ -38,9 +42,12 @@ class Navbar extends React.Component<Props, State> {
     let username = this.context.getUsername();
     return (
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a className="navbar-brand" href="#">
-          OneRandomSample
-        </a>
+        <div className="brand-container">
+          <a className="navbar-brand" href="#">
+            OneRandomSample
+          </a>
+          <small className="text-muted ml-2">a small polling application</small>
+        </div>
         <button
           className="navbar-toggler"
           type="button"
@@ -99,10 +106,17 @@ class Navbar extends React.Component<Props, State> {
                 type="text"
                 placeholder="Search"
                 value={this.props.searchValue}
-                onChange={(evt: any) => this.props.onInputChanged(evt)}
-                onFocus={(evt: any) => this.handleInputFocus(evt)}
+                onChange={(evt: React.ChangeEvent<HTMLInputElement>) =>
+                  this.props.onInputChanged(evt)
+                }
+                onFocus={(evt: React.ChangeEvent<HTMLInputElement>) =>
+                  this.handleInputFocus(evt)
+                }
+                onBlur={(evt: React.ChangeEvent<HTMLInputElement>) =>
+                  this.handleInputBlur(evt)
+                }
               />
-              {this.state.isInputFocued && (
+              {this.state.isInputFocused && (
                 <i className="fa fa-times" onClick={this.handleClearClick}></i>
               )}
             </div>
