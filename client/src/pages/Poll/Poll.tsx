@@ -220,8 +220,9 @@ class Poll extends React.Component<Props, State> {
             />
           </div>
         </div>
-        <form onSubmit={evt => this.onSubmit(evt)}>
-          <div className="form-group">
+        <div className="card text-white bg-dark mb-3">
+        <form className="container" onSubmit={evt => this.onSubmit(evt)}>
+          <div className="form-group mt-3">
             <label htmlFor="commentTextarea">Add comment</label>
             <textarea
               className="form-control"
@@ -237,10 +238,18 @@ class Poll extends React.Component<Props, State> {
             </div>
           </div>
         </form>
+        </div>
+
         {this.state.poll.comments?.map((comment: any, index: number) => {
           return (
-            <div className="card border-primary text-white bg-dark mb-3">
-              <div className="card-header">{comment.author}</div>
+            <div
+              key={index}
+              className="card border-primary text-white bg-dark mb-3"
+            >
+              <div className="card-header">
+                <span>{comment.author}</span>
+                <span className="text-primary">{comment.date}</span>
+              </div>
               <div className="card-body">
                 <p className="card-text">{comment.comment}</p>
               </div>
