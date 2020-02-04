@@ -33,6 +33,7 @@ class Polls extends React.Component<Props, State> {
   };
 
   render() {
+    // return <Spinner />;
     if (this.state.polls.length === 0) return <Spinner />;
     return (
       <div>
