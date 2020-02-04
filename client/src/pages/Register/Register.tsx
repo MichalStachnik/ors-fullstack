@@ -117,6 +117,7 @@ const Register: React.FC = () => {
               value={password2}
               onChange={evt => onChange(evt)}
             />
+            <div className="invalid-feedback">Passwords do not match</div>
           </div>
           <button type="submit" className="btn btn-primary">
             Submit

@@ -6,10 +6,11 @@ import './ForgotPassword.css';
 const ForgotPassword: React.FC = () => {
   const [formData, setFormData] = useState({
     email: '',
-    buttonDisabled: true
+    buttonDisabled: true,
+    alertShowing: false
   });
 
-  const { email, buttonDisabled } = formData;
+  const { email, buttonDisabled, alertShowing } = formData;
 
   const onChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -35,7 +36,7 @@ const ForgotPassword: React.FC = () => {
       });
 
       const data = await res.json();
-      setFormData({ ...formData, buttonDisabled: true });
+      setFormData({ ...formData, buttonDisabled: true, alertShowing: true });
     } catch (error) {
       console.log('error sending forget password');
       console.error(error.message);
@@ -76,6 +77,11 @@ const ForgotPassword: React.FC = () => {
           </button>
         </fieldset>
       </form>
+      {alertShowing && (
+        <div className="alert alert-dismissible alert-success">
+          Please check your inbox to reset your email.
+        </div>
+      )}
     </div>
   );
 };
