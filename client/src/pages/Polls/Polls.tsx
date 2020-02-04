@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+
 import DonutChart from '../../components/DonutChart/DonutChart';
+import Spinner from '../../components/Spinner/Spinner';
 
 import './Polls.css';
 
@@ -31,7 +33,7 @@ class Polls extends React.Component<Props, State> {
   };
 
   render() {
-    if (this.state.polls.length === 0) return <h1>Loading...</h1>;
+    if (this.state.polls.length === 0) return <Spinner />;
     return (
       <div>
         {this.state.polls
