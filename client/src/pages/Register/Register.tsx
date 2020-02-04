@@ -106,13 +106,19 @@ const Register: React.FC = () => {
               onChange={evt => onChange(evt)}
             />
           </div>
-          <div className="form-group">
+          <div className="form-group ">
             <label htmlFor="exampleInputPassword1">Confirm password</label>
             <input
               type="password"
               className={`form-control ${
                 password.length && password !== password2 ? 'is-invalid' : ''
-              }`}
+              } 
+                ${
+                  password === password2 && password.length > 0
+                    ? 'is-valid'
+                    : ''
+                }
+              `}
               id="exampleInputPassword2"
               placeholder="Password"
               required
@@ -120,7 +126,8 @@ const Register: React.FC = () => {
               value={password2}
               onChange={evt => onChange(evt)}
             />
-            <div className="invalid-feedback">Passwords do not match</div>
+            <div className="invalid-feedback">Passwords do not match.</div>
+            <div className="valid-feedback">Well done, passwords match.</div>
           </div>
           <button type="submit" className="btn btn-primary float-right mt-4">
             Submit
