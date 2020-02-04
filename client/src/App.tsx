@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
+import ReactGA from 'react-ga';
 
 import './App.css';
 
@@ -17,6 +18,13 @@ import { UserProvider } from './contexts/UserContext';
 
 const App: React.FC = () => {
   let [searchValue, setSearchValue] = useState('');
+
+  // Set up google analytics
+  useEffect(() => {
+    ReactGA.initialize('G-13MKF7DJWK');
+    ReactGA.pageview(window.location.pathname + window.location.search);
+    console.log('google analytics all set');
+  });
 
   const inputChangeHandler = (evt: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(evt.target.value);
