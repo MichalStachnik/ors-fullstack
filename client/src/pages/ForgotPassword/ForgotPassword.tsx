@@ -45,13 +45,16 @@ const ForgotPassword: React.FC = () => {
   };
 
   return (
-    <div className="my-3">
+    <div className="my-3 text-white">
       <Link to="/">
         <button type="button" className="btn btn-outline-secondary">
           Back
         </button>
       </Link>
-      <form className="my-3" onSubmit={evt => onSubmit(evt)}>
+      <form
+        className="my-3 p-5 container col-lg-8 border-primary card bg-dark"
+        onSubmit={evt => onSubmit(evt)}
+      >
         <fieldset>
           <legend>Forgot Password</legend>
           <div className="form-group">
@@ -78,7 +81,7 @@ const ForgotPassword: React.FC = () => {
         </fieldset>
       </form>
       {alertShowing && (
-        <div className="alert alert-dismissible alert-success">
+        <div className="alert alert-dismissible alert-success mx-auto col-lg-6 text-center">
           Please check your inbox to reset your email.
         </div>
       )}

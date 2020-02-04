@@ -50,13 +50,16 @@ const Register: React.FC = () => {
   };
 
   return (
-    <div className="my-3">
+    <div className="my-3 text-white">
       <Link to="/">
         <button type="button" className="btn btn-outline-secondary">
           Back
         </button>
       </Link>
-      <form className="my-3" onSubmit={evt => onSubmit(evt)}>
+      <form
+        className="my-3 my-3 p-5 container col-lg-8 border-primary card bg-dark"
+        onSubmit={evt => onSubmit(evt)}
+      >
         <fieldset>
           <legend>Sign Up</legend>
           <div className="form-group">
@@ -119,7 +122,7 @@ const Register: React.FC = () => {
             />
             <div className="invalid-feedback">Passwords do not match</div>
           </div>
-          <button type="submit" className="btn btn-primary">
+          <button type="submit" className="btn btn-primary float-right mt-4">
             Submit
           </button>
         </fieldset>
