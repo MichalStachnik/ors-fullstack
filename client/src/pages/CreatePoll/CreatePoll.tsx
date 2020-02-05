@@ -15,7 +15,7 @@ const CreatePoll: React.FC = () => {
   });
 
   let history = useHistory();
-  let { question, optionCount } = pollData;
+  let { question, optionCount, options } = pollData;
 
   const onQuestionChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
     setPollData({
@@ -110,6 +110,18 @@ const CreatePoll: React.FC = () => {
     return <Redirect from="/create-poll" exact to="/" />;
   }
 
+  let isSubmitDisabled = false;
+
+  if (question.length === 0) {
+    isSubmitDisabled = true;
+  }
+  // check all options
+  for (let i = 0; i < optionCount; i++) {
+    if (options[i] && options[i].length === 0) {
+      isSubmitDisabled = true;
+    }
+  }
+
   return (
     <div className="my-3">
       <form className="my-3" onSubmit={evt => onSubmit(evt)}>
@@ -149,7 +161,11 @@ const CreatePoll: React.FC = () => {
 
           {renderOptions()}
 
-          <button type="submit" className="btn btn-primary">
+          <button
+            type="submit"
+            className="btn btn-primary"
+            disabled={isSubmitDisabled}
+          >
             Submit
           </button>
         </fieldset>
