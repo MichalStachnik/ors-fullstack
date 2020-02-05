@@ -17,7 +17,7 @@ export class UserProvider extends Component<
   constructor(props: any) {
     super(props);
     this.state = {
-      token: '',
+      token: localStorage.getItem('token') || '',
       username: localStorage.getItem('username') || ''
     };
   }
