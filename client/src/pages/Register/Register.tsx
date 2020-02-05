@@ -49,6 +49,12 @@ const Register: React.FC = () => {
     }
   };
 
+  const isSubmitDisabled =
+    username.length === 0 ||
+    email.length === 0 ||
+    password.length === 0 ||
+    password2.length === 0;
+
   return (
     <div className="my-3 text-white">
       <Link to="/">
@@ -129,7 +135,11 @@ const Register: React.FC = () => {
             <div className="invalid-feedback">Passwords do not match.</div>
             <div className="valid-feedback">Well done, passwords match.</div>
           </div>
-          <button type="submit" className="btn btn-primary float-right mt-4">
+          <button
+            type="submit"
+            className="btn btn-primary float-right mt-4"
+            disabled={isSubmitDisabled}
+          >
             Submit
           </button>
         </fieldset>

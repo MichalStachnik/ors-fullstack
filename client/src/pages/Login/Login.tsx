@@ -27,8 +27,6 @@ const Login: React.FC = () => {
   const onSubmit = async (evt: React.FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
 
-    console.log(formData);
-
     const credentials = {
       email,
       password
@@ -56,6 +54,8 @@ const Login: React.FC = () => {
       throw error;
     }
   };
+
+  const isSubmitDisabled = email.length === 0 || password.length === 0;
 
   return (
     <div className="my-3 text-white">
@@ -104,7 +104,11 @@ const Login: React.FC = () => {
             Forgot your password?
             <Link to="/forgot-password">click here</Link>
           </small>
-          <button type="submit" className="btn btn-primary mt-3 float-right">
+          <button
+            type="submit"
+            className="btn btn-primary mt-3 float-right"
+            disabled={isSubmitDisabled}
+          >
             Submit
           </button>
         </fieldset>

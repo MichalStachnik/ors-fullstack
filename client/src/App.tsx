@@ -23,7 +23,6 @@ const App: React.FC = () => {
   useEffect(() => {
     ReactGA.initialize('G-13MKF7DJWK');
     ReactGA.pageview(window.location.pathname + window.location.search);
-    console.log('google analytics all set');
   });
 
   const inputChangeHandler = (evt: React.ChangeEvent<HTMLInputElement>) => {
