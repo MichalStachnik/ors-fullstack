@@ -5,7 +5,6 @@ const authMiddleware = (req, res, next) => {
   const token = req.header('x-auth-token');
   console.log('in authMiddleware with token');
   console.log(token);
-  console.log('---------');
 
   if (!token) {
     return res.status(401).json({ error: 'no token' });

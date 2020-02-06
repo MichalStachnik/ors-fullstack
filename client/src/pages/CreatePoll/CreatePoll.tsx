@@ -46,7 +46,7 @@ const CreatePoll: React.FC = () => {
     let renderArray = [];
 
     for (let i = 0; i < optionCount; i++) {
-      let val: any = pollData.options[`${i}`];
+      let val: any = pollData.options[i];
 
       renderArray.push(
         <div className="form-group">

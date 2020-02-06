@@ -42,10 +42,14 @@ const Login: React.FC = () => {
       });
 
       const data = await res.json();
+
+      console.log('the data after logging in', data);
+
       userContext.setUser(data);
 
       // Set to localstorage
       localStorage.setItem('username', data.username);
+      localStorage.setItem('userid', data.userId);
       localStorage.setItem('token', data.token);
 
       history.push('/');

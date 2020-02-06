@@ -60,6 +60,15 @@ const PollSchema = Schema({
         default: Date.now
       }
     }
+  ],
+  voters: [
+    // {
+    //   voterId: {
+    //     type: Schema.Types.ObjectId,
+    //     ref: 'user'
+    //   }
+    // }
+    Schema.Types.ObjectId
   ]
 });
 

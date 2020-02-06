@@ -69,7 +69,7 @@ router.post(
       jwt.sign(
         payload,
         process.env.TOKEN,
-        { expiresIn: 3600 },
+        { expiresIn: '1d' },
         (error, token) => {
           if (error) throw error;
           res.json({ token });
@@ -108,10 +108,10 @@ router.post('/login', async (req, res) => {
     }
   };
 
-  jwt.sign(payload, process.env.TOKEN, { expiresIn: 3600 }, (error, token) => {
+  jwt.sign(payload, process.env.TOKEN, { expiresIn: '1d' }, (error, token) => {
     if (error) throw error;
     console.log('token signed, sending token...');
-    res.json({ token, username: user.username });
+    res.json({ token, username: user.username, userId: user._id });
   });
 });
 

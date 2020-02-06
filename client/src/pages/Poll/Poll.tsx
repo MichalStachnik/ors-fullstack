@@ -18,6 +18,7 @@ interface State {
   donutOptions?: any;
   labels?: any;
   commentValue: string;
+  userHasVoted: boolean;
 }
 
 class Poll extends React.Component<Props, State> {
@@ -52,7 +53,8 @@ class Poll extends React.Component<Props, State> {
         series: [],
         labels: []
       },
-      commentValue: ''
+      commentValue: '',
+      userHasVoted: false
     };
   }
 
@@ -60,12 +62,16 @@ class Poll extends React.Component<Props, State> {
     const res = await fetch(`/polls/${this.props.match.params.pollId}`);
     const data = await res.json();
 
-    console.log('the poll we get in /poll');
-    console.log(data);
-
     const options = data.poll.options.map((option: any) => option.option);
 
     const chartData = data.poll.options.map((option: any) => option.voteCount);
+
+    // Check if the users ID is in the voters array of the poll
+    const userId = this.context.getUserId();
+    console.log('userId', userId);
+
+    const userHasVoted = data.poll.voters.includes(userId);
+    console.log('userHasVoted', userHasVoted);
 
     this.setState({
       poll: data.poll,
@@ -76,14 +82,23 @@ class Poll extends React.Component<Props, State> {
         },
         series: chartData,
         labels: options
-      }
+      },
+      userHasVoted
     });
   };
 
   handleVoteClick = async (option: any) => {
+    const userToken = this.context.getToken();
+
     // Send one vote
     const voteRes = await fetch(
-      `/polls/${this.props.match.params.pollId}/vote/${option}`
+      `/polls/${this.props.match.params.pollId}/vote/${option}`,
+      {
+        method: 'GET',
+        headers: {
+          'x-auth-token': `${userToken}`
+        }
+      }
     );
     const voteData = await voteRes.json();
 
@@ -209,13 +224,15 @@ class Poll extends React.Component<Props, State> {
                       </span>
                       {option.option}
                     </p>
-                    <button
-                      type="button"
-                      className="btn btn-outline-primary"
-                      onClick={() => this.handleVoteClick(option.option)}
-                    >
-                      Vote
-                    </button>
+                    {!this.state.userHasVoted && (
+                      <button
+                        type="button"
+                        className="btn btn-outline-primary"
+                        onClick={() => this.handleVoteClick(option.option)}
+                      >
+                        Vote
+                      </button>
+                    )}
                   </div>
                 );
               })}
