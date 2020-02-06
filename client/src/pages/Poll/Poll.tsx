@@ -68,10 +68,8 @@ class Poll extends React.Component<Props, State> {
 
     // Check if the users ID is in the voters array of the poll
     const userId = this.context.getUserId();
-    console.log('userId', userId);
 
     const userHasVoted = data.poll.voters.includes(userId);
-    console.log('userHasVoted', userHasVoted);
 
     this.setState({
       poll: data.poll,
@@ -237,14 +235,6 @@ class Poll extends React.Component<Props, State> {
                 );
               })}
             </div>
-            {/* <div className="card-body-right">
-              <Chart
-                options={this.state.donutOptions.options}
-                series={this.state.donutOptions.series}
-                type="donut"
-                width="100%"
-              />
-            </div> */}
             <div className="card-body-right">
               <DonutChart pollData={this.state.poll.options} />
             </div>

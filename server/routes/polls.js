@@ -62,11 +62,15 @@ router.get('/:pollId/vote/:option', authMiddleware, async (req, res, next) => {
 
     let poll = await Poll.findById(req.params.pollId);
 
+    // Add a count to the chosen vote
     poll.options.map(option => {
       if (option.option === req.params.option) {
         option.voteCount++;
       }
     });
+
+    // Add a count to total votes
+    poll.totalVotes++;
 
     // Add user to voters array of poll
     poll.voters.push(theVoter);

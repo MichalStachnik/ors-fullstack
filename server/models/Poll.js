@@ -61,15 +61,7 @@ const PollSchema = Schema({
       }
     }
   ],
-  voters: [
-    // {
-    //   voterId: {
-    //     type: Schema.Types.ObjectId,
-    //     ref: 'user'
-    //   }
-    // }
-    Schema.Types.ObjectId
-  ]
+  voters: [Schema.Types.ObjectId]
 });
 
 module.exports = mongoose.model('poll', PollSchema);

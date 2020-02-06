@@ -1,0 +1,23 @@
+.nav {
+  justify-content: flex-end;
+}
+
+.nav-tabs .nav-item.show .nav-link {
+  border-radius: 0;
+  background: var(--dark);
+  color: var(--primary);
+}
+
+.nav-tabs .nav-item.show .dropdown-menu {
+  background: var(--dark);
+}
+
+.nav-tabs .nav-item.show .dropdown-item {
+  cursor: pointer;
+  color: var(--primary);
+}
+
+.nav-tabs .nav-item.show .dropdown-item:active {
+  background: var(--primary);
+  color: var(--light);
+}
