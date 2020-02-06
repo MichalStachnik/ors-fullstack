@@ -28,12 +28,9 @@ class Polls extends React.Component<Props, State> {
     this.setState({
       polls
     });
-    console.log('the polls we have in /polls');
-    console.log(polls);
   };
 
   render() {
-    // return <Spinner />;
     if (this.state.polls.length === 0) return <Spinner />;
     return (
       <div>

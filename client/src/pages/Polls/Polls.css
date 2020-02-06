@@ -24,3 +24,25 @@
   display: flex;
   align-items: center;
 }
+
+@media only screen and (max-width: 375px) {
+  .card-header {
+    padding: 0.5rem 1rem;
+  }
+
+  .card-body {
+    padding: 1rem;
+  }
+
+  .card-options {
+    width: 50%;
+  }
+
+  .card-text {
+    width: 100%;
+  }
+
+  .card-chart {
+    max-width: 40%;
+  }
+}
