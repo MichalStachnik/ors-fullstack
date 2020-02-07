@@ -20,7 +20,7 @@ const Filter: React.FC<Props> = props => {
   let [dropdownOption, setDropdownOption] = useState(DropdownOption[0]);
 
   const handleDropdownChange = (selectedOption: number) => {
-    props.handleFilter(dropdownOption);
+    props.handleFilter(selectedOption);
     setDropdownOption(DropdownOption[selectedOption]);
   };
 
