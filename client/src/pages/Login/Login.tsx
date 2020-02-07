@@ -47,10 +47,16 @@ const Login: React.FC = () => {
 
       userContext.setUser(data);
 
+      const OneDay = 86_400_000;
+      const Now = new Date().getTime();
+
+      const expiresIn = OneDay + Now;
+
       // Set to localstorage
       localStorage.setItem('username', data.username);
       localStorage.setItem('userid', data.userId);
       localStorage.setItem('token', data.token);
+      localStorage.setItem('expiresIn', expiresIn.toString());
 
       history.push('/');
     } catch (error) {

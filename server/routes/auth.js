@@ -108,7 +108,7 @@ router.post('/login', async (req, res) => {
     }
   };
 
-  jwt.sign(payload, process.env.TOKEN, { expiresIn: '1d' }, (error, token) => {
+  jwt.sign(payload, process.env.TOKEN, { expiresIn: '24h' }, (error, token) => {
     if (error) throw error;
     console.log('token signed, sending token...');
     res.json({ token, username: user.username, userId: user._id });
