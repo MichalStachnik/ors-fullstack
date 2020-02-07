@@ -141,7 +141,7 @@ router.post('/forgot-password', async (req, res) => {
   // Check if prod and construct forgot password link
   let forgotPasswordUrl;
   if (process.env.NODE_ENV === 'production') {
-    forgotPasswordUrl = `https://hidden-woodland-03676.herokuapp.com/new-password/${emailToken}`;
+    forgotPasswordUrl = `http://onerandomsample.com/new-password/${emailToken}`;
   } else {
     forgotPasswordUrl = `http://localhost:3000/new-password/${emailToken}`;
   }

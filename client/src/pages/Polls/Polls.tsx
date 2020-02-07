@@ -32,7 +32,6 @@ class Polls extends React.Component<Props, State> {
   };
 
   handleFilter = (dropdownoption: number) => {
-    console.log('handleFilter fired in parent with', dropdownoption);
     // Sort this.state.polls
     const sortedPolls = [...this.state.polls];
     if (dropdownoption === 1) {
