@@ -2,33 +2,26 @@ import React, { useState } from 'react';
 
 import './Filter.css';
 
-enum DropdownOption {
-  None,
-  Newest,
-  Oldest,
-  MostVotes,
-  LeastVotes
-}
-
 interface Props {
   handleFilter: any;
-  //   dropdownOption: DropdownOption;
 }
 
+type DropdownOptionType = { [index: number]: string };
+
 const Filter: React.FC<Props> = props => {
-  const dropdownOption: DropdownOption = 0;
+  const DropdownOption: DropdownOptionType = {
+    0: 'Filter',
+    1: 'Newest',
+    2: 'Oldest',
+    3: 'Most Votes',
+    4: 'Least Votes'
+  };
 
-  console.log('dropdownOption');
-  console.log(dropdownOption); // 0
+  let [dropdownOption, setDropdownOption] = useState(DropdownOption[0]);
 
-  //   let [dropdownOption, setDropdownOption] = useState();
-
-  const handleDropdownChange = (dropdownOption: number) => {
-    // console.log('handleDropdown change fired in filter');
-    // console.log(props);
-    // console.log(dropdownOption);
-    // setDropdownOption(dropdownOption);
+  const handleDropdownChange = (selectedOption: number) => {
     props.handleFilter(dropdownOption);
+    setDropdownOption(DropdownOption[selectedOption]);
   };
 
   return (
@@ -42,19 +35,19 @@ const Filter: React.FC<Props> = props => {
           aria-haspopup="true"
           aria-expanded="false"
         >
-          Filter {dropdownOption}
+          {dropdownOption}
         </a>
         <div className="dropdown-menu">
-          <a className="dropdown-item" onClick={() => handleDropdownChange(0)}>
+          <a className="dropdown-item" onClick={() => handleDropdownChange(1)}>
             Newest
           </a>
-          <a className="dropdown-item" onClick={() => handleDropdownChange(1)}>
+          <a className="dropdown-item" onClick={() => handleDropdownChange(2)}>
             Oldest
           </a>
-          <a className="dropdown-item" onClick={() => handleDropdownChange(2)}>
+          <a className="dropdown-item" onClick={() => handleDropdownChange(3)}>
             Most Votes
           </a>
-          <a className="dropdown-item" onClick={() => handleDropdownChange(3)}>
+          <a className="dropdown-item" onClick={() => handleDropdownChange(4)}>
             Least Votes
           </a>
         </div>

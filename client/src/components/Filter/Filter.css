@@ -2,6 +2,11 @@
   justify-content: flex-end;
 }
 
+.nav .nav-item.dropdown {
+  min-width: 110px;
+  text-align: center;
+}
+
 .nav-tabs .nav-item.show .nav-link {
   border-radius: 0;
   background: var(--dark);
