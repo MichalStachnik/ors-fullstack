@@ -118,7 +118,8 @@ class Poll extends React.Component<Props, State> {
         },
         series: chartData,
         labels: options
-      }
+      },
+      userHasVoted: true
     });
   };
 
