@@ -23,3 +23,7 @@ nav .username {
 nav .username span {
   color: var(--primary);
 }
+
+nav .logout {
+  cursor: pointer;
+}

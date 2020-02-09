@@ -8,7 +8,8 @@ const initialContext = {
   setUser: (user: any) => {},
   getToken: () => '',
   getUsername: () => '',
-  getUserId: () => ''
+  getUserId: () => '',
+  clearUserData: () => {}
 };
 
 export const UserContext = createContext(initialContext);
@@ -52,9 +53,20 @@ export class UserProvider extends Component<
 
   getUsername = () => this.state.username;
 
-  getUserId = () => {
-    console.log('in context getting userId', this.state.userId);
-    return this.state.userId;
+  getUserId = () => this.state.userId;
+
+  clearUserData = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('username');
+    localStorage.removeItem('userid');
+    localStorage.removeItem('expiresIn');
+
+    this.setState({
+      token: '',
+      username: '',
+      userId: '',
+      expiresIn: ''
+    });
   };
 
   render() {
@@ -68,7 +80,8 @@ export class UserProvider extends Component<
           setUser: this.setUser,
           getToken: this.getToken,
           getUsername: this.getUsername,
-          getUserId: this.getUserId
+          getUserId: this.getUserId,
+          clearUserData: this.clearUserData
         }}
       >
         {this.props.children}
