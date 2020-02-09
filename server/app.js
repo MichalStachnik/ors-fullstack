@@ -1,6 +1,7 @@
 const path = require('path');
 const express = require('express');
 const mongoose = require('mongoose');
+const sslRedirect = require('heroku-ssl-redirect');
 
 // Routes
 const polls = require('./routes/polls.js');
@@ -27,6 +28,8 @@ const connectToDB = async () => {
 };
 
 const app = express();
+
+app.use(sslRedirect());
 
 connectToDB();
 

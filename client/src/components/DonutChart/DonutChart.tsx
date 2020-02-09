@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Chart from 'react-apexcharts';
+import Spinner from '../Spinner/Spinner';
 
 interface Props {
   pollData: any;
@@ -7,7 +8,7 @@ interface Props {
 
 const DonutChart: React.FC<Props> = props => {
   if (!props.pollData) {
-    return <div>Loading...</div>;
+    return <Spinner />;
   }
 
   const options = props.pollData.map((option: any) => option.option);
@@ -37,6 +38,11 @@ const DonutChart: React.FC<Props> = props => {
           colors: '#fff'
         }
       },
+      tooltip: {
+        enabled: true,
+        enabledOnSeries: undefined
+      },
+      labels: options,
       responsive: [
         {
           breakpoint: 500,
@@ -47,16 +53,24 @@ const DonutChart: React.FC<Props> = props => {
               }
             }
           }
+        },
+        {
+          breakpoint: 376,
+          options: {
+            dataLabels: {
+              enabled: false
+            },
+            plotOptions: {
+              pie: {
+                expandOnClick: false
+              }
+            }
+          }
         }
       ]
     },
-    series: chartData,
-    labels: options
+    series: chartData
   };
-
-  // const [donutData, setDonutData] = useState({
-  //   donutOptions
-  // });
 
   return (
     <Chart

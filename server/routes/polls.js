@@ -1,7 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const authMiddleware = require('../helpers/auth');
+
 const Poll = require('../models/Poll');
+const User = require('../models/User');
 
 // Create one poll
 router.post('/', authMiddleware, async (req, res, next) => {
@@ -53,19 +55,28 @@ router.get('/:pollId', async (req, res, next) => {
 });
 
 // Send one vote
-router.get('/:pollId/vote/:option', async (req, res, next) => {
+router.get('/:pollId/vote/:option', authMiddleware, async (req, res, next) => {
   try {
+    // Get the voter
+    const theVoter = await User.findById(req.user.id);
+
     let poll = await Poll.findById(req.params.pollId);
 
-    console.log('req.params', req.params);
+    // Add a count to the chosen vote
     poll.options.map(option => {
       if (option.option === req.params.option) {
         option.voteCount++;
       }
     });
 
+    // Add a count to total votes
+    poll.totalVotes++;
+
+    // Add user to voters array of poll
+    poll.voters.push(theVoter);
+
     await poll.save();
-    res.status(200).json({ message: 'updated vote count' });
+    res.status(200).json({ message: 'success voting' });
   } catch (error) {
     console.log('error sending vote');
     console.error(error.message);

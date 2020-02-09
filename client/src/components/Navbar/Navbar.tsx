@@ -37,6 +37,10 @@ class Navbar extends React.Component<Props, State> {
     this.setState({ isInputFocused: false });
   };
 
+  handleLogout = () => {
+    this.context.clearUserData();
+  };
+
   render() {
     let token = this.context.getToken();
     let username = this.context.getUsername();
@@ -92,6 +96,11 @@ class Navbar extends React.Component<Props, State> {
               </li>
             ) : (
               ''
+            )}
+            {token && (
+              <li className="nav-item" onClick={() => this.handleLogout()}>
+                <span className="nav-link logout">Logout</span>
+              </li>
             )}
           </ul>
           {username && (

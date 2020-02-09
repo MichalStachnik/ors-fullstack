@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import './App.css';
 
 import Navbar from './components/Navbar/Navbar';
+import Footer from './components/Footer/Footer';
 import Login from './pages/Login/Login';
 import Register from './pages/Register/Register';
 import Polls from './pages/Polls/Polls';
@@ -49,6 +50,7 @@ const App: React.FC = () => {
           />
         </div>
       </Router>
+      <Footer />
     </UserProvider>
   );
 };

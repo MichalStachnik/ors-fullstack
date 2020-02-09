@@ -60,7 +60,8 @@ const PollSchema = Schema({
         default: Date.now
       }
     }
-  ]
+  ],
+  voters: [Schema.Types.ObjectId]
 });
 
 module.exports = mongoose.model('poll', PollSchema);

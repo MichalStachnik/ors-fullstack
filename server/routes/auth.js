@@ -69,7 +69,7 @@ router.post(
       jwt.sign(
         payload,
         process.env.TOKEN,
-        { expiresIn: 3600 },
+        { expiresIn: '1d' },
         (error, token) => {
           if (error) throw error;
           res.json({ token });
@@ -108,10 +108,10 @@ router.post('/login', async (req, res) => {
     }
   };
 
-  jwt.sign(payload, process.env.TOKEN, { expiresIn: 3600 }, (error, token) => {
+  jwt.sign(payload, process.env.TOKEN, { expiresIn: '24h' }, (error, token) => {
     if (error) throw error;
     console.log('token signed, sending token...');
-    res.json({ token, username: user.username });
+    res.json({ token, username: user.username, userId: user._id });
   });
 });
 
@@ -141,7 +141,7 @@ router.post('/forgot-password', async (req, res) => {
   // Check if prod and construct forgot password link
   let forgotPasswordUrl;
   if (process.env.NODE_ENV === 'production') {
-    forgotPasswordUrl = `https://hidden-woodland-03676.herokuapp.com/new-password/${emailToken}`;
+    forgotPasswordUrl = `https://onerandomsample.com/#/new-password/${emailToken}`;
   } else {
     forgotPasswordUrl = `http://localhost:3000/new-password/${emailToken}`;
   }

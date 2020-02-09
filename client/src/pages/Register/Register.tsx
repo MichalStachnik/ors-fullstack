@@ -49,14 +49,23 @@ const Register: React.FC = () => {
     }
   };
 
+  const isSubmitDisabled =
+    username.length === 0 ||
+    email.length === 0 ||
+    password.length === 0 ||
+    password2.length === 0;
+
   return (
-    <div className="my-3">
+    <div className="my-3 text-white">
       <Link to="/">
         <button type="button" className="btn btn-outline-secondary">
           Back
         </button>
       </Link>
-      <form className="my-3" onSubmit={evt => onSubmit(evt)}>
+      <form
+        className="my-3 my-3 p-5 container col-lg-8 border-primary card bg-dark"
+        onSubmit={evt => onSubmit(evt)}
+      >
         <fieldset>
           <legend>Sign Up</legend>
           <div className="form-group">
@@ -103,13 +112,19 @@ const Register: React.FC = () => {
               onChange={evt => onChange(evt)}
             />
           </div>
-          <div className="form-group">
+          <div className="form-group ">
             <label htmlFor="exampleInputPassword1">Confirm password</label>
             <input
               type="password"
               className={`form-control ${
                 password.length && password !== password2 ? 'is-invalid' : ''
-              }`}
+              } 
+                ${
+                  password === password2 && password.length > 0
+                    ? 'is-valid'
+                    : ''
+                }
+              `}
               id="exampleInputPassword2"
               placeholder="Password"
               required
@@ -117,8 +132,14 @@ const Register: React.FC = () => {
               value={password2}
               onChange={evt => onChange(evt)}
             />
+            <div className="invalid-feedback">Passwords do not match.</div>
+            <div className="valid-feedback">Well done, passwords match.</div>
           </div>
-          <button type="submit" className="btn btn-primary">
+          <button
+            type="submit"
+            className="btn btn-primary float-right mt-4"
+            disabled={isSubmitDisabled}
+          >
             Submit
           </button>
         </fieldset>
