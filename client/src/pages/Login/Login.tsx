@@ -43,8 +43,6 @@ const Login: React.FC = () => {
 
       const data = await res.json();
 
-      console.log('the data after logging in', data);
-
       userContext.setUser(data);
 
       const OneDay = 86_400_000;

@@ -31,10 +31,10 @@ class Polls extends React.Component<Props, State> {
     });
   };
 
-  handleFilter = (dropdownoption: number) => {
+  handleFilter = (dropdownOption: number) => {
     // Sort this.state.polls
     const sortedPolls = [...this.state.polls];
-    if (dropdownoption === 1) {
+    if (dropdownOption === 1) {
       // Newest selected
       sortedPolls.sort((a, b) => {
         const aDate = Date.parse(a.date);
@@ -42,7 +42,7 @@ class Polls extends React.Component<Props, State> {
         return bDate - aDate;
       });
       // Oldest first
-    } else if (dropdownoption === 2) {
+    } else if (dropdownOption === 2) {
       sortedPolls.sort((a, b) => {
         const aDate = Date.parse(a.date);
         const bDate = Date.parse(b.date);
@@ -51,13 +51,13 @@ class Polls extends React.Component<Props, State> {
       });
     }
     // Most votes
-    else if (dropdownoption === 3) {
+    else if (dropdownOption === 3) {
       sortedPolls.sort((a, b) => {
         return b.totalVotes - a.totalVotes;
       });
     }
     // Least votes
-    else if (dropdownoption === 4) {
+    else if (dropdownOption === 4) {
       sortedPolls.sort((a, b) => a.totalVotes - b.totalVotes);
     }
 

@@ -141,7 +141,7 @@ router.post('/forgot-password', async (req, res) => {
   // Check if prod and construct forgot password link
   let forgotPasswordUrl;
   if (process.env.NODE_ENV === 'production') {
-    forgotPasswordUrl = `http://onerandomsample.com/#/new-password/${emailToken}`;
+    forgotPasswordUrl = `https://onerandomsample.com/#/new-password/${emailToken}`;
   } else {
     forgotPasswordUrl = `http://localhost:3000/new-password/${emailToken}`;
   }
