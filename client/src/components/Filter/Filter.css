@@ -7,6 +7,18 @@
   text-align: center;
 }
 
+.nav-tabs .nav-item .nav-link {
+  color: #919191;
+  width: 100%;
+  padding-left: 0;
+  padding-right: 0;
+  cursor: pointer;
+}
+
+.nav-tabs .nav-item .nav-link.dropdown-toggle::after {
+  margin-left: 50%;
+}
+
 .nav-tabs .nav-item.show .nav-link {
   border-radius: 0;
   background: var(--dark);
