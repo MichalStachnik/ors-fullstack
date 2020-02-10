@@ -65,20 +65,59 @@
       async
       src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
     ></script>
-    <title>ors</title>
+
+    <style>
+      .adsterra {
+        display: flex;
+        justify-content: center;
+        background: var(--dark);
+        padding: 10px 0 25px 0;
+      }
+
+      footer {
+        padding: 10px 0;
+      }
+
+      footer .name {
+        color: var(--primary);
+      }
+    </style>
+    <title>OneRandomSample</title>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
+    <!-- Adsterra -->
+    <div class="adsterra">
+      <script type="text/javascript">
+        atOptions = {
+          key: 'c9b14b6db2d52d40cc7593e19ef20efc',
+          format: 'iframe',
+          height: 50,
+          width: 320,
+          params: {}
+        };
+        document.write(
+          '<scr' +
+            'ipt type="text/javascript" src="http' +
+            (location.protocol === 'https:' ? 's' : '') +
+            '://www.madcpms.com/c9b14b6db2d52d40cc7593e19ef20efc/invoke.js"></scr' +
+            'ipt>'
+        );
+      </script>
+    </div>
+    <footer class="text-white bg-dark text-center">
+      OneRandomSample <span id="year"></span> &copy; <a id="contact">Contact</a>
+      <br />
+      Created by <span class="name">Michal Stachnik</span>
+    </footer>
+    <script type="text/javascript">
+      const yearEl = document.getElementById('year');
+      const year = new Date().getFullYear();
+      yearEl.innerHTML = `${year}`;
 
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
-
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
+      const contactEl = document.getElementById('contact');
+      contactEl.href = `/contact`;
+    </script>
   </body>
 </html>

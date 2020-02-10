@@ -5,6 +5,7 @@ import './App.css';
 
 import Navbar from './components/Navbar/Navbar';
 import Footer from './components/Footer/Footer';
+import Ad from './components/Ad/Ad';
 import Login from './pages/Login/Login';
 import Register from './pages/Register/Register';
 import Polls from './pages/Polls/Polls';
@@ -48,9 +49,13 @@ const App: React.FC = () => {
             path="/new-password/:emailToken"
             component={NewPassword}
           />
+          <Route exact path="/contact">
+            <div>im a contact component</div>
+          </Route>
         </div>
       </Router>
-      <Footer />
+      {/* <Ad /> */}
+      {/* <Footer /> */}
     </UserProvider>
   );
 };
