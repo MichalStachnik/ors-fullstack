@@ -19,6 +19,7 @@ interface State {
   labels?: any;
   commentValue: string;
   userHasVoted: boolean;
+  userToken: string;
 }
 
 class Poll extends React.Component<Props, State> {
@@ -54,7 +55,8 @@ class Poll extends React.Component<Props, State> {
         labels: []
       },
       commentValue: '',
-      userHasVoted: false
+      userHasVoted: false,
+      userToken: ''
     };
   }
 
@@ -71,6 +73,8 @@ class Poll extends React.Component<Props, State> {
 
     const userHasVoted = data.poll.voters.includes(userId);
 
+    const userToken = this.context.getToken();
+
     this.setState({
       poll: data.poll,
       donutOptions: {
@@ -81,20 +85,19 @@ class Poll extends React.Component<Props, State> {
         series: chartData,
         labels: options
       },
-      userHasVoted
+      userHasVoted,
+      userToken
     });
   };
 
   handleVoteClick = async (option: any) => {
-    const userToken = this.context.getToken();
-
     // Send one vote
     const voteRes = await fetch(
       `/polls/${this.props.match.params.pollId}/vote/${option}`,
       {
         method: 'GET',
         headers: {
-          'x-auth-token': `${userToken}`
+          'x-auth-token': `${this.state.userToken}`
         }
       }
     );
@@ -127,7 +130,6 @@ class Poll extends React.Component<Props, State> {
   onSubmit = async (evt: React.FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
 
-    const userToken = this.context.getToken();
     const username = this.context.getUsername();
     const comment = {
       commentAuthor: username,
@@ -141,7 +143,7 @@ class Poll extends React.Component<Props, State> {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'x-auth-token': `${userToken}`
+            'x-auth-token': `${this.state.userToken}`
           },
           body: JSON.stringify(comment)
         }
@@ -223,7 +225,7 @@ class Poll extends React.Component<Props, State> {
                       </span>
                       {option.option}
                     </p>
-                    {!this.state.userHasVoted && (
+                    {!this.state.userHasVoted && this.state.userToken && (
                       <button
                         type="button"
                         className="btn btn-outline-primary"
