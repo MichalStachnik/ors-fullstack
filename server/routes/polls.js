@@ -31,7 +31,8 @@ router.post('/', authMiddleware, async (req, res, next) => {
 // Get all polls
 router.get('/', async (req, res, next) => {
   try {
-    let polls = await Poll.find({});
+    // Get most recent polls based on date
+    let polls = await Poll.find({}).sort({ date: -1 });
     if (polls) {
       res.status(200).json({ polls });
     }
