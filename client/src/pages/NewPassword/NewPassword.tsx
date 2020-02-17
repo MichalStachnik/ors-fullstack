@@ -4,6 +4,7 @@ import { Link, useHistory } from 'react-router-dom';
 import './NewPassword.css';
 
 const NewPassword: React.FC = (props: any) => {
+  console.log('in new password');
   const [formData, setFormData] = useState({
     password: '',
     password2: '',
@@ -31,6 +32,7 @@ const NewPassword: React.FC = (props: any) => {
 
       // If the server is unable to verify the token
       if (!data.token) {
+        console.log('unable to verify the token');
         history.push('/');
       }
     } catch (error) {
@@ -41,6 +43,7 @@ const NewPassword: React.FC = (props: any) => {
   };
 
   if (!emailToken) {
+    console.log('no email token');
     history.push('/');
   } else {
     // Authenticate email token with server

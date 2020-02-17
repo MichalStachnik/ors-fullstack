@@ -143,7 +143,7 @@ router.post('/forgot-password', async (req, res) => {
   if (process.env.NODE_ENV === 'production') {
     forgotPasswordUrl = `https://onerandomsample.com/#/new-password/${emailToken}`;
   } else {
-    forgotPasswordUrl = `http://localhost:3000/new-password/${emailToken}`;
+    forgotPasswordUrl = `http://localhost:3000/#/new-password/${emailToken}`;
   }
 
   try {
