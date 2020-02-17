@@ -16,7 +16,7 @@
 }
 
 .nav-tabs .nav-item .nav-link.dropdown-toggle::after {
-  margin-left: 50%;
+  margin-left: 30%;
 }
 
 .nav-tabs .nav-item.show .nav-link {
