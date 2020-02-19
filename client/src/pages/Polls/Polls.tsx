@@ -82,9 +82,11 @@ class Polls extends React.Component<Props, State> {
       <div>
         <Filter handleFilter={this.handleFilter} />
         {this.state.polls
-          .filter((poll: any, index: number) =>
-            poll.question.includes(this.props.searchValue)
-          )
+          .filter((poll: any, index: number) => {
+            return poll.question
+              .toLowerCase()
+              .includes(this.props.searchValue.toLowerCase());
+          })
           .map((poll: any, index: number) => {
             return (
               <div className="card text-white bg-dark my-3" key={index}>
