@@ -150,7 +150,7 @@ router.post('/forgot-password', async (req, res) => {
     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
     const msg = {
       to: user.email,
-      from: 'support@onerandomsample.com',
+      from: 'contact@onerandomsample.com',
       subject: 'Reset Password',
       text: 'Please click the link to reset your password',
       html: `<p>Please click the link to <strong><a href='${forgotPasswordUrl}'>reset your password</a></strong></p>`

@@ -107,7 +107,8 @@
       </script>
     </div>
     <footer class="text-white bg-dark text-center">
-      OneRandomSample <span id="year"></span> &copy; <a id="contact">Contact</a>
+      OneRandomSample <span id="year"></span> &copy;
+      <a id="contact">Contact</a>
       <br />
       Created by <span class="name">Michal Stachnik</span>
     </footer>
@@ -117,7 +118,7 @@
       yearEl.innerHTML = `${year}`;
 
       const contactEl = document.getElementById('contact');
-      contactEl.href = `/contact`;
+      contactEl.href = window.origin + `/#/contact`;
     </script>
   </body>
 </html>
