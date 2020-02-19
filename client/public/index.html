@@ -71,11 +71,20 @@
         display: flex;
         justify-content: center;
         background: var(--dark);
-        padding: 10px 0 25px 0;
+        padding: 10px 0 35px 0;
       }
 
       footer {
+        display: flex;
+        justify-content: space-around;
         padding: 10px 0;
+      }
+
+      footer ul {
+        padding: 0;
+        margin: 0;
+        list-style-type: none;
+        flex: 1;
       }
 
       footer .name {
@@ -107,10 +116,15 @@
       </script>
     </div>
     <footer class="text-white bg-dark text-center">
-      OneRandomSample <span id="year"></span> &copy;
-      <a id="contact">Contact</a>
+      <ul class="footer-left">
+        <li>OneRandomSample <span id="year"></span> &copy;</li>
+        <li>Created by <span class="name">Michal Stachnik</span></li>
+      </ul>
+      <ul class="footer-right">
+        <li><a id="contact">Contact</a></li>
+        <li><a id="privacy">Privacy Policy</a></li>
+      </ul>
       <br />
-      Created by <span class="name">Michal Stachnik</span>
     </footer>
     <script type="text/javascript">
       const yearEl = document.getElementById('year');
