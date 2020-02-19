@@ -1,7 +1,5 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-
-import { UserContext } from '../../contexts/UserContext';
 
 import './Contact.css';
 
@@ -40,8 +38,6 @@ const Contact: React.FC = () => {
         },
         body: JSON.stringify(payload)
       });
-
-      const data = await res.json();
 
       history.push('/');
     } catch (error) {

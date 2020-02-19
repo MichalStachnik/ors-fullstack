@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Chart from 'react-apexcharts';
 import DonutChart from '../../components/DonutChart/DonutChart';
 
 import { UserContext } from '../../contexts/UserContext';

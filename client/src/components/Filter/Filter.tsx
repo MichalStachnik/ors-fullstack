@@ -27,7 +27,7 @@ const Filter: React.FC<Props> = props => {
   return (
     <ul className="nav nav-tabs mt-3">
       <li className="nav-item dropdown">
-        <a
+        <span
           className="nav-link dropdown-toggle"
           data-toggle="dropdown"
           role="button"
@@ -35,20 +35,32 @@ const Filter: React.FC<Props> = props => {
           aria-expanded="false"
         >
           {dropdownOption}
-        </a>
+        </span>
         <div className="dropdown-menu">
-          <a className="dropdown-item" onClick={() => handleDropdownChange(1)}>
+          <span
+            className="dropdown-item"
+            onClick={() => handleDropdownChange(1)}
+          >
             Newest
-          </a>
-          <a className="dropdown-item" onClick={() => handleDropdownChange(2)}>
+          </span>
+          <span
+            className="dropdown-item"
+            onClick={() => handleDropdownChange(2)}
+          >
             Oldest
-          </a>
-          <a className="dropdown-item" onClick={() => handleDropdownChange(3)}>
+          </span>
+          <span
+            className="dropdown-item"
+            onClick={() => handleDropdownChange(3)}
+          >
             Most Votes
-          </a>
-          <a className="dropdown-item" onClick={() => handleDropdownChange(4)}>
+          </span>
+          <span
+            className="dropdown-item"
+            onClick={() => handleDropdownChange(4)}
+          >
             Least Votes
-          </a>
+          </span>
         </div>
       </li>
     </ul>
