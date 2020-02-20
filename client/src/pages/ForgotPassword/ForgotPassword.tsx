@@ -58,11 +58,11 @@ const ForgotPassword: React.FC = () => {
         <fieldset>
           <legend>Forgot Password</legend>
           <div className="form-group">
-            <label htmlFor="exampleInputEmail1">Email address</label>
+            <label htmlFor="forgotInputEmail">Email address</label>
             <input
               type="email"
-              className="form-control"
-              id="exampleInputEmail1"
+              className="form-control text-white"
+              id="forgotInputEmail"
               aria-describedby="emailHelp"
               placeholder="Enter email"
               required

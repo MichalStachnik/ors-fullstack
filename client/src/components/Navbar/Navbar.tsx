@@ -36,7 +36,9 @@ class Navbar extends React.Component<Props, {}> {
           <NavLink exact to="/" className="navbar-brand">
             OneRandomSample
           </NavLink>
-          <small className="text-muted ml-2">a small polling application</small>
+          <small className="text-primary ml-2">
+            a small polling application
+          </small>
         </div>
         <button
           className="navbar-toggler"

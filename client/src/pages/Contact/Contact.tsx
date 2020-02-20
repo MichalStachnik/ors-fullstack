@@ -63,11 +63,11 @@ const Contact: React.FC = () => {
         <fieldset>
           <legend>Contact</legend>
           <div className="form-group">
-            <label htmlFor="exampleInputEmail1">Email address</label>
+            <label htmlFor="contactInputEmail">Email address</label>
             <input
               type="email"
-              className="form-control"
-              id="exampleInputEmail1"
+              className="form-control text-white"
+              id="contactInputEmail"
               aria-describedby="emailHelp"
               placeholder="Enter email"
               required
@@ -77,9 +77,11 @@ const Contact: React.FC = () => {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="commentTextarea">Add comment</label>
+            <label htmlFor="commentTextarea">
+              Please send us any comments or suggestions:
+            </label>
             <textarea
-              className="form-control"
+              className="form-control text-white"
               id="commentTextarea"
               rows={3}
               name="message"

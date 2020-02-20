@@ -247,7 +247,7 @@ class Poll extends React.Component<Props, State> {
             <div className="form-group mt-3">
               <label htmlFor="commentTextarea">Add comment</label>
               <textarea
-                className="form-control"
+                className="form-control text-white"
                 id="commentTextarea"
                 rows={3}
                 value={this.state.commentValue}

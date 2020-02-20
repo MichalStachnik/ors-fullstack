@@ -53,7 +53,7 @@ const CreatePoll: React.FC = () => {
           <label htmlFor="question">Option {`${i}`}</label>
           <input
             type="input"
-            className="form-control"
+            className="form-control text-white"
             id={`${i}`}
             aria-describedby="questionHelp"
             placeholder="Enter option"
@@ -131,7 +131,7 @@ const CreatePoll: React.FC = () => {
             <label htmlFor="question">Question</label>
             <input
               type="input"
-              className="form-control"
+              className="form-control text-white"
               id="question"
               aria-describedby="questionHelp"
               placeholder="Enter question"
