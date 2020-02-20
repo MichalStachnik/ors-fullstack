@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 import './Register.css';
 
@@ -10,6 +10,8 @@ const Register: React.FC = () => {
     password: '',
     password2: ''
   });
+
+  const history = useHistory();
 
   const { username, email, password, password2 } = formData;
 
@@ -41,7 +43,7 @@ const Register: React.FC = () => {
       });
 
       const data = await res.json();
-      console.log('data:', data);
+      history.push('/');
     } catch (error) {
       console.log('error registering user');
       console.error(error.message);

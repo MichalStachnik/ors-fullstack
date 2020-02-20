@@ -30,8 +30,6 @@ router.post(
     check('email', 'please enter valid email').isEmail()
   ],
   async (req, res) => {
-    console.log('in register', req.body);
-
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
