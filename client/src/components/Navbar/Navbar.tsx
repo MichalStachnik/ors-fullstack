@@ -11,26 +11,12 @@ interface Props {
   searchValue: string;
 }
 
-interface State {
-  isInputFocused: boolean;
-}
-
-class Navbar extends React.Component<Props, State> {
+class Navbar extends React.Component<Props, {}> {
   static contextType = UserContext;
   constructor(props: Props) {
     super(props);
-    this.state = {
-      isInputFocused: false
-    };
+    this.state = {};
   }
-
-  handleInputFocus = (evt: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ isInputFocused: true });
-  };
-
-  handleInputBlur = (evt: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ isInputFocused: false });
-  };
 
   handleClearClick = () => {
     this.props.onInputCleared();
@@ -118,23 +104,18 @@ class Navbar extends React.Component<Props, State> {
                 onChange={(evt: React.ChangeEvent<HTMLInputElement>) =>
                   this.props.onInputChanged(evt)
                 }
-                onFocus={(evt: React.ChangeEvent<HTMLInputElement>) =>
-                  this.handleInputFocus(evt)
-                }
-                onBlur={(evt: React.ChangeEvent<HTMLInputElement>) =>
-                  this.handleInputBlur(evt)
-                }
               />
-              {this.state.isInputFocused && (
+              {this.props.searchValue.length > 0 && (
                 <i className="fa fa-times" onClick={this.handleClearClick}></i>
               )}
             </div>
-            <button
+            {/* TODO: Hit BE with submit button */}
+            {/* <button
               className="btn btn-outline-primary my-2 my-sm-0"
               type="submit"
             >
               Search
-            </button>
+            </button> */}
           </form>
         </div>
       </nav>
