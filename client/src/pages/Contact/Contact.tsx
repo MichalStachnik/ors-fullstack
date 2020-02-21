@@ -78,7 +78,7 @@ const Contact: React.FC = () => {
           </div>
           <div className="form-group">
             <label htmlFor="commentTextarea">
-              Please send us any comments or suggestions:
+              Please send us any comments or suggestions
             </label>
             <textarea
               className="form-control text-white"

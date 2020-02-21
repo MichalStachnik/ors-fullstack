@@ -123,6 +123,7 @@
       <ul class="footer-right">
         <li><a id="contact">Contact</a></li>
         <li><a id="privacy">Privacy Policy</a></li>
+        <li><a id="terms">Terms of Use</a></li>
       </ul>
       <br />
     </footer>
@@ -133,6 +134,12 @@
 
       const contactEl = document.getElementById('contact');
       contactEl.href = window.origin + `/#/contact`;
+
+      const privacyEl = document.getElementById('privacy');
+      privacyEl.href = window.origin + `/#/privacy-policy`;
+
+      const termsEl = document.getElementById('terms');
+      termsEl.href = window.origin + `/#/terms-of-use`;
     </script>
   </body>
 </html>

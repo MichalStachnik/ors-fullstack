@@ -14,6 +14,8 @@ import Poll from './pages/Poll/Poll';
 import CreatePoll from './pages/CreatePoll/CreatePoll';
 import ForgotPassword from './pages/ForgotPassword/ForgotPassword';
 import NewPassword from './pages/NewPassword/NewPassword';
+import PrivacyPolicy from './pages/PrivacyPolicy/PrivacyPolicy';
+import TermsOfUse from './pages/TermsOfUse/TermsOfUse';
 
 import { UserProvider } from './contexts/UserContext';
 
@@ -51,6 +53,8 @@ const App: React.FC = () => {
             component={NewPassword}
           />
           <Route exact path="/contact" component={Contact} />
+          <Route exact path="/privacy-policy" component={PrivacyPolicy} />
+          <Route exact path="/terms-of-use" component={TermsOfUse} />
         </div>
       </Router>
       {/* <Ad /> */}
