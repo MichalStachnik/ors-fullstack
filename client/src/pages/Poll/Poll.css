@@ -9,9 +9,6 @@
 
 .card-body .card-body-right {
   max-width: 60%;
-  /* width: 80%;
-  min-height: 300px;
-  height: 350px; */
   display: flex;
   align-items: center;
 }
@@ -55,4 +52,20 @@ textarea {
 
 i {
   cursor: pointer;
+}
+
+@media only screen and (max-width: 414px) {
+  .card-body .card-body-left {
+    flex: 1;
+  }
+
+  .likes-container {
+    flex-direction: column;
+  }
+
+  .likes-container .likes,
+  .likes-container .dislikes {
+    width: 100%;
+    justify-content: space-around;
+  }
 }

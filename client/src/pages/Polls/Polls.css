@@ -25,7 +25,7 @@
   align-items: center;
 }
 
-@media only screen and (max-width: 375px) {
+@media only screen and (max-width: 414px) {
   .card-header {
     padding: 0.5rem 1rem;
   }
