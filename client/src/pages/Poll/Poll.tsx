@@ -74,7 +74,7 @@ class Poll extends React.Component<Props, State> {
     const userId = this.context.getUserId();
 
     let userHasVoted = data.poll.voters.filter(
-      (voter: any) => voter._id === userId
+      (voter: any) => voter.voterId === userId
     );
 
     userHasVoted = userHasVoted.length > 0;
