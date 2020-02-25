@@ -1,7 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+
 import Spinner from '../../components/Spinner/Spinner';
 import DonutChart from '../../components/DonutChart/DonutChart';
+import PollMap from '../../components/PollMap/PollMap';
 
 import { UserContext } from '../../contexts/UserContext';
 
@@ -325,6 +327,9 @@ class Poll extends React.Component<Props, State> {
             )}
             <div className="card-body-right">
               <DonutChart pollData={this.state.poll.options} />
+              {this.state.poll.isGeoEnabled && (
+                <PollMap voters={this.state.poll.voters} />
+              )}
             </div>
           </div>
         </div>
