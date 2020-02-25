@@ -7,12 +7,13 @@ const User = require('../models/User');
 
 // Create one poll
 router.post('/', authMiddleware, async (req, res, next) => {
-  const { question, options } = req.body;
+  const { question, isGeoEnabled, options } = req.body;
 
   try {
     let poll = new Poll({
       user: req.user.id,
       question,
+      isGeoEnabled,
       options,
       totalVotes: 0,
       date: new Date().toISOString(),
@@ -56,10 +57,12 @@ router.get('/:pollId', async (req, res, next) => {
 });
 
 // Send one vote
-router.get('/:pollId/vote/:option', authMiddleware, async (req, res, next) => {
+router.post('/:pollId/vote/:option', authMiddleware, async (req, res, next) => {
   try {
+    console.log('in POST to vote', req.body);
+    const { lat, lon } = req.body;
     // Get the voter
-    const theVoter = await User.findById(req.user.id);
+    const voter = await User.findById(req.user.id);
 
     let poll = await Poll.findById(req.params.pollId);
 
@@ -72,6 +75,12 @@ router.get('/:pollId/vote/:option', authMiddleware, async (req, res, next) => {
 
     // Add a count to total votes
     poll.totalVotes++;
+
+    const theVoter = {
+      voter,
+      lat,
+      lon
+    };
 
     // Add user to voters array of poll
     poll.voters.push(theVoter);

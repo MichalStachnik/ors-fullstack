@@ -4,6 +4,45 @@
   justify-content: space-between;
 }
 
+.card-tags {
+  position: relative;
+  flex: 0.3;
+}
+
+.card-tags span {
+  position: absolute;
+  bottom: -40px;
+  right: 50%;
+  width: 100%;
+  max-width: 280px;
+  background: var(--light);
+  color: var(--dark);
+  padding: 10px;
+  text-align: center;
+  font-size: 0.7rem;
+  line-height: 0.7rem;
+  opacity: 0;
+  border-radius: 5px;
+  transition: 0.3s all ease-in-out;
+}
+
+.card-tags span::before {
+  content: '';
+  border: 5px solid;
+  border-bottom-color: var(--light);
+  position: absolute;
+  right: calc(50% - 10px);
+  top: -10px;
+}
+
+.card-tags i {
+  cursor: unset;
+}
+
+.card-tags i:hover + span {
+  opacity: 1;
+}
+
 .card-options {
   width: 50%;
   display: flex;

@@ -7,6 +7,10 @@
   flex: 0.7;
 }
 
+.card-body .spinner {
+  height: unset;
+}
+
 .card-body .card-body-right {
   max-width: 60%;
   display: flex;
