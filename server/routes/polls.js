@@ -59,7 +59,6 @@ router.get('/:pollId', async (req, res, next) => {
 // Send one vote
 router.post('/:pollId/vote/:option', authMiddleware, async (req, res, next) => {
   try {
-    console.log('in POST to vote', req.body);
     const { lat, lon } = req.body;
     // Get the voter
     const voter = await User.findById(req.user.id);
@@ -77,7 +76,7 @@ router.post('/:pollId/vote/:option', authMiddleware, async (req, res, next) => {
     poll.totalVotes++;
 
     const theVoter = {
-      voter,
+      voterId: voter,
       lat,
       lon
     };

@@ -29,11 +29,6 @@ class Polls extends React.Component<Props, State> {
     this.setState({
       polls
     });
-    ($('button.my-tooltip') as any).tooltip();
-  };
-
-  componentDidUpdate = () => {
-    ($('button.my-tooltip') as any).tooltip();
   };
 
   handleFilter = (dropdownOption: number) => {
@@ -93,7 +88,6 @@ class Polls extends React.Component<Props, State> {
               .includes(this.props.searchValue.toLowerCase());
           })
           .map((poll: any, index: number) => {
-            console.log(poll);
             return (
               <div className="card text-white bg-dark my-3" key={index}>
                 <div className="card-header">

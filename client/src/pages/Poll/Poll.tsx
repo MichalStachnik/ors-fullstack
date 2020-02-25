@@ -73,7 +73,11 @@ class Poll extends React.Component<Props, State> {
     // Check if the users ID is in the voters array of the poll
     const userId = this.context.getUserId();
 
-    const userHasVoted = data.poll.voters.includes(userId);
+    let userHasVoted = data.poll.voters.filter(
+      (voter: any) => voter._id === userId
+    );
+
+    userHasVoted = userHasVoted.length > 0;
 
     const userToken = this.context.getToken();
 
@@ -97,6 +101,7 @@ class Poll extends React.Component<Props, State> {
     this.setState({ isLoading: true });
 
     let lat, lon;
+    let payload = {};
 
     // Check if geo is enabled
     if (this.state.poll.isGeoEnabled) {
@@ -106,15 +111,14 @@ class Poll extends React.Component<Props, State> {
       } else {
         navigator.geolocation.getCurrentPosition(
           success => {
-            console.log('success', success);
             lat = success.coords.latitude;
             lon = success.coords.longitude;
 
-            const payload = {
+            payload = {
               lat,
               lon
             };
-            console.log('my payload sending vote', payload);
+
             // Send vote
             fetch(`/polls/${this.props.match.params.pollId}/vote/${option}`, {
               method: 'POST',
@@ -126,58 +130,81 @@ class Poll extends React.Component<Props, State> {
             })
               .then(voteRes => voteRes.json())
               .then(data => {
-                console.log('data back', data);
+                // Get one poll
+                fetch(`/polls/${this.props.match.params.pollId}`)
+                  .then(pollRes => pollRes.json())
+                  .then(pollData => {
+                    const options = pollData.poll.options.map(
+                      (option: any) => option.option
+                    );
+
+                    const chartData = pollData.poll.options.map(
+                      (option: any) => option.voteCount
+                    );
+                    this.setState({
+                      poll: pollData.poll,
+                      donutOptions: {
+                        ...this.state.donutOptions,
+                        options: {
+                          labels: options
+                        },
+                        series: chartData,
+                        labels: options
+                      },
+                      userHasVoted: true
+                    });
+                  })
+                  .catch(err => console.warn('error getting single poll', err));
               })
               .catch(err => console.warn('error', err));
 
             this.setState({ isLoading: false });
           },
           error => {
-            console.log('error', error);
+            console.error('error fetching geodata', error);
           }
-          // { maximumAge: 60000, timeout: 5000, enableHighAccuracy: false }
         );
       }
     }
-
-    return;
-
-    // Sendvote
-    const voteRes = await fetch(
-      `/polls/${this.props.match.params.pollId}/vote/${option}`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-auth-token': `${this.state.userToken}`
+    // Vote is not geo enabled
+    else {
+      // Send vote
+      const voteRes = await fetch(
+        `/polls/${this.props.match.params.pollId}/vote/${option}`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-auth-token': `${this.state.userToken}`
+          },
+          body: JSON.stringify(payload)
         }
-        // body: JSON.stringify(payload)
-      }
-    );
+      );
 
-    const voteData = await voteRes.json();
+      const voteData = await voteRes.json();
 
-    // Get one poll
-    const pollRes = await fetch(`/polls/${this.props.match.params.pollId}`);
-    const pollData = await pollRes.json();
+      // Get one poll
+      const pollRes = await fetch(`/polls/${this.props.match.params.pollId}`);
+      const pollData = await pollRes.json();
 
-    const options = pollData.poll.options.map((option: any) => option.option);
+      const options = pollData.poll.options.map((option: any) => option.option);
 
-    const chartData = pollData.poll.options.map(
-      (option: any) => option.voteCount
-    );
-    this.setState({
-      poll: pollData.poll,
-      donutOptions: {
-        ...this.state.donutOptions,
-        options: {
+      const chartData = pollData.poll.options.map(
+        (option: any) => option.voteCount
+      );
+      this.setState({
+        poll: pollData.poll,
+        donutOptions: {
+          ...this.state.donutOptions,
+          options: {
+            labels: options
+          },
+          series: chartData,
           labels: options
         },
-        series: chartData,
-        labels: options
-      },
-      userHasVoted: true
-    });
+        userHasVoted: true
+      });
+    }
   };
 
   // POST a comment

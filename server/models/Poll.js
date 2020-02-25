@@ -66,7 +66,6 @@ const PollSchema = Schema({
       }
     }
   ],
-  // voters: [Schema.Types.ObjectId],
   voters: [
     {
       voterId: {
