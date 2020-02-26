@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { useHistory, Redirect } from 'react-router-dom';
+import { useHistory, Redirect, Link } from 'react-router-dom';
 
 import { UserContext } from '../../contexts/UserContext';
 
@@ -133,6 +133,11 @@ const CreatePoll: React.FC = () => {
 
   return (
     <div className="my-3 text-white">
+      <Link to="/">
+        <button type="button" className="btn btn-outline-secondary mt-3">
+          Back
+        </button>
+      </Link>
       <form
         className="my-3 p-5 container col-lg-8 border-primary card bg-dark"
         onSubmit={evt => onSubmit(evt)}
