@@ -109,7 +109,8 @@ class Poll extends React.Component<Props, State> {
     if (this.state.poll.isGeoEnabled) {
       // Get window navigator
       if (!navigator.geolocation) {
-        console.log('geolocation not available');
+        // TODO: Add toast or modal telling user they cannot vote in this poll
+        return;
       } else {
         navigator.geolocation.getCurrentPosition(
           success => {
