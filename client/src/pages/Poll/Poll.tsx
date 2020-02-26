@@ -280,22 +280,24 @@ class Poll extends React.Component<Props, State> {
         <div className="card text-white bg-dark my-3">
           <div className="card-header">
             <div className="question">{this.state.poll.question}</div>
-            <div className="likes-container">
-              <div className="likes">
-                <span>Liked: {this.state.poll.likes}</span>
-                <i
-                  className="fa fa-thumbs-up fa-lg"
-                  onClick={() => this.handleLikeClick()}
-                ></i>
+            {this.state.userToken && (
+              <div className="likes-container">
+                <div className="likes">
+                  <span>Liked: {this.state.poll.likes}</span>
+                  <i
+                    className="fa fa-thumbs-up fa-lg"
+                    onClick={() => this.handleLikeClick()}
+                  ></i>
+                </div>
+                <div className="dislikes">
+                  <span>Disliked: {this.state.poll.dislikes}</span>
+                  <i
+                    className="fa fa-thumbs-down fa-lg"
+                    onClick={() => this.handleDisLikeClick()}
+                  ></i>
+                </div>
               </div>
-              <div className="dislikes">
-                <span>Disliked: {this.state.poll.dislikes}</span>
-                <i
-                  className="fa fa-thumbs-down fa-lg"
-                  onClick={() => this.handleDisLikeClick()}
-                ></i>
-              </div>
-            </div>
+            )}
           </div>
           <div className="card-body">
             {this.state.isLoading ? (
