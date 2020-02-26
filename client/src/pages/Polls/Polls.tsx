@@ -79,12 +79,14 @@ class Polls extends React.Component<Props, State> {
   render() {
     if (this.state.polls.length === 0) return <Spinner />;
     return (
-      <div>
+      <div className="Polls">
         <Filter handleFilter={this.handleFilter} />
         {this.state.polls
-          .filter((poll: any, index: number) =>
-            poll.question.includes(this.props.searchValue)
-          )
+          .filter((poll: any, index: number) => {
+            return poll.question
+              .toLowerCase()
+              .includes(this.props.searchValue.toLowerCase());
+          })
           .map((poll: any, index: number) => {
             return (
               <div className="card text-white bg-dark my-3" key={index}>
@@ -93,7 +95,18 @@ class Polls extends React.Component<Props, State> {
                     <h3>{poll.question}</h3>
                     <p className="text-primary">{this.formatDate(poll.date)}</p>
                   </div>
-                  <Link to={`/polls/${poll._id}`}>
+                  <div className="card-tags">
+                    {poll.isGeoEnabled && (
+                      <React.Fragment>
+                        <i
+                          className="fa fa-globe-americas"
+                          title="This poll requires geolocation"
+                        ></i>
+                        <span>This poll requires geolocation</span>
+                      </React.Fragment>
+                    )}
+                  </div>
+                  <Link to={`/polls/${poll._id}`} className="card-vote">
                     <button
                       className="btn btn-secondary my-2 my-sm-0"
                       type="button"

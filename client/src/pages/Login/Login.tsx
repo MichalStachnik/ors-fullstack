@@ -80,11 +80,11 @@ const Login: React.FC = () => {
         <fieldset>
           <legend>Login</legend>
           <div className="form-group">
-            <label htmlFor="exampleInputEmail1">Email address</label>
+            <label htmlFor="loginInputEmail">Email address</label>
             <input
               type="email"
-              className="form-control"
-              id="exampleInputEmail1"
+              className="form-control text-white"
+              id="loginInputEmail"
               aria-describedby="emailHelp"
               placeholder="Enter email"
               required
@@ -97,11 +97,11 @@ const Login: React.FC = () => {
             </small>
           </div>
           <div className="form-group">
-            <label htmlFor="exampleInputPassword1">Password</label>
+            <label htmlFor="loginInputPassword">Password</label>
             <input
               type="password"
-              className="form-control"
-              id="exampleInputPassword1"
+              className="form-control text-white"
+              id="loginInputPassword"
               placeholder="Password"
               required
               name="password"

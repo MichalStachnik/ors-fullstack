@@ -6,6 +6,7 @@ const sslRedirect = require('heroku-ssl-redirect');
 // Routes
 const polls = require('./routes/polls.js');
 const auth = require('./routes/auth.js');
+const contact = require('./routes/contact.js');
 
 require('dotenv').config();
 
@@ -37,6 +38,7 @@ app.use(express.json({ extended: false }));
 
 app.use('/polls', polls);
 app.use('/auth', auth);
+app.use('/contact', contact);
 
 // Serve for production
 if (process.env.NODE_ENV === 'production') {

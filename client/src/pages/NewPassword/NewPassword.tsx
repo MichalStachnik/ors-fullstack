@@ -75,7 +75,6 @@ const NewPassword: React.FC = (props: any) => {
       });
 
       const data = await res.json();
-      console.log('data', data);
       setFormData({ ...formData, buttonDisabled: true });
     } catch (error) {
       console.log('error sending forget password');
@@ -85,13 +84,16 @@ const NewPassword: React.FC = (props: any) => {
   };
 
   return (
-    <div className="my-3">
+    <div className="my-3 text-white">
       <Link to="/">
         <button type="button" className="btn btn-outline-secondary">
           Back
         </button>
       </Link>
-      <form className="my-3" onSubmit={evt => onSubmit(evt)}>
+      <form
+        className="my-3 p-5 container col-lg-8 border-primary card bg-dark"
+        onSubmit={evt => onSubmit(evt)}
+      >
         <fieldset>
           <legend>New Password</legend>
           <div className="form-group">

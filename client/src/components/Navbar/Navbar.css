@@ -3,6 +3,10 @@ nav .brand-container {
   flex-direction: column;
 }
 
+nav .brand-container .navbar-brand {
+  font-size: 20px;
+}
+
 nav .input-container {
   position: relative;
 }

@@ -30,8 +30,6 @@ router.post(
     check('email', 'please enter valid email').isEmail()
   ],
   async (req, res) => {
-    console.log('in register', req.body);
-
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
@@ -143,14 +141,14 @@ router.post('/forgot-password', async (req, res) => {
   if (process.env.NODE_ENV === 'production') {
     forgotPasswordUrl = `https://onerandomsample.com/#/new-password/${emailToken}`;
   } else {
-    forgotPasswordUrl = `http://localhost:3000/new-password/${emailToken}`;
+    forgotPasswordUrl = `http://localhost:3000/#/new-password/${emailToken}`;
   }
 
   try {
     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
     const msg = {
       to: user.email,
-      from: 'support@onerandomsample.com',
+      from: 'contact@onerandomsample.com',
       subject: 'Reset Password',
       text: 'Please click the link to reset your password',
       html: `<p>Please click the link to <strong><a href='${forgotPasswordUrl}'>reset your password</a></strong></p>`

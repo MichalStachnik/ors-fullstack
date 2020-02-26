@@ -13,7 +13,7 @@ html {
 }
 
 .container {
-  padding-bottom: 70px;
+  padding-bottom: 10px;
 }
 
 .form-control::placeholder {

@@ -7,12 +7,14 @@
   flex: 0.7;
 }
 
+.card-body .spinner {
+  height: unset;
+}
+
 .card-body .card-body-right {
   max-width: 60%;
-  /* width: 80%;
-  min-height: 300px;
-  height: 350px; */
   display: flex;
+  flex-direction: column;
   align-items: center;
 }
 
@@ -55,4 +57,32 @@ textarea {
 
 i {
   cursor: pointer;
+}
+
+@media only screen and (max-width: 414px) {
+  .Poll .card-body {
+    flex-direction: column;
+  }
+
+  .card-body .option {
+    justify-content: space-around;
+  }
+
+  .card-body .card-body-right {
+    max-width: 100%;
+  }
+
+  .card-body .card-text {
+    width: 80%;
+  }
+
+  .likes-container {
+    flex-direction: column;
+  }
+
+  .likes-container .likes,
+  .likes-container .dislikes {
+    width: 100%;
+    justify-content: space-around;
+  }
 }

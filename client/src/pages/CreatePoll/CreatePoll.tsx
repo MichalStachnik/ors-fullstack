@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { useHistory, Redirect } from 'react-router-dom';
+import { useHistory, Redirect, Link } from 'react-router-dom';
 
 import { UserContext } from '../../contexts/UserContext';
 
@@ -10,17 +10,25 @@ const CreatePoll: React.FC = () => {
 
   const [pollData, setPollData] = useState({
     question: '',
+    isGeoEnabled: false,
     optionCount: 0,
     options: {} as any
   });
 
   let history = useHistory();
-  let { question, optionCount, options } = pollData;
+  let { question, isGeoEnabled, optionCount, options } = pollData;
 
   const onQuestionChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
     setPollData({
       ...pollData,
       question: evt.target.value
+    });
+  };
+
+  const onGeoChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
+    setPollData({
+      ...pollData,
+      isGeoEnabled: !isGeoEnabled
     });
   };
 
@@ -53,7 +61,7 @@ const CreatePoll: React.FC = () => {
           <label htmlFor="question">Option {`${i}`}</label>
           <input
             type="input"
-            className="form-control"
+            className="form-control text-white"
             id={`${i}`}
             aria-describedby="questionHelp"
             placeholder="Enter option"
@@ -82,6 +90,7 @@ const CreatePoll: React.FC = () => {
 
     const postObj = {
       question,
+      isGeoEnabled,
       options: postOptions
     };
 
@@ -123,15 +132,23 @@ const CreatePoll: React.FC = () => {
   }
 
   return (
-    <div className="my-3">
-      <form className="my-3" onSubmit={evt => onSubmit(evt)}>
+    <div className="my-3 text-white">
+      <Link to="/">
+        <button type="button" className="btn btn-outline-secondary mt-3">
+          Back
+        </button>
+      </Link>
+      <form
+        className="my-3 p-5 container col-lg-8 border-primary card bg-dark"
+        onSubmit={evt => onSubmit(evt)}
+      >
         <fieldset>
           <legend>Create Poll</legend>
           <div className="form-group">
             <label htmlFor="question">Question</label>
             <input
               type="input"
-              className="form-control"
+              className="form-control text-white"
               id="question"
               aria-describedby="questionHelp"
               placeholder="Enter question"
@@ -142,11 +159,25 @@ const CreatePoll: React.FC = () => {
             />
           </div>
           <div className="form-group">
+            <div className="custom-control custom-switch">
+              <input
+                type="checkbox"
+                className="custom-control-input"
+                id="geoSwitch"
+                checked={isGeoEnabled}
+                onChange={evt => onGeoChange(evt)}
+              />
+              <label className="custom-control-label" htmlFor="geoSwitch">
+                Enable geolocation capture of voters?
+              </label>
+            </div>
+          </div>
+          <div className="form-group">
             <label htmlFor="exampleSelect1">Number of options:</label>
             <select
               value={optionCount}
               onChange={evt => onSelectChange(evt)}
-              className="form-control"
+              className="form-control text-white"
               id="optionSelect"
               name="OPTION!!"
             >
@@ -163,10 +194,10 @@ const CreatePoll: React.FC = () => {
 
           <button
             type="submit"
-            className="btn btn-primary"
+            className="btn btn-primary float-right"
             disabled={isSubmitDisabled}
           >
-            Submit
+            Create Poll
           </button>
         </fieldset>
       </form>

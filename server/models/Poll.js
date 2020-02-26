@@ -10,6 +10,11 @@ const PollSchema = Schema({
     type: String,
     required: true
   },
+  isGeoEnabled: {
+    type: Boolean,
+    required: true,
+    default: false
+  },
   options: [
     {
       option: {
@@ -61,7 +66,20 @@ const PollSchema = Schema({
       }
     }
   ],
-  voters: [Schema.Types.ObjectId]
+  voters: [
+    {
+      voterId: {
+        type: Schema.Types.ObjectId,
+        ref: 'user'
+      },
+      lat: {
+        type: Number
+      },
+      lon: {
+        type: Number
+      }
+    }
+  ]
 });
 
 module.exports = mongoose.model('poll', PollSchema);

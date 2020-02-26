@@ -1,33 +1,37 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
-import './ForgotPassword.css';
+import './Contact.css';
 
-const ForgotPassword: React.FC = () => {
+const Contact: React.FC = () => {
   const [formData, setFormData] = useState({
     email: '',
-    buttonDisabled: true,
-    alertShowing: false
+    message: ''
   });
 
-  const { email, buttonDisabled, alertShowing } = formData;
+  const history = useHistory();
 
-  const onChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
+  const { email, message } = formData;
+
+  const onChange = (
+    evt: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     setFormData({
       ...formData,
-      [evt.target.name]: evt.target.value,
-      buttonDisabled: false
+      [evt.target.name]: evt.target.value
     });
   };
 
   const onSubmit = async (evt: React.FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
-    let payload = {
-      email
+
+    const payload = {
+      email,
+      message
     };
 
     try {
-      const res = await fetch('/auth/forgot-password', {
+      const res = await fetch('/contact', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -35,14 +39,15 @@ const ForgotPassword: React.FC = () => {
         body: JSON.stringify(payload)
       });
 
-      const data = await res.json();
-      setFormData({ ...formData, buttonDisabled: true, alertShowing: true });
+      history.push('/');
     } catch (error) {
-      console.log('error sending forget password');
+      console.log('error sending message');
       console.error(error.message);
       throw error;
     }
   };
+
+  const isSendDisabled = email.length === 0 || message.length === 0;
 
   return (
     <div className="my-3 text-white">
@@ -56,13 +61,13 @@ const ForgotPassword: React.FC = () => {
         onSubmit={evt => onSubmit(evt)}
       >
         <fieldset>
-          <legend>Forgot Password</legend>
+          <legend>Contact</legend>
           <div className="form-group">
-            <label htmlFor="forgotInputEmail">Email address</label>
+            <label htmlFor="contactInputEmail">Email address</label>
             <input
               type="email"
               className="form-control text-white"
-              id="forgotInputEmail"
+              id="contactInputEmail"
               aria-describedby="emailHelp"
               placeholder="Enter email"
               required
@@ -71,22 +76,30 @@ const ForgotPassword: React.FC = () => {
               onChange={evt => onChange(evt)}
             />
           </div>
+          <div className="form-group">
+            <label htmlFor="commentTextarea">
+              Please send us any comments or suggestions
+            </label>
+            <textarea
+              className="form-control text-white"
+              id="commentTextarea"
+              rows={3}
+              name="message"
+              value={message}
+              onChange={evt => onChange(evt)}
+            ></textarea>
+          </div>
           <button
-            disabled={buttonDisabled}
             type="submit"
-            className="btn btn-primary float-right"
+            className="btn btn-primary mt-3 float-right"
+            disabled={isSendDisabled}
           >
-            Send Link
+            Send
           </button>
         </fieldset>
       </form>
-      {alertShowing && (
-        <div className="alert alert-dismissible alert-success mx-auto col-lg-6 text-center">
-          Please check your inbox to reset your email.
-        </div>
-      )}
     </div>
   );
 };
 
-export default ForgotPassword;
+export default Contact;

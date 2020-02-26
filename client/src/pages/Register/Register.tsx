@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 import './Register.css';
 
@@ -10,6 +10,8 @@ const Register: React.FC = () => {
     password: '',
     password2: ''
   });
+
+  const history = useHistory();
 
   const { username, email, password, password2 } = formData;
 
@@ -41,7 +43,7 @@ const Register: React.FC = () => {
       });
 
       const data = await res.json();
-      console.log('data:', data);
+      history.push('/');
     } catch (error) {
       console.log('error registering user');
       console.error(error.message);
@@ -72,7 +74,7 @@ const Register: React.FC = () => {
             <label htmlFor="username">Username</label>
             <input
               type="text"
-              className="form-control"
+              className="form-control text-white"
               id="username"
               aria-describedby="usernameHelp"
               placeholder="Enter username"
@@ -83,11 +85,11 @@ const Register: React.FC = () => {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="exampleInputEmail1">Email address</label>
+            <label htmlFor="registerInputEmail">Email address</label>
             <input
               type="email"
-              className="form-control"
-              id="exampleInputEmail1"
+              className="form-control text-white"
+              id="registerInputEmail"
               aria-describedby="emailHelp"
               placeholder="Enter email"
               required
@@ -100,11 +102,11 @@ const Register: React.FC = () => {
             </small>
           </div>
           <div className="form-group">
-            <label htmlFor="exampleInputPassword1">Password</label>
+            <label htmlFor="registerInputPassword1">Password</label>
             <input
               type="password"
-              className="form-control"
-              id="exampleInputPassword1"
+              className="form-control text-white"
+              id="registerInputPassword1"
               placeholder="Password"
               required
               name="password"
@@ -112,11 +114,11 @@ const Register: React.FC = () => {
               onChange={evt => onChange(evt)}
             />
           </div>
-          <div className="form-group ">
-            <label htmlFor="exampleInputPassword1">Confirm password</label>
+          <div className="form-group">
+            <label htmlFor="inputPassword2">Confirm password</label>
             <input
               type="password"
-              className={`form-control ${
+              className={`form-control text-white ${
                 password.length && password !== password2 ? 'is-invalid' : ''
               } 
                 ${
@@ -125,8 +127,8 @@ const Register: React.FC = () => {
                     : ''
                 }
               `}
-              id="exampleInputPassword2"
-              placeholder="Password"
+              id="registerInputPassword2"
+              placeholder="Confirm Password"
               required
               name="password2"
               value={password2}

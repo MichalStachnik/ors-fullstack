@@ -1,7 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Chart from 'react-apexcharts';
+
+import Spinner from '../../components/Spinner/Spinner';
 import DonutChart from '../../components/DonutChart/DonutChart';
+import PollMap from '../../components/PollMap/PollMap';
 
 import { UserContext } from '../../contexts/UserContext';
 
@@ -12,6 +14,7 @@ interface Props {
 }
 
 interface State {
+  isLoading: boolean;
   poll: any;
   options?: any;
   series?: any;
@@ -19,6 +22,7 @@ interface State {
   labels?: any;
   commentValue: string;
   userHasVoted: boolean;
+  userToken: string;
 }
 
 class Poll extends React.Component<Props, State> {
@@ -54,7 +58,9 @@ class Poll extends React.Component<Props, State> {
         labels: []
       },
       commentValue: '',
-      userHasVoted: false
+      userHasVoted: false,
+      userToken: '',
+      isLoading: false
     };
   }
 
@@ -69,7 +75,13 @@ class Poll extends React.Component<Props, State> {
     // Check if the users ID is in the voters array of the poll
     const userId = this.context.getUserId();
 
-    const userHasVoted = data.poll.voters.includes(userId);
+    let userHasVoted = data.poll.voters.filter(
+      (voter: any) => voter.voterId === userId
+    );
+
+    userHasVoted = userHasVoted.length > 0;
+
+    const userToken = this.context.getToken();
 
     this.setState({
       poll: data.poll,
@@ -81,53 +93,127 @@ class Poll extends React.Component<Props, State> {
         series: chartData,
         labels: options
       },
-      userHasVoted
+      userHasVoted,
+      userToken
     });
   };
 
   handleVoteClick = async (option: any) => {
-    const userToken = this.context.getToken();
+    // Start spinner
+    this.setState({ isLoading: true });
 
-    // Send one vote
-    const voteRes = await fetch(
-      `/polls/${this.props.match.params.pollId}/vote/${option}`,
-      {
-        method: 'GET',
-        headers: {
-          'x-auth-token': `${userToken}`
-        }
+    let lat, lon;
+    let payload = {};
+
+    // Check if geo is enabled
+    if (this.state.poll.isGeoEnabled) {
+      // Get window navigator
+      if (!navigator.geolocation) {
+        // TODO: Add toast or modal telling user they cannot vote in this poll
+        return;
+      } else {
+        navigator.geolocation.getCurrentPosition(
+          success => {
+            lat = success.coords.latitude;
+            lon = success.coords.longitude;
+
+            payload = {
+              lat,
+              lon
+            };
+
+            // Send vote
+            fetch(`/polls/${this.props.match.params.pollId}/vote/${option}`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'x-auth-token': `${this.state.userToken}`
+              },
+              body: JSON.stringify(payload)
+            })
+              .then(voteRes => voteRes.json())
+              .then(data => {
+                // Get one poll
+                fetch(`/polls/${this.props.match.params.pollId}`)
+                  .then(pollRes => pollRes.json())
+                  .then(pollData => {
+                    const options = pollData.poll.options.map(
+                      (option: any) => option.option
+                    );
+
+                    const chartData = pollData.poll.options.map(
+                      (option: any) => option.voteCount
+                    );
+                    this.setState({
+                      poll: pollData.poll,
+                      donutOptions: {
+                        ...this.state.donutOptions,
+                        options: {
+                          labels: options
+                        },
+                        series: chartData,
+                        labels: options
+                      },
+                      userHasVoted: true
+                    });
+                  })
+                  .catch(err => console.warn('error getting single poll', err));
+              })
+              .catch(err => console.warn('error', err));
+
+            this.setState({ isLoading: false });
+          },
+          error => {
+            console.error('error fetching geodata', error);
+          }
+        );
       }
-    );
-    const voteData = await voteRes.json();
+    }
+    // Vote is not geo enabled
+    else {
+      // Send vote
+      const voteRes = await fetch(
+        `/polls/${this.props.match.params.pollId}/vote/${option}`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-auth-token': `${this.state.userToken}`
+          },
+          body: JSON.stringify(payload)
+        }
+      );
 
-    // Get one poll
-    const pollRes = await fetch(`/polls/${this.props.match.params.pollId}`);
-    const pollData = await pollRes.json();
+      const voteData = await voteRes.json();
 
-    const options = pollData.poll.options.map((option: any) => option.option);
+      // Get one poll
+      const pollRes = await fetch(`/polls/${this.props.match.params.pollId}`);
+      const pollData = await pollRes.json();
 
-    const chartData = pollData.poll.options.map(
-      (option: any) => option.voteCount
-    );
-    this.setState({
-      poll: pollData.poll,
-      donutOptions: {
-        ...this.state.donutOptions,
-        options: {
+      const options = pollData.poll.options.map((option: any) => option.option);
+
+      const chartData = pollData.poll.options.map(
+        (option: any) => option.voteCount
+      );
+      this.setState({
+        poll: pollData.poll,
+        donutOptions: {
+          ...this.state.donutOptions,
+          options: {
+            labels: options
+          },
+          series: chartData,
           labels: options
         },
-        series: chartData,
-        labels: options
-      },
-      userHasVoted: true
-    });
+        userHasVoted: true
+      });
+    }
   };
 
   // POST a comment
   onSubmit = async (evt: React.FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
 
-    const userToken = this.context.getToken();
     const username = this.context.getUsername();
     const comment = {
       commentAuthor: username,
@@ -141,7 +227,7 @@ class Poll extends React.Component<Props, State> {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'x-auth-token': `${userToken}`
+            'x-auth-token': `${this.state.userToken}`
           },
           body: JSON.stringify(comment)
         }
@@ -184,9 +270,9 @@ class Poll extends React.Component<Props, State> {
   };
 
   render() {
-    if (!this.state.poll) return <h1>Loading...</h1>;
+    if (!this.state.poll) return <Spinner />;
     return (
-      <div>
+      <div className="Poll">
         <Link to="/">
           <button type="button" className="btn btn-outline-secondary mt-3">
             Back
@@ -194,50 +280,61 @@ class Poll extends React.Component<Props, State> {
         </Link>
         <div className="card text-white bg-dark my-3">
           <div className="card-header">
-            <div className="question">{this.state.poll.question}</div>
-            <div className="likes-container">
-              <div className="likes">
-                <span>Liked: {this.state.poll.likes}</span>
-                <i
-                  className="fa fa-thumbs-up fa-lg"
-                  onClick={() => this.handleLikeClick()}
-                ></i>
-              </div>
-              <div className="dislikes">
-                <span>Disliked: {this.state.poll.dislikes}</span>
-                <i
-                  className="fa fa-thumbs-down fa-lg"
-                  onClick={() => this.handleDisLikeClick()}
-                ></i>
-              </div>
+            <div className="question">
+              <h4>{this.state.poll.question}</h4>
             </div>
+            {this.state.userToken && (
+              <div className="likes-container">
+                <div className="likes">
+                  <span>Liked: {this.state.poll.likes}</span>
+                  <i
+                    className="fa fa-thumbs-up fa-lg"
+                    onClick={() => this.handleLikeClick()}
+                  ></i>
+                </div>
+                <div className="dislikes">
+                  <span>Disliked: {this.state.poll.dislikes}</span>
+                  <i
+                    className="fa fa-thumbs-down fa-lg"
+                    onClick={() => this.handleDisLikeClick()}
+                  ></i>
+                </div>
+              </div>
+            )}
           </div>
           <div className="card-body">
-            <div className="card-body-left">
-              {this.state.poll.options?.map((option: any, index: number) => {
-                return (
-                  <div className="option mb-3" key={index}>
-                    <p className="card-text" key={index}>
-                      <span className="badge badge-primary badge-pill">
-                        {option.voteCount}
-                      </span>
-                      {option.option}
-                    </p>
-                    {!this.state.userHasVoted && (
-                      <button
-                        type="button"
-                        className="btn btn-outline-primary"
-                        onClick={() => this.handleVoteClick(option.option)}
-                      >
-                        Vote
-                      </button>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
+            {this.state.isLoading ? (
+              <Spinner />
+            ) : (
+              <div className="card-body-left">
+                {this.state.poll.options?.map((option: any, index: number) => {
+                  return (
+                    <div className="option mb-3" key={index}>
+                      <p className="card-text" key={index}>
+                        <span className="badge badge-primary badge-pill">
+                          {option.voteCount}
+                        </span>
+                        {option.option}
+                      </p>
+                      {!this.state.userHasVoted && this.state.userToken && (
+                        <button
+                          type="button"
+                          className="btn btn-outline-primary"
+                          onClick={() => this.handleVoteClick(option.option)}
+                        >
+                          Vote
+                        </button>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            )}
             <div className="card-body-right">
               <DonutChart pollData={this.state.poll.options} />
+              {this.state.poll.isGeoEnabled && (
+                <PollMap voters={this.state.poll.voters} />
+              )}
             </div>
           </div>
         </div>
@@ -246,7 +343,7 @@ class Poll extends React.Component<Props, State> {
             <div className="form-group mt-3">
               <label htmlFor="commentTextarea">Add comment</label>
               <textarea
-                className="form-control"
+                className="form-control text-white"
                 id="commentTextarea"
                 rows={3}
                 value={this.state.commentValue}
