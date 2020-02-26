@@ -60,8 +60,20 @@ i {
 }
 
 @media only screen and (max-width: 414px) {
-  .card-body .card-body-left {
-    flex: 1;
+  .Poll .card-body {
+    flex-direction: column;
+  }
+
+  .card-body .option {
+    justify-content: space-around;
+  }
+
+  .card-body .card-body-right {
+    max-width: 100%;
+  }
+
+  .card-body .card-text {
+    width: 80%;
   }
 
   .likes-container {

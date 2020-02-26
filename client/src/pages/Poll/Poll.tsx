@@ -271,7 +271,7 @@ class Poll extends React.Component<Props, State> {
   render() {
     if (!this.state.poll) return <Spinner />;
     return (
-      <div>
+      <div className="Poll">
         <Link to="/">
           <button type="button" className="btn btn-outline-secondary mt-3">
             Back
@@ -279,7 +279,9 @@ class Poll extends React.Component<Props, State> {
         </Link>
         <div className="card text-white bg-dark my-3">
           <div className="card-header">
-            <div className="question">{this.state.poll.question}</div>
+            <div className="question">
+              <h4>{this.state.poll.question}</h4>
+            </div>
             {this.state.userToken && (
               <div className="likes-container">
                 <div className="likes">

@@ -79,7 +79,7 @@ class Polls extends React.Component<Props, State> {
   render() {
     if (this.state.polls.length === 0) return <Spinner />;
     return (
-      <div>
+      <div className="Polls">
         <Filter handleFilter={this.handleFilter} />
         {this.state.polls
           .filter((poll: any, index: number) => {
@@ -106,7 +106,7 @@ class Polls extends React.Component<Props, State> {
                       </React.Fragment>
                     )}
                   </div>
-                  <Link to={`/polls/${poll._id}`}>
+                  <Link to={`/polls/${poll._id}`} className="card-vote">
                     <button
                       className="btn btn-secondary my-2 my-sm-0"
                       type="button"
