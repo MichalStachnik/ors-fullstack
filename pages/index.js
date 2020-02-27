@@ -2,7 +2,6 @@ import Link from 'next/link';
 import fetch from 'isomorphic-unfetch';
 
 const Index = props => {
-  console.log('props in index', props);
   return (
     <div>
       <Link href="/about">
