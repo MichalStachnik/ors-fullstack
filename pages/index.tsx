@@ -1,14 +1,19 @@
+import { NextPage } from 'next';
 import Link from 'next/link';
 import fetch from 'isomorphic-unfetch';
 
-const Index = props => {
+import Layout from '../components/Layout';
+
+const Index: NextPage = props => {
   return (
-    <div>
-      <Link href="/about">
-        <a title="about">about</a>
-      </Link>
-      <p>hello index</p>
-    </div>
+    <Layout>
+      <div>
+        <Link href="/about">
+          <a title="about">about</a>
+        </Link>
+        <p>hello index</p>
+      </div>
+    </Layout>
   );
 };
 
