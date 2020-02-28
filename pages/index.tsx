@@ -1,12 +1,15 @@
 import { NextPage } from 'next';
 import Link from 'next/link';
+import dynamic from 'next/dynamic';
 import fetch from 'isomorphic-unfetch';
 
 import Layout from '../components/Layout';
 
-const Index: NextPage = (props: any) => {
-  console.log('the props I got', props);
+// Have to dynamically import the donut chart because it
+// requires the document object which does not exist on the server
+const DonutChart = dynamic(() => import('../components/DonutChart'));
 
+const Index: NextPage = (props: any) => {
   const formatDate = (date: string) => {
     // Get milliseconds from string
     const milliseconds = Date.parse(date);
@@ -73,7 +76,7 @@ const Index: NextPage = (props: any) => {
                     })}
                   </div>
                   <div className="card-chart">
-                    {/* <DonutChart pollData={poll.options} />  */}
+                    <DonutChart pollData={poll.options} />
                   </div>
                 </div>
               </div>
