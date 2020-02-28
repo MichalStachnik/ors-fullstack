@@ -36,6 +36,34 @@ const Layout: React.FC = props => (
       searchValue={''}
     />
     <div className="container">{props.children}</div>
+    <style jsx global>
+      {`
+        html {
+          overflow-y: scroll;
+          box-sizing: border-box;
+          padding: 0;
+          margin: 0;
+        }
+
+        :root {
+          --dark: #2d2d2d;
+        }
+
+        #__next {
+          background: var(--dark);
+          min-height: 100vh;
+          position: relative;
+        }
+
+        .container {
+          padding-bottom: 10px;
+        }
+
+        .form-control::placeholder {
+          color: #666;
+        }
+      `}
+    </style>
   </div>
 );
 
