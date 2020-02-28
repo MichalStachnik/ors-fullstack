@@ -7,7 +7,12 @@ import Layout from '../components/Layout';
 
 // Have to dynamically import the donut chart because it
 // requires the document object which does not exist on the server
-const DonutChart = dynamic(() => import('../components/DonutChart'));
+// const DonutChart = dynamic(() => import('../components/DonutChart'), {
+//   loading: () => <p>i'm loading...</p>
+// });
+const DonutChart = dynamic(() => import('../components/DonutChart'), {
+  ssr: false
+});
 
 const Index: NextPage = (props: any) => {
   const formatDate = (date: string) => {
@@ -83,6 +88,117 @@ const Index: NextPage = (props: any) => {
             );
           })}
       </div>
+      <style jsx>
+        {`
+          .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+          }
+
+          .card-tags {
+            position: relative;
+            flex: 0.3;
+          }
+
+          .card-tags span {
+            position: absolute;
+            bottom: -40px;
+            right: 50%;
+            width: 100%;
+            max-width: 280px;
+            background: var(--light);
+            color: var(--dark);
+            padding: 8px;
+            text-align: center;
+            font-size: 0.7rem;
+            line-height: 0.7rem;
+            opacity: 0;
+            border-radius: 5px;
+            transition: 0.3s all ease-in-out;
+          }
+
+          .card-tags span::before {
+            content: '';
+            border: 5px solid;
+            border-bottom-color: var(--light);
+            position: absolute;
+            right: calc(50% - 10px);
+            top: -10px;
+          }
+
+          .card-tags i {
+            cursor: unset;
+          }
+
+          .card-tags i:hover + span {
+            opacity: 1;
+          }
+
+          .card-options {
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: right;
+          }
+
+          .card-text {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 60%;
+          }
+
+          .card-chart {
+            max-width: 50%;
+            display: flex;
+            align-items: center;
+          }
+
+          @media only screen and (max-width: 414px) {
+            .Polls .card-header {
+              padding: 0.5rem 1rem;
+              display: grid;
+              grid-template-areas:
+                'question tags'
+                'question vote';
+              grid-template-columns: 3fr 1fr;
+              grid-template-rows: 1fr 2fr;
+            }
+
+            .card-header .card-question {
+              grid-area: question;
+            }
+
+            .card-header .card-tags {
+              grid-area: tags;
+              place-self: center;
+            }
+
+            .card-header .card-vote {
+              grid-area: vote;
+              place-self: center;
+            }
+
+            .card-body {
+              padding: 1rem;
+            }
+
+            .card-options {
+              width: 50%;
+            }
+
+            .card-text {
+              width: 100%;
+            }
+
+            .card-chart {
+              max-width: 40%;
+            }
+          }
+        `}
+      </style>
     </Layout>
   );
 };
