@@ -1,20 +1,73 @@
-import { NextPage } from 'next';
+import { NextPage, NextPageContext } from 'next';
+import { useState } from 'react';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import fetch from 'isomorphic-unfetch';
 
 import Layout from '../components/Layout';
+import Filter from '../components/Filter';
 
-// Have to dynamically import the donut chart because it
-// requires the document object which does not exist on the server
 // const DonutChart = dynamic(() => import('../components/DonutChart'), {
 //   loading: () => <p>i'm loading...</p>
 // });
+// Have to dynamically import the donut chart because it
+// requires the document object which does not exist on the server
 const DonutChart = dynamic(() => import('../components/DonutChart'), {
   ssr: false
 });
 
+import Poll from '../models/Poll';
+
+interface Props {
+  polls: any;
+  searchValue: string;
+  url: any;
+}
+
 const Index: NextPage = (props: any) => {
+  let [searchValue, setSearchValue] = useState('');
+
+  const inputChangeHandler = (evt: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(evt.target.value);
+  };
+
+  const inputClearHandler = () => {
+    setSearchValue('');
+  };
+
+  const handleFilter = (dropdownOption: number) => {
+    // Sort this.state.polls
+    const sortedPolls = [...this.state.polls];
+    if (dropdownOption === 1) {
+      // Newest selected
+      sortedPolls.sort((a, b) => {
+        const aDate = Date.parse(a.date);
+        const bDate = Date.parse(b.date);
+        return bDate - aDate;
+      });
+      // Oldest first
+    } else if (dropdownOption === 2) {
+      sortedPolls.sort((a, b) => {
+        const aDate = Date.parse(a.date);
+        const bDate = Date.parse(b.date);
+
+        return aDate - bDate;
+      });
+    }
+    // Most votes
+    else if (dropdownOption === 3) {
+      sortedPolls.sort((a, b) => {
+        return b.totalVotes - a.totalVotes;
+      });
+    }
+    // Least votes
+    else if (dropdownOption === 4) {
+      sortedPolls.sort((a, b) => a.totalVotes - b.totalVotes);
+    }
+
+    this.setState({ polls: sortedPolls });
+  };
+
   const formatDate = (date: string) => {
     // Get milliseconds from string
     const milliseconds = Date.parse(date);
@@ -28,16 +81,16 @@ const Index: NextPage = (props: any) => {
   };
 
   return (
-    <Layout>
+    <Layout onInputChanged={inputChangeHandler} searchValue={searchValue}>
       <div>
-        {/* <Filter handleFilter={handleFilter} /> */}
+        <Filter handleFilter={handleFilter} />
         {props.polls
-          .filter((poll: any, index: number) => {
+          .filter((poll: Poll, index: number) => {
             return poll.question
               .toLowerCase()
               .includes(props.searchValue.toLowerCase());
           })
-          .map((poll: any, index: number) => {
+          .map((poll: Poll, index: number) => {
             return (
               <div className="card text-white bg-dark my-3" key={index}>
                 <div className="card-header">
@@ -135,6 +188,11 @@ const Index: NextPage = (props: any) => {
             opacity: 1;
           }
 
+          .card-body {
+            display: flex;
+            justify-content: space-between;
+          }
+
           .card-options {
             width: 50%;
             display: flex;
@@ -203,7 +261,7 @@ const Index: NextPage = (props: any) => {
   );
 };
 
-Index.getInitialProps = async function() {
+Index.getInitialProps = async () => {
   const res = await fetch('http://localhost:5000/polls');
   const { polls } = await res.json();
 

@@ -1,7 +1,12 @@
 import Head from 'next/head';
 import Navbar from './Navbar';
 
-const Layout: React.FC = props => (
+interface Props {
+  onInputChanged: (evt: React.ChangeEvent<HTMLInputElement>) => void;
+  searchValue: string;
+}
+
+const Layout: React.FC<Props> = props => (
   <div>
     <Head>
       <title>One Random Sample</title>
@@ -32,8 +37,8 @@ const Layout: React.FC = props => (
     </Head>
     <Navbar
       onInputCleared={() => undefined}
-      onInputChanged={() => null}
-      searchValue={''}
+      onInputChanged={evt => props.onInputChanged(evt)}
+      searchValue={props.searchValue}
     />
     <div className="container">{props.children}</div>
     <style jsx global>

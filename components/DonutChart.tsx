@@ -7,7 +7,6 @@ interface Props {
 }
 
 const DonutChart: React.FC<Props> = props => {
-  console.log('im the props in the donut chart', props);
   // if (!props.pollData) {
   //   // return <Spinner />;
   //   return <div>yo</div>;
