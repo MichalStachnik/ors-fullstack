@@ -26,6 +26,7 @@ interface Props {
 
 const Index: NextPage = (props: any) => {
   let [searchValue, setSearchValue] = useState('');
+  let [polls, setPolls] = useState(props.polls);
 
   const inputChangeHandler = (evt: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(evt.target.value);
@@ -37,7 +38,7 @@ const Index: NextPage = (props: any) => {
 
   const handleFilter = (dropdownOption: number) => {
     // Sort this.state.polls
-    const sortedPolls = [...this.state.polls];
+    const sortedPolls = [...props.polls];
     if (dropdownOption === 1) {
       // Newest selected
       sortedPolls.sort((a, b) => {
@@ -65,7 +66,7 @@ const Index: NextPage = (props: any) => {
       sortedPolls.sort((a, b) => a.totalVotes - b.totalVotes);
     }
 
-    this.setState({ polls: sortedPolls });
+    setPolls(sortedPolls);
   };
 
   const formatDate = (date: string) => {
@@ -84,11 +85,11 @@ const Index: NextPage = (props: any) => {
     <Layout onInputChanged={inputChangeHandler} searchValue={searchValue}>
       <div>
         <Filter handleFilter={handleFilter} />
-        {props.polls
+        {polls
           .filter((poll: Poll, index: number) => {
             return poll.question
               .toLowerCase()
-              .includes(props.searchValue.toLowerCase());
+              .includes(searchValue.toLowerCase());
           })
           .map((poll: Poll, index: number) => {
             return (
