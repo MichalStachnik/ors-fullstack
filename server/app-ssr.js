@@ -1,9 +1,11 @@
 const express = require('express');
 const next = require('next');
 const mongoose = require('mongoose');
+const cors = require('cors');
 
 // Routes
 const polls = require('./routes/polls.js');
+const auth = require('./routes/auth.js');
 
 require('dotenv').config();
 
@@ -39,9 +41,12 @@ app
   .then(() => {
     const server = express();
 
+    server.use(cors());
+
     server.use(express.json({ extended: false }));
 
     server.use('/polls', polls);
+    server.use('/auth', auth);
 
     server.get('*', (req, res) => {
       return handle(req, res);

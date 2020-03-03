@@ -1,4 +1,4 @@
-import { NextPage, NextPageContext } from 'next';
+import { NextPage } from 'next';
 import { useState } from 'react';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
@@ -110,7 +110,7 @@ const Index: NextPage = (props: any) => {
                       </div>
                     )}
                   </div>
-                  <Link href={`/polls/${poll._id}`}>
+                  <Link href={`/poll?pollId=${poll._id}`}>
                     <div className="card-vote">
                       <button
                         className="btn btn-secondary my-2 my-sm-0"
