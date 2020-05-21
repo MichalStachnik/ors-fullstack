@@ -1,49 +1,45 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
 
 import './PollMap.css';
 
-type State = {
-  lat: number;
-  lng: number;
-  zoom: number;
-};
-
 interface Props {
-  voters: any;
+  voters: Voter[];
 }
 
-type LatLng = {
+interface Voter {
+  lat: number;
+  lon: number;
+  voterId: string;
+  _id: string;
+}
+
+interface LatLng {
   lat: number;
   lng: number;
+}
+
+const PollMap: React.FC<Props> = (props) => {
+  const [mapValues, setMapValues] = useState({
+    lat: 51.505,
+    lng: -0.09,
+    zoom: 1,
+  });
+
+  const position: LatLng = { lat: mapValues.lat, lng: mapValues.lng };
+
+  return (
+    <Map center={position} zoom={mapValues.zoom} className="mt-3">
+      <TileLayer
+        attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+      />
+      {props.voters.map((voter: Voter, index: number) => {
+        return <Marker position={[voter.lat, voter.lon]} key={index}></Marker>;
+      })}
+      {/* <Popup> </Popup> */}
+    </Map>
+  );
 };
 
-export default class PollMap extends Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      lat: 51.505,
-      lng: -0.09,
-      zoom: 1
-    };
-  }
-
-  render() {
-    const position: LatLng = { lat: this.state.lat, lng: this.state.lng };
-    return (
-      <Map center={position} zoom={this.state.zoom} className="mt-3">
-        <TileLayer
-          attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
-
-        {this.props.voters.map((voter: any, index: number) => {
-          return (
-            <Marker position={[voter.lat, voter.lon]} key={index}></Marker>
-          );
-        })}
-        {/* <Popup> </Popup> */}
-      </Map>
-    );
-  }
-}
+export default PollMap;
