@@ -1,7 +1,6 @@
 const path = require('path');
 const express = require('express');
 const mongoose = require('mongoose');
-const sslRedirect = require('heroku-ssl-redirect');
 
 // Routes
 const polls = require('./routes/polls.js');
@@ -10,7 +9,7 @@ const contact = require('./routes/contact.js');
 
 require('dotenv').config();
 
-let DB_PATH = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@ors-wbspk.mongodb.net/test?retryWrites=true&w=majority`;
+let DB_PATH = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.pxzaibe.mongodb.net/`;
 
 const connectToDB = async () => {
   try {
@@ -30,8 +29,6 @@ const connectToDB = async () => {
 
 const app = express();
 
-app.use(sslRedirect());
-
 connectToDB();
 
 app.use(express.json({ extended: false }));
@@ -48,6 +45,6 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 4000;
 
 app.listen(PORT, () => console.log(`listening on ${PORT}`));
