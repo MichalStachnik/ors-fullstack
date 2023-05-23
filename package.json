@@ -19,7 +19,6 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-validator": "^6.3.1",
-    "heroku-ssl-redirect": "0.0.4",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.8.7"
   },
