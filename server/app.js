@@ -23,6 +23,8 @@ const connectToDB = async () => {
   } catch (error) {
     console.log('Error connecting to mongodb');
     console.error(error);
+    console.log('DB_USER:', process.env.DB_USER);
+    console.log('DB_PASS:', process.env.DB_PASS);
     process.exit(1);
   }
 };
